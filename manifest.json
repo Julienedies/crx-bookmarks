@@ -1,0 +1,30 @@
+{
+  "manifest_version": 2,
+
+  "name": "bookmarkManager",
+  "description": "manage bookmark.",
+  "version": "1.0",
+
+  "permissions": [
+  	"tabs",
+  	"contextMenus",
+  	"downloads",  
+  	"storage",
+  	"bookmarks",
+  	"\u003Call_urls\u003E",
+    "http://*/*"
+  ],
+  
+  //"background": { "scripts": ["background.js"] },
+  
+   "icons": {
+          "16": "assets/img/icon-bitty.png",
+          "48": "assets/img/icon-small.png",
+          "128": "assets/img/icon-large.png"
+  },
+  
+  "browser_action": {
+    "default_icon": "assets/img/icon-large.png",
+    "default_popup": "popup.html"
+  }
+}

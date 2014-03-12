@@ -1,0 +1,144 @@
+@charset "utf-8";
+/* reset */
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, button, textarea, p, blockquote, th, td {
+	margin: 0;
+	padding: 0;
+}
+fieldset, img {
+	border: 0;
+}
+/* remember to define focus styles! */
+:focus {
+	outline: 0;
+}
+address, caption, cite, code, dfn, em, strong, th, var, optgroup {
+	font-style: normal;
+	font-weight: normal;
+}
+abbr, acronym {
+	border: 0;
+	font-variant: normal;
+}
+input, button, textarea, select, optgroup, option {
+	font-family: inherit;
+	font-size: inherit;
+	font-style: inherit;
+	font-weight: inherit;
+}
+code, kbd, samp, tt {
+	font-size: 100%;
+}
+/*@purpose To enable resizing for IE */
+/*@branch For IE6-Win, IE7-Win */
+input, button, textarea, select {
+ *font-size: 100%;
+}
+body {
+	line-height: 1.5;
+}
+ol, ul, li {
+	list-style: none;
+}
+/* tables still need 'cellspacing="0"' in the markup */
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+caption, th {
+	text-align: left;
+	white-space: nowrap;
+}
+sup, sub {
+	font-size: 100%;
+	vertical-align: baseline;
+}
+/* remember to highlight anchors and inserts somehow! */
+:link, :visited, ins {
+	text-decoration: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after, q:before, q:after {
+	content: '';
+	content: none;
+}
+
+/* reset end */
+
+/* base */
+body{
+	font-size:14px;
+	line-height:1.4;
+}
+a:link,
+a:visited{
+	color:#333;
+	color:#0070c0;
+}
+a:hover{
+	color:red;
+}
+/* base end */
+
+/* modules */
+#btnGroup{
+	position:fixed;
+	top:4px;
+	right:4px;
+	z-index:11;
+}
+#path{
+	position:fixed;
+	top:0;
+	left:0;
+	right:0;
+	z-index:10;
+	height:2em;
+	padding:0 0 0 40px;
+	line-height:2em;
+	color:#aaa;
+	color: #7A7A7A;
+	background:rgba(250,250,250,0.9);
+}
+#path span{
+	cursor:pointer;
+}
+#path span.current{
+	cursor:defalut;
+}
+
+#view{
+	position:absolute;
+	top:40px;
+	left:40px;
+	right:40px;
+}
+#view li{
+	padding:4px 0 4px 6px;
+	border:solid 1px #fff;
+}
+#view li:hover{
+	background:rgba(220,250,160,0.7);
+	border-color:rgba(200,220,140,1);
+}
+
+#view li img,
+#view li b,
+#view li a{
+	vertical-align:middle;
+}
+
+#view li img{
+	margin:0 16px 0 0;
+	width:1.2em;
+}
+
+#view li b{
+	padding-left:32px;
+	background:url(../img/folder.png) -4px 50% no-repeat;
+	background-size:28px 28px;
+	font-family: arial, sans-serif;
+	cursor:pointer;
+}
+/* modules end */
