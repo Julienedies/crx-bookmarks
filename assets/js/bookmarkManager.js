@@ -1,8 +1,15 @@
 /**
- * app目标：
+ * Todo
  * 
  * 1：书签树格式化；
  * 2：可以按多种方式排序；
+ * 3: icon缓存到本地
+ * 4: 列出所有目录
+ * 5：按网站分类
+ * 6：按浏览热度排序
+ * 7：icon本地缓存
+ * 
+ * 
  * 
  */
 
@@ -94,7 +101,6 @@ $(function($){
 				formatPath(r);
 			});	
 			getViewById(d.id, function(r){
-				d3.select('#view').selectAll('li').remove();
 				formatView(r[0].children);
 			});
 		});
@@ -105,6 +111,8 @@ $(function($){
 		var li =  d3.select('#view').selectAll('li').data(r);
 		
 		li.enter().append('li');
+		
+		li.exit().remove();
 		
 		li.html(function(d){
 			if(d.children){
@@ -118,7 +126,6 @@ $(function($){
 		.on('click',function(d, i){
 			var r;
 			if( r = d.children){
-				d3.select('#view').selectAll('li').remove();
 				formatView(r);
 				
 				getPathById(d.id, function(r){

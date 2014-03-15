@@ -2,7 +2,7 @@
   "manifest_version": 2,
 
   "name": "bookmarkManager",
-  "description": "manage bookmark.",
+  "description": "To manage bookmark.",
   "version": "1.0",
 
   "permissions": [
@@ -25,6 +25,7 @@
   
   "browser_action": {
     "default_icon": "assets/img/icon-large.png",
-    "default_popup": "popup.html"
+    "default_popup": "popup.html",
+    "default_title": "我的书签管理器"
   }
 }
