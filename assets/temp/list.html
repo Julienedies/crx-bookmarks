@@ -1,47 +1,4 @@
-<div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="./index.html">Bootstrap</a>
-          <div class="nav-collapse">
-	    <ul class="nav">
-              <li class="">
-                <a href="./index.html">概述</a>
-              </li>
-              <li class="">
-                <a href="./scaffolding.html">框架</a>
-              </li>
-              <li class="">
-                <a href="./base-css.html">基础CSS</a>
-              </li>
-              <li class="active">
-                <a href="./components.html">组件</a>
-              </li>
-              <li class="">
-                <a href="./javascript.html">Javascript插件</a>
-              </li>
-              <li class="">
-                <a href="./less.html">使用LESS</a>
-              </li>
-              <li class="divider-vertical"></li>
-              <li class="">
-                <a href="./download.html">定制</a>
-              </li>
-              <li class="">
-                <a href="./examples.html">例子</a>
-              </li>
-	      <li class="">
-                <a href="./wrongway.html">译者言</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
+
 
 
 <div class="container-fluid">
@@ -74,7 +31,7 @@ Search: <input ng-model="query">
 <ul id="view">
 	<li ng-repeat="bookmark in bookmarks | filter:query | orderBy:orderProp"  class="phone-listing">
 	<div ng-if="bookmark.url">
-	<a href="{{bookmark.url}}" target="_blank" >{{bookmark.title || bookmark.url}}</a>
+	<img ng-src="{{bookmark.url | generateIcon}}" /><a href="{{bookmark.url}}" target="_blank" >{{bookmark.title || bookmark.url}}</a>
 	</div>
 	<div ng-if="bookmark.children || !bookmark.url">
 	<b><a href="{{'#/node/'+bookmark.id}}"  >{{bookmark.title || '~~~~'}}</a></b>
