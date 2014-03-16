@@ -1,17 +1,54 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="bookmarkManager">
 <head>
 <title>bookmark manager</title>
 <meta charset="utf-8" />
-<link href="assets/css/style.css" rel="stylesheet" type="text/css" />
-<script src="assets/js/libs/jquery.min.js"></script>
-<script src="assets/js/libs/angular.min.js"></script>
-<script src="assets/js/bookmarkManager.js"></script>
+<link rel="stylesheet" href="assets/css/bootstrap.css"/>
+<link rel="stylesheet" href="assets/css/style.css"/>
 </head>
 
-<body>
-<div id="btnGroup"><button>recent</button></div>
-<div id="path"></div>
-<ol id="view"></ol>
+<body ng-controller="bookmarkListCtrl">
+
+<div class="container-fluid">
+<div class="row-fluid">
+<div class="span2">
+<!--Sidebar content-->
+Search: <input ng-model="query">
+
+  Sort by:
+  <select ng-model="orderProp">
+    <option value="title">Alphabetical</option>
+    <option value="id">Newest</option>
+  </select>
+</div>
+
+
+
+
+
+
+
+
+<div class="span10">
+<!--Body content-->
+<ul>
+	<li ng-repeat="bookmark in bookmarks | filter:query | orderBy:orderProp">
+	<p>{{bookmark.title || 'alias'}}</p>
+	</li>
+</ul>
+
+
+
+
+</div>
+</div>
+</div>
+
+<!-- 
+ ------------------------------------ -->
+<script src="assets/js/libs/jquery.min.js"></script>
+<script src="assets/js/libs/angular.min.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/controllers.js"></script>
 </body>
 </html>
