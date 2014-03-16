@@ -5,9 +5,8 @@
  */
 
 
-//---------------------------------------------
-
-function bookmarkListCtrl($scope) {
+// 列出书签树单个节点下所有子节点
+function nodeCtrl($scope) {
 
 	chrome.bookmarks.getTree(function(r){
 		console.log(r); 
@@ -21,13 +20,25 @@ function bookmarkListCtrl($scope) {
 	//$scope.orderProp = 'age';
 }
 
-//---------------------------------------------
+// 列出书签树中所有书签目录
+function dirCtrl($scope, $routeParams) {
+    //$scope.phoneId = $routeParams.phoneId;
+}
 
-var bookmarkManager = angular.module('bookmarkManager', ['ngRoute', 'bookmarkManagerControllers']);
+// 列出最近使用的书签
+function recentCtrl($scope, $routeParams){
+	
+}
+
+var bmControllers = angular.module('bmControllers', []);
                                                          
 
 
-bookmarkManager.controller('bookmarkListCtrl',['$scope', bookmarkListCtrl]);
+bmControllers.controller('nodeCtrl',['$scope', '$routeParams', nodeCtrl]);
+
+bmControllers.controller('dirCtrl',['$scope', dirCtrl]);
+
+bmControllers.controller('recentCtrl',['$scope', recentCtrl]);
 			 
 	
   

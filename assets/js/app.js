@@ -9,13 +9,16 @@ var bmApp = angular.module('bmApp', [ 'ngRoute',
 		'bmControllers' ]);
 
 bmApp.config([ '$routeProvider', function($routeProvider) {
-	$routeProvider.when('/phones', {
-		templateUrl : 'partials/phone-list.html',
-		controller : 'PhoneListCtrl'
-	}).when('/phones/:phoneId', {
-		templateUrl : 'partials/phone-detail.html',
-		controller : 'PhoneDetailCtrl'
+	$routeProvider.when('/node/:nodeId', {
+		templateUrl : 'assets/temp/list.html',
+		controller : 'nodeCtrl'
+	}).when('/dir', {
+		templateUrl : 'assets/temp/list.html',
+		controller : 'dirCtrl'
+	}).when('/recent', {
+		templateUrl : 'assets/temp/list.html',
+		controller : 'recentCtrl'			
 	}).otherwise({
-		redirectTo : '/phones'
+		redirectTo : '/dir'
 	});
 } ]);
