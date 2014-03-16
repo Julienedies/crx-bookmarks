@@ -70,11 +70,10 @@ function dirCtrl($scope) {
 		for(var i in tree){
 			item = tree[i];
 			
-			if( isTree(item) ){
-				getListFromTree(item, list);
-			}else if(typeof item === 'object'){
-				list.push(item);
-			}	
+			if( isTree(item) && item.children ){
+				list.push({id:item.id, title:item.title});
+				getListFromTree(item.children, list);
+			}
 		}
 		
 		return list;
@@ -83,7 +82,7 @@ function dirCtrl($scope) {
 	chrome.bookmarks.getTree(function(r){
 		console.log(r); 
 		
-		//var r = getListFromTree(r);
+		var r = getListFromTree(r);
 
 		$scope.$apply(function () {
 			$scope.bookmarks = r;
