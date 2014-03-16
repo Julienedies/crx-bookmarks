@@ -107,7 +107,7 @@ a:hover{
 #path b.current{
 	cursor:defalut;
 }
-b a:link{
+b a{
 	color:inherit;
 }
 #view{
