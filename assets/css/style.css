@@ -101,18 +101,18 @@ a:hover{
 	color: #7A7A7A;
 	background:rgba(250,250,250,0.9);
 }
-#path span{
+#path b{
 	cursor:pointer;
 }
-#path span.current{
+#path b.current{
 	cursor:defalut;
 }
-
+b a{
+	color:inherit;
+}
 #view{
-	position:absolute;
+	position:relative;
 	top:40px;
-	left:40px;
-	right:40px;
 }
 #view li{
 	padding:4px 0 4px 6px;

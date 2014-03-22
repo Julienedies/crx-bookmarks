@@ -1,53 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="zn" ng-app="bmApp">
 <head>
 <title>bookmark manager</title>
 <meta charset="utf-8" />
-<link href="assets/css/style.css" rel="stylesheet" type="text/css" />
-<script src="assets/js/library/jquery.min.js"  type="text/javascript"></script>
-<script src="assets/js/library/jquery.mousewheel.js"  type="text/javascript"></script>
-<script src="assets/js/library/d3.min.js"  type="text/javascript"></script>
-<script src="assets/js/bookmarkManager.js"  type="text/javascript"></script>
+<link rel="stylesheet" href="assets/css/bootstrap.css"/>
+<link rel="stylesheet" href="assets/css/style.css"/>
+<link rel="stylesheet" href="assets/css/animations.css"/>
 
-<!-- template
-  	================================================== 
-    ================================================== -->
-<style id="temp" type="text/html">
-<ul>
-    <% for (var i in list) { var obj = list[i]; %>
-        <li>
-			<% if(obj.children) { %>
-					<% include('temp1', {"list": obj.children }) %>
-			<% }else{ %>
-					<p>	<%= obj.title || obj.url %> </p>
-			<% } %>
-		</li>
-    <%}%>
-</ul>
-</style>
+<script src="assets/js/libs/jquery-1.10.2.min.js"></script>
+<script src="assets/js/libs/angular.min.js"></script>
+<script src="assets/js/libs/angular-animate.js"></script>
+<script src="assets/js/libs/angular-resource.js"></script>
+<script src="assets/js/libs/angular-route.js"></script>
 
-<style id="temp1" type="text/html">
-<ul>
-    <% for (var i in list) { var obj = list[i]; %>
-        <li>
-			<% if(obj.children) { %>
-					<% include('temp', {"list": obj.children }) %>
-			<% }else{ %>
-					<p>	<%= obj.title || obj.url %> </p>
-			<% } %>
-		</li>
-    <%}%>
-</ul>
-</style>
-
-<!-- template
-  	================================================== 
-    ================================================== -->
+<script src="assets/js/app.js"></script>
+<script src="assets/js/services.js"></script>
+<script src="assets/js/animations.js"></script>
+<script src="assets/js/controllers.js"></script>
+<script src="assets/js/filters.js"></script>
 </head>
-
 <body>
-<div id="btnGroup"><button>recent</button></div>
-<div id="path"></div>
-<ol id="view"></ol>
+
+<div ng-view></div>
+
 </body>
 </html>

@@ -157,22 +157,6 @@ $(function($){
 	
 	
 	///////////////////////////////////////////////////////////
-	//main
-	(function main(){
-		
-		$('#btnGroup button').click(function(){
-			getRecent(280);
-		});
-		
-		//
-		chrome.bookmarks.getTree(function(r){
-			formatView(r);
-		});
-		
-		
-		
-	})();
-	
 	
 	
 	
@@ -188,22 +172,7 @@ $(function($){
 	
 	
 	
-	//鼠标滚轮事件
 	/*
-    $('body')
-    .mousewheel(function(event, delta) {
-    	var wh = $(window).height()-30;
-    	var $body = $(this);
-    	var ss = $body.scrollTop();
-    	var sh = ss-(delta*wh);
-    	
-    	cg(ss-(delta*wh));
-    	
-    	//$body.scrollTop(sh);
-    	$body.animate({'scrollTop':sh+'px'},400)
-    	return false;
-    });
-    
 	chrome.bookmarks.getTree(function(r){
 		console.log(r); 
 		
