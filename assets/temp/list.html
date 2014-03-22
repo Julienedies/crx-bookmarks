@@ -1,9 +1,5 @@
 
-
-
-<div class="container-fluid">
-<div class="row-fluid">
-<div class="span2">
+<div style="margin:40px 0 0 0;">
 <!--Sidebar content-->
 Search: <input ng-model="query">
 
@@ -15,23 +11,20 @@ Search: <input ng-model="query">
 </div>
 
 
-
-<div class="span10">
-<!--Body content-->
-</div>
-</div>
-</div>
-
 <div id="path">
 	<b ng-repeat="node in paths">
 	<a href="{{'#/node/'+node.id}}">{{node.title || '~~~~'}}</a>&nbsp;›&nbsp;
 	</b>
+	<a href="#/dir" style="float:right;margin:0 30px 0 0;">dir</a>
+	<a href="#/recent" style="float:right;margin:0 30px 0 0;">recent</a>
 </div>
 
 <ul id="view">
 	<li ng-repeat="bookmark in bookmarks | filter:query | orderBy:orderProp"  class="phone-listing">
 	<div ng-if="bookmark.url">
-	<img ng-src="{{bookmark.url | generateIcon}}" /><a href="{{bookmark.url}}" target="_blank" >{{bookmark.title || bookmark.url}}</a>
+	
+	<img ng-src="{{bookmark.url | generateIcon}}" /><a href="{{bookmark.url}}" target="_blank"  contentEditable="{{bookmark.Editable?'true':'false'}}"  ng-model="bookmark.title"  >{{bookmark.title || bookmark.url}}</a>
+	<i ng-click="bookmark.Editable = !bookmark.Editable">edit</i>
 	</div>
 	<div ng-if="bookmark.children || !bookmark.url">
 	<b><a href="{{'#/node/'+bookmark.id}}"  >{{bookmark.title || '~~~~'}}</a></b>

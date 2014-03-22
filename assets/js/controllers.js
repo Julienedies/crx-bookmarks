@@ -94,18 +94,21 @@ function dirCtrl($scope) {
 }
 
 // 列出最近使用的书签
-function recentCtrl($scope, $routeParams){
+function recentCtrl($scope, BOOKMARKS){
 	
+	/*
 	chrome.bookmarks.getRecent(240,function(r){
-		console.log(r); 
-		
-		//var r = getListFromTree(r);
-
 		$scope.$apply(function () {
 			$scope.bookmarks = r;
 		});
-
-	});			
+	});	
+	*/
+	
+	BOOKMARKS.getRecent(240).then(function(r){
+		$scope.bookmarks = r;
+	});
+	
+	
 }
 
 var bmControllers = angular.module('bmControllers', []);
@@ -116,7 +119,7 @@ bmControllers.controller('nodeCtrl',['$scope', '$routeParams', nodeCtrl]);
 
 bmControllers.controller('dirCtrl',['$scope', dirCtrl]);
 
-bmControllers.controller('recentCtrl',['$scope', recentCtrl]);
+bmControllers.controller('recentCtrl',['$scope', 'BOOKMARKS', recentCtrl]);
 			 
 	
   

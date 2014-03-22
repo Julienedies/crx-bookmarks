@@ -6,7 +6,7 @@
  * 
  */
 
-var bmApp = angular.module('bmApp', [ 'ngRoute','bmAnimations', 'bmControllers', 'bmFilters' ]);
+var bmApp = angular.module('bmApp', [ 'ngRoute', 'bmServices', 'bmAnimations', 'bmControllers', 'bmFilters' ]);
 		
 
 bmApp.config([ '$routeProvider', function($routeProvider) {
