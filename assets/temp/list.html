@@ -1,4 +1,3 @@
-
 <div style="margin:40px 0 0 0;">
 <!--Sidebar content-->
 Search: <input ng-model="query">
@@ -23,7 +22,8 @@ Search: <input ng-model="query">
 	<li ng-repeat="bookmark in bookmarks | filter:query | orderBy:orderProp"  class="phone-listing">
 	<div ng-if="bookmark.url">
 	
-	<img ng-src="{{bookmark.url | generateIcon}}" /><a href="{{bookmark.url}}" target="_blank"  contentEditable="{{bookmark.Editable?'true':'false'}}"  ng-model="bookmark.title"  >{{bookmark.title || bookmark.url}}</a>
+	<img ng-src="{{bookmark.url | generateIcon}}" />
+	<a href="{{bookmark.url}}" target="_blank" contentEditable="{{bookmark.Editable?'true':'false'}}"  ng-model="bookmark.title"  >{{bookmark.title || bookmark.url}}</a>
 	<i ng-click="bookmark.Editable = !bookmark.Editable">edit</i>
 	</div>
 	<div ng-if="bookmark.children || !bookmark.url">

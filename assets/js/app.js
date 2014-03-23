@@ -6,7 +6,7 @@
  * 
  */
 
-var bmApp = angular.module('bmApp', [ 'ngRoute', 'bmServices', 'bmAnimations', 'bmControllers', 'bmFilters' ]);
+var bmApp = angular.module('bmApp', [ 'ngRoute', 'bmServices', 'bmDirectives', 'bmFilters', 'bmAnimations', 'bmControllers' ]);
 		
 
 bmApp.config([ '$routeProvider', function($routeProvider) {
@@ -14,7 +14,7 @@ bmApp.config([ '$routeProvider', function($routeProvider) {
 		templateUrl : 'assets/temp/list.html',
 		controller : 'nodeCtrl'
 	}).when('/dir', {
-		templateUrl : 'assets/temp/list.html',
+		templateUrl : 'assets/temp/dir.html',
 		controller : 'dirCtrl'
 	}).when('/recent', {
 		templateUrl : 'assets/temp/list.html',

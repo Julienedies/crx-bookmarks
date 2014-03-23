@@ -9,7 +9,7 @@
 var bmServices = angular.module('bmServices', ['ngResource']);
 
 /*
- * 该service对chrome.bookmarks的方法进行了封装;
+ * 对chrome.bookmarks的方法进行封装;
  */
 bmServices.factory('BOOKMARKS', ['$q', function($q) {
 	
@@ -20,7 +20,9 @@ bmServices.factory('BOOKMARKS', ['$q', function($q) {
 	var fs = ['get', 'getChildren', 'getRecent', 'getTree', 'getSubTree', 'search', 'create', 'move', 'update', 'remove', 'removeTree'];
 	
 	for(var i in fs){
+		
 		i = fs[i];
+		
 		BOOKMARKS[i] = (function(i){
 			
 			return function(){

@@ -1,0 +1,24 @@
+<script type="text/ng-template"  id="tree_item_renderer.html">
+	<b><a href="{{'#/node/'+node.id}}"  >{{node.title || '~~~~'}}</a></b>
+    <ul ng-if="node.children || !node.url">
+        <li ng-repeat="node in node.children | isTree"  ng-include="'tree_item_renderer.html'"></li>
+    </ul>
+</script>
+
+
+<div style="margin:40px 0 0 0;">
+<!--Sidebar content-->
+Search: <input ng-model="query">
+
+  Sort by:
+  <select ng-model="orderProp">
+    <option value="title">Alphabetical</option>
+    <option value="id">Newest</option>
+  </select>
+</div>
+
+<ul id="view">
+	<li ng-repeat="node in tree | isTree" ng-include="'tree_item_renderer.html'">
+	</li>
+</ul>
+

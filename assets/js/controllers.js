@@ -50,7 +50,7 @@ function nodeCtrl($scope, $routeParams) {
 }
 
 // 列出书签树中所有书签目录
-function dirCtrl($scope) {
+function dirCtrl($scope, BOOKMARKS) {
 	
 	function isTree(o){
 		if(typeof o === 'object'){
@@ -79,23 +79,15 @@ function dirCtrl($scope) {
 		return list;
 	}
 	
-	chrome.bookmarks.getTree(function(r){
+	BOOKMARKS.getTree().then(function(r){
 		console.log(r); 
-		
-		var r = getListFromTree(r);
-
-		$scope.$apply(function () {
-			$scope.bookmarks = r;
-		});
-
+		$scope.tree = r;
 	});		
-	
 	
 }
 
 // 列出最近使用的书签
 function recentCtrl($scope, BOOKMARKS){
-	
 	/*
 	chrome.bookmarks.getRecent(240,function(r){
 		$scope.$apply(function () {
@@ -108,8 +100,10 @@ function recentCtrl($scope, BOOKMARKS){
 		$scope.bookmarks = r;
 	});
 	
-	
 }
+
+
+
 
 var bmControllers = angular.module('bmControllers', []);
                                                          
@@ -117,7 +111,7 @@ var bmControllers = angular.module('bmControllers', []);
 
 bmControllers.controller('nodeCtrl',['$scope', '$routeParams', nodeCtrl]);
 
-bmControllers.controller('dirCtrl',['$scope', dirCtrl]);
+bmControllers.controller('dirCtrl',['$scope', 'BOOKMARKS', dirCtrl]);
 
 bmControllers.controller('recentCtrl',['$scope', 'BOOKMARKS', recentCtrl]);
 			 
