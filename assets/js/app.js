@@ -18,10 +18,16 @@ bmApp.config([ '$routeProvider', function($routeProvider) {
 		controller : 'dirCtrl'
 	}).when('/recent', {
 		templateUrl : 'assets/temp/list.html',
-		controller : 'recentCtrl'	
+		controller : 'recentCtrl'
+	}).when('/search/:searchText', {
+		templateUrl : 'assets/temp/list.html',
+		controller : 'searchCtrl'			
 	}).when('/help', {
 		templateUrl : 'assets/temp/help.html'
-		//controller : 'recentCtrl'				
+		//controller : 'recentCtrl'	
+	}).when('/seting', {
+		templateUrl : 'assets/temp/seting.html'
+		//controller : 'recentCtrl'					
 	}).otherwise({
 		redirectTo : '/dir'
 	});

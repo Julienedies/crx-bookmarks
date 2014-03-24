@@ -8,7 +8,7 @@
 
 var bmFilters = angular.module('bmFilters', []);
 
-bmFilters.filter('generateIcon', function() {
+bmFilters.filter('getIcon', function() {
   return function(input) {
 		    var durl=/^(\w+:\/\/\/?[^\/]+)\//i;  
 		    var domain = input.match(durl);  

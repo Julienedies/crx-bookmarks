@@ -50,36 +50,9 @@ function nodeCtrl($scope, $routeParams) {
 }
 
 // 列出书签树中所有书签目录
-function dirCtrl($scope, BOOKMARKS) {
+function dirCtrl($scope, bookMarkManager) {
 	
-	function isTree(o){
-		if(typeof o === 'object'){
-			for(var i in o){
-				if(typeof o[i] === 'object'){
-					return 1;
-				} 
-			}
-		}
-		return 0;
-	}
-	
-	function getListFromTree(tree,list){
-		var list = list || [];
-		var item;
-		
-		for(var i in tree){
-			item = tree[i];
-			
-			if( isTree(item) && item.children ){
-				list.push({id:item.id, title:item.title});
-				getListFromTree(item.children, list);
-			}
-		}
-		
-		return list;
-	}
-	
-	BOOKMARKS.getTree().then(function(r){
+	bookMarkManager.getTree().then(function(r){
 		console.log(r); 
 		$scope.tree = r;
 	});		
@@ -87,7 +60,7 @@ function dirCtrl($scope, BOOKMARKS) {
 }
 
 // 列出最近使用的书签
-function recentCtrl($scope, BOOKMARKS){
+function recentCtrl($scope, bookMarkManager){
 	/*
 	chrome.bookmarks.getRecent(240,function(r){
 		$scope.$apply(function () {
@@ -96,24 +69,40 @@ function recentCtrl($scope, BOOKMARKS){
 	});	
 	*/
 	
-	BOOKMARKS.getRecent(240).then(function(r){
+	bookMarkManager.getRecent().then(function(r){
 		$scope.bookmarks = r;
 	});
 	
 }
 
+function searchCtrl($scope, $routeParams, bookMarkManager) {
+	if($routeParams.searchText){
+		bookMarkManager.search($routeParams.searchText).then(function(r){
+			$scope.bookmarks = r;
+		});		
+	}
 
+}
+
+function mainCtrl($scope, $location, bookMarkManager){
+	$scope.searchf = function(){
+		$location.path('/search/'+$scope.searchText);
+		alert($scope.searchText);
+	};
+}
 
 
 var bmControllers = angular.module('bmControllers', []);
                                                          
-
+bmControllers.controller('mainCtrl',['$scope', '$location', mainCtrl]);
 
 bmControllers.controller('nodeCtrl',['$scope', '$routeParams', nodeCtrl]);
 
-bmControllers.controller('dirCtrl',['$scope', 'BOOKMARKS', dirCtrl]);
+bmControllers.controller('dirCtrl',['$scope', 'bookMarkManager', dirCtrl]);
 
-bmControllers.controller('recentCtrl',['$scope', 'BOOKMARKS', recentCtrl]);
+bmControllers.controller('recentCtrl',['$scope', 'bookMarkManager', recentCtrl]);
+
+bmControllers.controller('searchCtrl',['$scope', '$routeParams', 'bookMarkManager', searchCtrl]);
 			 
 	
   

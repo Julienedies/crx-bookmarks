@@ -8,6 +8,35 @@
 
 var bmDirectives = angular.module('bmDirectives', []);
 
+bmDirectives.directive('enterPress', function() {
+    return {
+        restrict : 'A',
+        scope : {
+        	enterPress : '='
+        },        
+        link : function(scope, element, attrs) {
+        	//var call = jQuery.proxy(scope.enterPress,element);
+        	
+        	var fn = function(e){
+        		if(e.which == 13){
+        			scope.enterPress();
+        		}		
+        	};
+        	
+        	element.focus(function(){
+        		element.keypress(fn);
+        	});
+        	element.blur(function(){
+        		element.unbind('keypress',fn);
+        	});        	
+        	
+        }
+    };
+    
+});
+
+
+
 bmDirectives.directive("clickToEdit", function() {
     var editorTemplate = '<div class="click-to-edit">' +
     '<div ng-hide="view.editorEnabled">' +
