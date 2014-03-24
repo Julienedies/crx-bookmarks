@@ -70,6 +70,7 @@ blockquote:before, blockquote:after, q:before, q:after {
 body{
 	font-size:14px;
 	line-height:1.4;
+	overflow-y:scroll;
 }
 a:link,
 a:visited{
@@ -79,7 +80,24 @@ a:visited{
 a:hover{
 	color:red;
 }
+b a{
+	color:inherit;
+}
 /* base end */
+
+
+
+.search-query{
+	color:#B4B4B4;
+}
+.search-query:focus{
+	color:#000;
+}
+
+a.btn{
+	color:#fff;
+}
+
 
 /* modules */
 #btnGroup{
@@ -107,16 +125,13 @@ a:hover{
 #path b.current{
 	cursor:defalut;
 }
-b a{
-	color:inherit;
-}
+
 #view{
 	position:relative;
 	top:40px;
 }
 #view li{
 	padding:4px 0 4px 6px;
-	border:solid 1px #fff;
 }
 #view li li{
 	margin:0 0 0 1em;

@@ -3,15 +3,17 @@
 <head>
 <title>bookmark manager</title>
 <meta charset="utf-8" />
-<link rel="stylesheet" href="assets/css/bootstrap.css"/>
-<link rel="stylesheet" href="assets/css/style.css"/>
-<link rel="stylesheet" href="assets/css/animations.css"/>
+<link rel="stylesheet" href="assets/css/bootstrap-theme-superhero.css" />
+<link rel="stylesheet" href="assets/css/animations.css" />
+<link rel="stylesheet" href="assets/css/style.css" />
 
 <script src="assets/js/libs/jquery-1.10.2.min.js"></script>
 <script src="assets/js/libs/angular.min.js"></script>
 <script src="assets/js/libs/angular-animate.js"></script>
 <script src="assets/js/libs/angular-resource.js"></script>
 <script src="assets/js/libs/angular-route.js"></script>
+
+<script src="assets/js/libs/bootstrap.min.js"></script>
 
 <script src="assets/js/app.js"></script>
 <script src="assets/js/services.js"></script>
@@ -20,9 +22,59 @@
 <script src="assets/js/controllers.js"></script>
 <script src="assets/js/filters.js"></script>
 </head>
-<body>
+<body ng-controller="mainCtrl">
 
-<div ng-view></div>
+<!-- Navbar start
+    ================================================== -->
+<div class="navbar navbar-default navbar-fixed-top">
+<div class="navbar-header">
+<button type="button" class="navbar-toggle" data-toggle="collapse"
+	data-target=".navbar-responsive-collapse"><span
+	class="icon-bar"></span> <span class="icon-bar"></span> <span
+	class="icon-bar"></span></button>
+<a class="navbar-brand" href="javascript:void 0;">Julien</a></div>
+
+<div class="navbar-collapse collapse navbar-responsive-collapse">
+
+<ul class="nav navbar-nav">
+	<li class="active"><a href="#/dir">书签目录</a></li>
+	<li class=""><a href="#/recent">最近使用</a></li>
+	<li class=""><a href="#/trash">回收站</a></li>
+	<li class=""><a href="#/hot">高频书签</a></li>
+	<li class=""><a href="#/seting">设置</a></li>
+</ul>
+
+<form class="navbar-form navbar-left">
+<input type="text" class="form-control col-lg-8 search-query" placeholder="Search" enter-press="searchf" ng-model="searchText" />
+<a ng-href="#/search/{{searchText}}" class="btn btn-small btn-info">search</a>
+</form>
+	
+<ul class="nav navbar-nav navbar-right">
+	<li><a href="javascript:void 0;">Link</a></li>
+	<li class="dropdown"><a href="javascript:void 0;"
+		class="dropdown-toggle" data-toggle="dropdown">Dropdown <b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li><a href="javascript:void 0;">Action</a></li>
+		<li><a href="javascript:void 0;">Another action</a></li>
+		<li><a href="javascript:void 0;">Something else here</a></li>
+		<li class="divider"></li>
+		<li><a href="javascript:void 0;">Separated link</a></li>
+	</ul>
+	</li>
+</ul>
+
+</div>
+</div>
+
+<!-- Navbar end
+    ================================================== -->
+
+
+
+
+
+<div ng-view ></div>
 
 </body>
 </html>
