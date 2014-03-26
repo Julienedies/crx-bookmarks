@@ -115,12 +115,13 @@ function trashCtrl($scope, bookmarkManager, rmBookmarkManager) {
 	
 	$scope.$on('chrome.storage.change',function(e,data){
 		rmBookmarkManager.get().then(function(r){
-			$scope.bookmarks = r;
+			$scope.bookmarks = JSON.stringify(r) == '{}' ? false : r;
 		});		
 	});
 	
 	rmBookmarkManager.get().then(function(r){
-		$scope.bookmarks = r;
+		console.log(r);
+		$scope.bookmarks = JSON.stringify(r) == '{}' ? false : r;
 	});
 	
 	$scope.clear = function(){

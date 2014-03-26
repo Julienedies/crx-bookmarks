@@ -203,9 +203,9 @@ bmServices.factory('recordManager', ['cStorageInterface', function(cStorageInter
 			get: function(id){
 				var classify = this.classify;
 				return cStorageInterface.get(classify).then(function(records){
-					//console.log(JSON.stringify(records));
-					records = records && records[classify] || {};
-					return angular.copy(records[id] || records);
+					console.log(JSON.stringify(records));
+					records = records && records[classify];
+					return records && records[id] || records;
 				});
 			},
 			set: function(record){
