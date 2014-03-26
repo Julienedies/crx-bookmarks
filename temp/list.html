@@ -1,0 +1,69 @@
+
+<div class="navbar">
+
+<div class="navbar-collapse collapse navbar-responsive-collapse">
+
+<ul class="nav navbar-nav">
+</ul>
+
+<div class="navbar-left">
+ Search: <input ng-model="query" placeholder="搜索当前位置">
+  Sort by:
+  <select ng-model="orderProp">
+    <option value="title">Alphabetical</option>
+    <option value="index">index</option>
+    <option value="url">url</option>
+    <option value="dateAdded">dateAdded</option>
+    <option value="children">children</option>
+  </select>
+</div>
+	
+<ul class="nav navbar-nav navbar-right">
+</ul>
+
+</div>
+</div>
+
+
+
+
+
+<div id="path">
+	<i ng-repeat="node in paths">
+	<a href="{{'#/node/'+node.id}}">{{node.title || '~~~~'}}</a>&nbsp;›&nbsp;
+	</i>
+</div>
+
+<ul id="view">
+	<li ng-repeat="bookmark in bookmarks | filter:query | orderBy:orderProp">
+	
+	<div ng-if="bookmark.url">
+		<img ng-src="{{bookmark.url | getIcon}}" />
+		<a href="{{bookmark.url}}" 
+		   contenteditable="{{bookmark.Editable?'true':'false'}}"
+		   ng-model="bookmark.title"
+		   target="_blank" >
+		   {{bookmark.title || bookmark.url}}
+		</a>
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<i class="btn btn-xs btn-info" ng-click="bookmark.Editable = !bookmark.Editable">edit</i>
+		<i class="btn btn-xs btn-info" ng-click="bookmarkManager.remove(bookmark);">remove</i>
+		<i class="btn btn-xs btn-info" ng-click="bookmarkManager.update(bookmark);">update</i>
+	</div>
+	
+	<div ng-if="!bookmark.url">
+		<b>
+		<a href="{{'#/node/'+bookmark.id}}"
+		   contenteditable="{{bookmark.Editable?'true':'false'}}"
+		   ng-model="bookmark.title">
+		{{bookmark.title || '~~~~'}}</a>
+		</b>
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<i class="btn btn-xs btn-info" ng-click="bookmark.Editable = !bookmark.Editable">edit</i>
+		<i class="btn btn-xs btn-info" ng-click="bookmarkManager.remove(bookmark);">remove</i>
+		<i class="btn btn-xs btn-info" ng-click="bookmarkManager.update(bookmark);">update</i>
+	</div>	
+	
+	</li>
+</ul>
+

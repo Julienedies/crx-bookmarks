@@ -70,6 +70,7 @@ blockquote:before, blockquote:after, q:before, q:after {
 body{
 	font-size:14px;
 	line-height:1.4;
+	padding:72px 0 0 0;
 	overflow-y:scroll;
 }
 a:link,
@@ -108,7 +109,7 @@ a.btn{
 }
 #path{
 	position:fixed;
-	top:0;
+	top:40px;
 	left:0;
 	right:0;
 	z-index:10;
@@ -128,7 +129,7 @@ a.btn{
 
 #view{
 	position:relative;
-	top:40px;
+	top:0px;
 }
 #view li{
 	padding:4px 0 4px 6px;

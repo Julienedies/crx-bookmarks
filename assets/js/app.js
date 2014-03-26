@@ -11,25 +11,34 @@ var bmApp = angular.module('bmApp', [ 'ngRoute', 'bmServices', 'bmDirectives', '
 
 bmApp.config([ '$routeProvider', function($routeProvider) {
 	$routeProvider.when('/node/:nodeId', {
-		templateUrl : 'assets/temp/list.html',
+		templateUrl : 'temp/list.html',
 		controller : 'nodeCtrl'
 	}).when('/dir', {
-		templateUrl : 'assets/temp/dir.html',
+		templateUrl : 'temp/dir.html',
 		controller : 'dirCtrl'
 	}).when('/recent', {
-		templateUrl : 'assets/temp/list.html',
+		templateUrl : 'temp/list.html',
 		controller : 'recentCtrl'
+	}).when('/classify', {
+		templateUrl : 'temp/classify.html',
+		controller : 'classifyCtrl'			
+	}).when('/hot', {
+		templateUrl : 'temp/list.html',
+		controller : 'hotCtrl'			
+	}).when('/trash', {
+		templateUrl : 'temp/list.html',
+		controller : 'trashCtrl'			
 	}).when('/search/:searchText', {
-		templateUrl : 'assets/temp/list.html',
+		templateUrl : 'temp/list.html',
 		controller : 'searchCtrl'			
-	}).when('/help', {
-		templateUrl : 'assets/temp/help.html'
-		//controller : 'recentCtrl'	
 	}).when('/seting', {
-		templateUrl : 'assets/temp/seting.html'
-		//controller : 'recentCtrl'					
+		templateUrl : 'temp/seting.html'
+		//controller : 'recentCtrl'
+	}).when('/help', {
+		templateUrl : 'temp/help.html'
+		//controller : 'recentCtrl'				
 	}).otherwise({
-		redirectTo : '/dir'
+		redirectTo : '/recent'
 	});
 } ]);
 

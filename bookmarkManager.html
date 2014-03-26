@@ -32,20 +32,23 @@
 	data-target=".navbar-responsive-collapse"><span
 	class="icon-bar"></span> <span class="icon-bar"></span> <span
 	class="icon-bar"></span></button>
-<a class="navbar-brand" href="javascript:void 0;">Julien</a></div>
+<a class="navbar-brand" href="https://github.com/julienedies/chrome-extension-bookmarkManager" target="_blank">Julien</a></div>
 
 <div class="navbar-collapse collapse navbar-responsive-collapse">
 
 <ul class="nav navbar-nav">
-	<li class="active"><a href="#/dir">书签目录</a></li>
+	<li class="active"><a href="#/node/1">Main</a></li>
+	<li class=""><a href="#/dir">书签目录</a></li>
 	<li class=""><a href="#/recent">最近使用</a></li>
-	<li class=""><a href="#/trash">回收站</a></li>
 	<li class=""><a href="#/hot">高频书签</a></li>
+	<li class=""><a href="#/classify">分类&标签</a></li>
+	<li class=""><a href="#/trash">回收站</a></li>	
 	<li class=""><a href="#/seting">设置</a></li>
+	<li class=""><a href="#/help">help</a></li>
 </ul>
 
 <form class="navbar-form navbar-left">
-<input type="text" class="form-control col-lg-8 search-query" placeholder="Search" enter-press="searchf" ng-model="searchText" />
+<input type="text" class="form-control col-lg-8 search-query" placeholder="搜索所有书签" enter-press="searchf" ng-model="searchText" />
 <a ng-href="#/search/{{searchText}}" class="btn btn-small btn-info">search</a>
 </form>
 	
@@ -71,10 +74,11 @@
     ================================================== -->
 
 
+<div id="left" style="float:left;width:24%;background:rgba(245, 245, 245, 0.9);" ng-controller="dirCtrl" ng-include="'temp/dir.html'">
+</div>
 
 
-
-<div ng-view ></div>
+<div style="float:right;width:74%;" ng-view ></div>
 
 </body>
 </html>
