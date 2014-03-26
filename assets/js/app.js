@@ -26,7 +26,7 @@ bmApp.config([ '$routeProvider', function($routeProvider) {
 		templateUrl : 'temp/list.html',
 		controller : 'hotCtrl'			
 	}).when('/trash', {
-		templateUrl : 'temp/list.html',
+		templateUrl : 'temp/trash.html',
 		controller : 'trashCtrl'			
 	}).when('/search/:searchText', {
 		templateUrl : 'temp/list.html',

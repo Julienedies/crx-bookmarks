@@ -110,8 +110,22 @@ function hotCtrl($scope, bookmarkManager) {
 }
 
 //
-function trashCtrl($scope, bookmarkManager) {
+function trashCtrl($scope, bookmarkManager, rmBookmarkManager) {
+	$scope.rmBookmarkManager = rmBookmarkManager;
 	
+	$scope.$on('chrome.storage.change',function(e,data){
+		rmBookmarkManager.get().then(function(r){
+			$scope.bookmarks = r;
+		});		
+	});
+	
+	rmBookmarkManager.get().then(function(r){
+		$scope.bookmarks = r;
+	});
+	
+	$scope.clear = function(){
+		rmBookmarkManager.clear();
+	};
 }
 
 //
@@ -143,7 +157,7 @@ bmControllers.controller('classifyCtrl',['$scope', 'bookmarkManager', classifyCt
 
 bmControllers.controller('hotCtrl',['$scope', 'bookmarkManager', hotCtrl]);
 
-bmControllers.controller('trashCtrl',['$scope', 'bookmarkManager', trashCtrl]);
+bmControllers.controller('trashCtrl',['$scope', 'bookmarkManager', 'rmBookmarkManager', trashCtrl]);
 
 bmControllers.controller('setingCtrl',['$scope', 'bookmarkManager', setingCtrl]);
 

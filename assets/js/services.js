@@ -122,78 +122,157 @@ bmServices.factory('cbInterface', ['$q','$rootScope', function($q, $rootScope) {
 	
 }]);
 
+
 /*
- * 
+ * 封装 chrome.storage接口;
  */
-bmServices.factory('ManagerProto', ['$http', '$q', function($http, $q) {
+bmServices.factory('cStorageInterface', ['$q', '$rootScope', function($q, $rootScope) {
 	
-	function ManagerProto(classify,list){
-		this.classify = classify;
-		this.list = list;
+	var cStorageInterface = {};
+	
+	var _interface = chrome.storage.sync;
+	
+	var events = ['onChanged'];
+	
+	var fs = ['get', 'set', 'remove', 'clear'];
+	
+	var fn;
+	
+	for(var i in _interface){
+		
+		fn = _interface[i];
+		
+		if(fn.constructor === Function){
+			cStorageInterface[i] = (function(i){
+				
+				return function(){
+					var deferred = $q.defer();
+					
+					var args = Array.prototype.slice.call(arguments, 0);
+					
+					var call = function(data){
+						deferred.resolve(data);
+					};
+					
+					args.push(call); 
+					
+					_interface[i].apply(_interface, args);
+					
+					return deferred.promise;				
+				};
+
+			})(i);			
+		}
+		
 	}
 	
-    ManagerProto.prototype = {
-        _pool: {},
-        _retrieveInstance: function(id, data) {
-            var instance = this._pool[id];
-
-            if (instance) {
-                instance.setData(data);
-            } else {
-                instance = new this.classify(data);
-                this._pool[id] = instance;
-            }
-
-            return instance;
-        },
-        _search: function(id) {
-            return this._pool[id];
-        },
-        _load: function(id, deferred) {
-            var scope = this;
-        },
-        /* get instance by it's id */
-        get: function(id) {
-            var deferred = $q.defer();
-            var instance = this._search(id);
-            if (instance) {
-                deferred.resolve(instance);
-            } else {
-                this._load(id, deferred);
-            }
-            return deferred.promise;
-        },
-        save: function(instance){
-        	
-        },
-        remove: function(){
-        	
-        } 
-        
-    };
-    return ManagerProto;
-}]);
-        
-
-
-
-
-
-
-
-
-/*
- * bookmarkRelTable
- */
-bmServices.factory('bookmarkRelTable', ['$q', '$rootScope', function($q, $rootScope) {
 	
-	return {};
+	// 注册事件监听函数
+	for(var j in events){
+		
+		j = events[j];
+		
+		var callback = (function(j){
+			
+			return function(){
+				var args = Array.prototype.slice.call(arguments, 0); 
+				console.log('>>>>'+j);
+				$rootScope.$broadcast('chrome.storage.change',args);
+			};
+			
+		})(j);
+		
+		chrome.storage[j].addListener(callback);
+	}
+	
+	return cStorageInterface;
 	
 }]);
 
+
 /*
- * BookmarkExtra
+ * 记录管理器
  */
+bmServices.factory('recordManager', ['cStorageInterface', function(cStorageInterface) {
+	
+	function fn(classify){
+		this.classify = classify;
+	}
+	
+	fn.prototype = {
+			get: function(id){
+				var classify = this.classify;
+				return cStorageInterface.get(classify).then(function(records){
+					//console.log(JSON.stringify(records));
+					records = records && records[classify] || {};
+					return angular.copy(records[id] || records);
+				});
+			},
+			set: function(record){
+				var classify = this.classify;
+				return cStorageInterface.get(classify).then(function(records){
+					records = records && records[classify] || {};
+					var obj = {};
+					var id = record.id;
+					var old = records[id];
+					if(old){
+						for(var i in record){
+							old[i] = record[i];
+						}					
+					}else{
+						records[id] = record;
+					}
+
+					obj[classify] = records;
+					return cStorageInterface.set(obj);
+				});
+			},
+			remove: function(record){
+				var classify = this.classify;
+				var id = typeof record === 'object' ? record.id : record;
+				return cStorageInterface.get(classify).then(function(records){
+					records = records && records[classify] || {};
+					var obj = {};
+					delete records[id];
+					obj[classify] = records;
+					return cStorageInterface.set(obj);
+				});
+			},
+			clear: function(){
+				var classify = this.classify;
+				var obj = {};
+				obj[classify] = {};
+				return cStorageInterface.set(obj);
+			}			
+	};
+	
+	return fn;
+	
+}]);
+
+/*
+ * bookmarkRelTableManager用于管理每个书签额外的相关信息
+ */
+bmServices.factory('bookmarkRelTableManager', ['$rootScope', 'recordManager', function($rootScope, recordManager) {
+	return new recordManager('bookmarkRelTable');
+}]);
+
+
+/*
+ * configManager用于管理应用配置信息
+ */
+bmServices.factory('configManager', ['$rootScope', 'recordManager', function($rootScope, recordManager) {
+	return new recordManager('config');
+}]);
+
+/*
+ * rmBookmarkManager用于管理删除的书签记录
+ */
+bmServices.factory('rmBookmarkManager', ['$rootScope', 'recordManager', function($rootScope, recordManager) {
+	return new recordManager('rmBookmark');
+}]);
+
+
 
 /*
  * 为bookmarkTreeNode建模
@@ -240,9 +319,9 @@ bmServices.factory('Bookmark', ['cbInterface', function(cbInterface) {
 }]);
   
 /*
- *
+ * 书签管理器
  */
-bmServices.factory('bookmarkManager', ['$rootScope', 'cbInterface', 'Bookmark', function( $rootScope, cbInterface, Bookmark) {
+bmServices.factory('bookmarkManager', ['$rootScope', 'cbInterface','rmBookmarkManager', 'Bookmark', function( $rootScope, cbInterface, rmBookmarkManager, Bookmark) {
 	
     var bookmarkManager = {
         _pool: {},
@@ -279,6 +358,7 @@ bmServices.factory('bookmarkManager', ['$rootScope', 'cbInterface', 'Bookmark', 
         },
         remove: function(bookmark) {
         	if(bookmark.url){
+        		rmBookmarkManager.set(bookmark);
         		return cbInterface.remove(bookmark.id);
         	}else{
         		return cbInterface.removeTree(bookmark.id);

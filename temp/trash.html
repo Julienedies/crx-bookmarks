@@ -18,8 +18,9 @@
   </select>
 </div>
 	
-<ul class="nav navbar-nav navbar-right">
-</ul>
+<div class="nav navbar-nav navbar-right">
+<button type="button" class="btn btn-danger btn-sm" ng-click="clear();">清空回收站</button>
+</div>
 
 </div>
 </div>
@@ -47,7 +48,7 @@
 		</a>
 		&nbsp;&nbsp;&nbsp;&nbsp;
 		<i class="" ng-click="bookmark.Editable = !bookmark.Editable">edit</i>
-		<i class="" ng-click="bookmarkManager.remove(bookmark);">remove</i>
+		<i class="" ng-click="rmBookmarkManager.remove(bookmark);">remove</i>
 		<i class="" ng-click="bookmarkManager.update(bookmark);">update</i>
 	</div>
 	
@@ -60,7 +61,7 @@
 		</b>
 		&nbsp;&nbsp;&nbsp;&nbsp;
 		<i class="" ng-click="bookmark.Editable = !bookmark.Editable">edit</i>
-		<i class="" ng-click="bookmarkManager.remove(bookmark);">remove</i>
+		<i class="" ng-click="rmBookmarkManager.remove(bookmark);">remove</i>
 		<i class="" ng-click="bookmarkManager.update(bookmark);">update</i>
 	</div>	
 	
