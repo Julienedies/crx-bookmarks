@@ -14,6 +14,7 @@
 <script src="assets/js/libs/angular-route.js"></script>
 
 <script src="assets/js/libs/bootstrap.min.js"></script>
+<script src="assets/js/libs/iscroll.js"></script>
 
 <script src="assets/js/app.js"></script>
 <script src="assets/js/services.js"></script>
@@ -74,11 +75,13 @@
     ================================================== -->
 
 
-<div id="left" style="float:left;width:24%;background:rgba(245, 245, 245, 0.9);" ng-controller="dirCtrl" ng-include="'temp/dir.html'">
+<div id="leftwrapper" style="width:420px;background:#F5F5F5;position:fixed;left:0;top:70px;bottom:0px;z-index:2;" >
+<div id="scroller" style="position:absolute;width:100%;" ng-controller="dirCtrl" ng-include="'temp/dir.html'"></div>
 </div>
 
-
-<div style="float:right;width:74%;" ng-view ></div>
+<div id="leftwrapper2" style="width:100%;background:#F5F5F5;position:absolute;left:0;top:70px;bottom:0px;" >
+<div id="main" ng-view  resizeable></div>
+</div>
 
 </body>
 </html>

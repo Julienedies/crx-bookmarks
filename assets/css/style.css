@@ -65,13 +65,18 @@ blockquote:before, blockquote:after, q:before, q:after {
 }
 
 /* reset end */
-
+	overflow-y:scroll;
+	overflow:hidden;
 /* base */
+html{
+	height:100%;
+}
 body{
 	font-size:14px;
 	line-height:1.4;
-	padding:72px 0 0 0;
-	overflow-y:scroll;
+	padding:70px 0 0 0;
+
+	height:100%;
 }
 a:link,
 a:visited{
@@ -161,3 +166,12 @@ a.btn{
 	cursor:pointer;
 }
 /* modules end */
+#main{
+	position:relative;
+	z-index:12;
+	background:#fff333;
+	min-height:100%;
+}
+.resizeBtn{
+	background:url(../img/resize.png) no-repeat 0 50% blue;
+}

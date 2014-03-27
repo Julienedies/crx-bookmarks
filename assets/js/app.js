@@ -49,3 +49,42 @@ bmApp.config( [
                    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):/);
                }
            ]);
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+ * iscroll 控件
+ */ 
+function loaded(){
+    var GiScroll = new iScroll('leftwrapper', {
+		//snap: true,
+		//momentum: false,
+		//hScrollbar: true,
+        checkDOMChanges: true
+		//useTransition: true,
+    });
+    var GiScroll2 = new iScroll('leftwrapper2', {
+		//snap: true,
+		//momentum: false,
+		//hScrollbar: true,
+        checkDOMChanges: true
+		//useTransition: true,
+    });   
+}
+
+document.addEventListener('touchmove', function(e){
+    e.preventDefault();
+}, false);
+
+document.addEventListener('DOMContentLoaded', function(){
+    setTimeout(loaded, 200);
+}, false);

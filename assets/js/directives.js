@@ -8,6 +8,7 @@
 
 var bmDirectives = angular.module('bmDirectives', []);
 
+//
 bmDirectives.directive('enterPress', function() {
     return {
         restrict : 'A',
@@ -35,6 +36,7 @@ bmDirectives.directive('enterPress', function() {
     
 });
 
+//
 bmDirectives.directive('contenteditable', function() {
 	  return {
 		    require: 'ngModel',
@@ -58,9 +60,80 @@ bmDirectives.directive('contenteditable', function() {
 		  };
 		});
 
+//expanderable
+bmDirectives.directive('resizeable',['$document', function($document) {
+	  return {
+		    link: function(scope, elm, attrs) {
+		    	
+		    	var boxW = elm.parent().width();
+		    	var elmW = elm.width();
+		    	var dragLineW = 10;
+		    	var maxW = boxW - dragLineW;
+		    	
+		    	var left;
+		    	
+		    	var disX, startX;
+		    	
+		    	//elm.css({'margin-left':dragLineW+'px'});
+		    	elm.css({'overflow':'hidden'});
+		    	
+		    	var dragLine = jQuery('<i class="resizeBtn"><i>').appendTo(elm);
+		    	
+		    	dragLine.css({
+		    		width: dragLineW+'px',
+		    		height: '100%',
+		    		cursor: 'w-resize',
+		    		position: 'absolute',
+		    		top: '0',
+		    		left: '0px'
+		    	});
+		    	
+		    	//originalEvent 
+		    	dragLine.on('mousedown',function mousedown(event) {
+		    		disX = event.clientX;
+		    		//startX = dragLine.offset().left;
+		    		startX = this.offsetLeft;
+		    		//startX = elm.css('margin-left');
+		    		
+		            $document.on('mousemove', mousemove);
+		            $document.on('mouseup', mouseup);
+		            
+		            dragLine.setCapture && dragLine.setCapture();
+		            return false;
+		    	});
+		    	
+	    		function mousemove(event){
+	    			var iT = startX + (event.clientX );
+	    			iT < 0 && (iT = 0);
+	    			iT > maxW && (iT = maxW);
+	    			//dragLine.css('left',iT-dragLineW+ 'px');
+	    			elm.css({'margin-left':iT + 'px', 'width':boxW-iT+'px'});
+	    			return false;
+	    		}
+	    		
+	    		function mouseup(){
+	    		    $document.unbind('mousemove', mousemove);
+	    	        $document.unbind('mouseup', mouseup);
+	    	        dragLine.releaseCapture && dragLine.releaseCapture();
+	    		}		    	
+		    }
+		  };
+		}]);
 
-
-
+//
+bmDirectives.directive('xz', function() {
+	  return {
+		  	restrict : 'A',
+		    link: function(scope, elm, attrs, ctrl) {
+		    	elm.children().click(function(){
+		    		var th = jQuery(this);
+		    		th.siblings().removeClass('active');
+		    		th.addClass('active');
+		    		
+		    	});
+		    }
+		  };
+		});
 
 
 
