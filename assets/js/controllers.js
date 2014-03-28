@@ -42,12 +42,14 @@ function nodeCtrl($scope, $routeParams, bookmarkManager) {
 	});
 	
 	getPathById(id, function(r){
-		$scope.paths = r;
+		$scope.$emit("paths.change", r);
 	});
 
 	bookmarkManager.getSubTree(id).then(function(r){
 		$scope.bookmarks = r[0].children;
 	});	
+	
+	
 }
 
 // 列出书签树中所有书签目录
@@ -71,12 +73,12 @@ function recentCtrl($scope, bookmarkManager){
 	
 	$scope.$on('bookmarkTree.change',function(e,data){
 		console.log(data);
-		bookmarkManager.getRecent(10).then(function(r){
+		bookmarkManager.getRecent(120).then(function(r){
 			$scope.bookmarks = r;
 		});		
 	});
 	
-	bookmarkManager.getRecent(10).then(function(r){
+	bookmarkManager.getRecent(120).then(function(r){
 		$scope.bookmarks = r;
 	});
 }
@@ -134,43 +136,59 @@ function setingCtrl($scope) {
 	
 }
 
+/*
+	<li ng-class="style.node"><a href="#/node/1">Main</a></li>
+	<li ng-class=""><a href="#/dir">书签目录</a></li>
+	<li ng-class=""><a href="#/recent">最近使用</a></li>
+	<li ng-class=""><a href="#/hot">高频书签</a></li>
+	<li ng-class=""><a href="#/classify">分类&标签</a></li>
+	<li ng-class=""><a href="#/trash">回收站</a></li>	
+	<li ng-class=""><a href="#/seting">设置</a></li>
+	<li ng-class=""><a href="#/help">help</a></li>
+ */
+
 //
 function mainCtrl($scope, $location, bookmarkManager){
-	$scope.bookmarkManager = bookmarkManager;
-	$scope.searchf = function(){
-		$location.path('/search/'+$scope.searchText);
-		//alert($scope.searchText);
+	
+	var navs = $scope.navs = [{text:'Main',href:'node/1'},
+	              {text:'目录',href:'dir'},
+	              {text:'最近',href:'recent'},
+	              {text:'hot',href:'hot'},
+	              {text:'分类',href:'classify'},
+	              {text:'回收站',href:'trash'},
+	              {text:'设置',href:'seting'},
+	              {text:'help',href:'help'}];
+	
+	var setActive = $scope.setActive = function(nav){
+		$scope.current && ( $scope.current.cla = '');
+		nav.cla = 'active';
+		$scope.current = nav;
 	};
 	
 	
-	/*
-	 * iscroll 控件
-	 
-	    var iScroll = new iScroll('leftwrapper', {
-			//snap: true,
-			//momentum: false,
-			//hScrollbar: true,
-	        checkDOMChanges: true
-			//useTransition: true,
-	    });
-	    var iScroll2 = new iScroll('leftwrapper2', {
-			//snap: true,
-			//momentum: false,
-			//hScrollbar: true,
-	        checkDOMChanges: true
-			//useTransition: true,
-	    });   
+	$scope.bookmarkManager = bookmarkManager;
 	
+	$scope.searchf = function(){
+		$location.path('/search/'+$scope.searchText);
+	};	
 	
-	    $scope.$on('$routeChangeSuccess', function () {
-	    	iScroll2.refresh();
-        });	
-	*/ 
+	 $scope.$on('$locationChangeSuccess',function(e,msg){
+		 delete $scope.paths;
+		 var reg = /\#\/(\w+)(?:\/\S+)?$/;
+		 var result = msg.match(reg);
+		 var hash = result && result[1];
+		 var nav;
+		 for(var i in navs){
+				nav = navs[i];
+				if(nav.href.search(hash)==0){
+					setActive(nav);
+				}
+			}		
+	 });	
 	
-	
-	
-	
-	
+	 $scope.$on('paths.change',function(e,msg){
+		 $scope.paths = msg;
+	 });
 	
 }
 

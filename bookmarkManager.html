@@ -38,14 +38,9 @@
 <div class="navbar-collapse collapse navbar-responsive-collapse">
 
 <ul class="nav navbar-nav">
-	<li class="active"><a href="#/node/1">Main</a></li>
-	<li class=""><a href="#/dir">书签目录</a></li>
-	<li class=""><a href="#/recent">最近使用</a></li>
-	<li class=""><a href="#/hot">高频书签</a></li>
-	<li class=""><a href="#/classify">分类&标签</a></li>
-	<li class=""><a href="#/trash">回收站</a></li>	
-	<li class=""><a href="#/seting">设置</a></li>
-	<li class=""><a href="#/help">help</a></li>
+	<li ng-repeat="nav in navs"  ng-class="nav.cla" ng-click="setActive(nav)">
+	<a ng-href="{{'#/'+nav.href}}" ng-bind="nav.text"></a>
+	</li>
 </ul>
 
 <form class="navbar-form navbar-left">
@@ -55,9 +50,8 @@
 	
 <ul class="nav navbar-nav navbar-right">
 	<li><a href="javascript:void 0;">Link</a></li>
-	<li class="dropdown"><a href="javascript:void 0;"
-		class="dropdown-toggle" data-toggle="dropdown">Dropdown <b
-		class="caret"></b></a>
+	<li class="dropdown">
+		<a href="javascript:void 0;" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
 	<ul class="dropdown-menu">
 		<li><a href="javascript:void 0;">Action</a></li>
 		<li><a href="javascript:void 0;">Another action</a></li>

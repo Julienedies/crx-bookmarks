@@ -74,7 +74,7 @@ bmDirectives.directive('resizeable',['$document', function($document) {
 		    	
 		    	var disX, startX;
 		    	
-		    	var dragLine = jQuery('<em class="dragLine"><i class="resizeBtn"></i></em>').appendTo(elm);
+		    	var dragLine = jQuery('<em class="dragLine"><em class="cell"><i class="resizeBtn"></i></em></em>').appendTo(elm);
 		    	var resizeBtn = dragLine.find('.resizeBtn');
 		    	
 		    	//elm.css({'margin-left':dragLineW+'px'});
@@ -122,11 +122,12 @@ bmDirectives.directive('resizeable',['$document', function($document) {
 		}]);
 
 //
-bmDirectives.directive('xz', function() {
+bmDirectives.directive('currenActive',['$location', function($location) {
 	  return {
 		  	restrict : 'A',
-		    link: function(scope, elm, attrs, ctrl) {
+		    link: function(scope, elm, attrs) {
 		    	elm.children().click(function(){
+		    		console.log($location);
 		    		var th = jQuery(this);
 		    		th.siblings().removeClass('active');
 		    		th.addClass('active');
@@ -134,7 +135,7 @@ bmDirectives.directive('xz', function() {
 		    	});
 		    }
 		  };
-		});
+		}]);
 
 
 

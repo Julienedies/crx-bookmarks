@@ -28,30 +28,29 @@
 
 
 
-<ul id="view">
+<ul class="bm-list">
 	<li ng-repeat="bookmark in bookmarks | filter:query | orderBy:orderProp">
 	
 	<div ng-if="bookmark.url">
-		<img ng-src="{{bookmark.url | getIcon}}" />
+		<img ng-src="{{bookmark.url | getIcon}}" class="icon" />
 		<a href="{{bookmark.url}}" 
 		   contenteditable="{{bookmark.Editable?'true':'false'}}"
 		   ng-model="bookmark.title"
 		   target="_blank" >
-		   {{bookmark.title || bookmark.url}}
+		   {{ bookmark.title}}
 		</a>
 		&nbsp;&nbsp;&nbsp;&nbsp;
 		<i class="" ng-click="bookmark.Editable = !bookmark.Editable">edit</i>
-		<i class="" ng-click="bookmarkManager.remove(bookmark);">remove</i>
+		<i class="" ng-clickq="bookmarkManager.remove(bookmark);">remove</i>
 		<i class="" ng-click="bookmarkManager.update(bookmark);">update</i>
 	</div>
 	
 	<div ng-if="!bookmark.url">
-		<b>
-		<a href="{{'#/node/'+bookmark.id}}"
+		<a class="dir"
+		   href="{{'#/node/'+bookmark.id}}"
 		   contenteditable="{{bookmark.Editable?'true':'false'}}"
 		   ng-model="bookmark.title">
 		{{bookmark.title || '~~~~'}}</a>
-		</b>
 		&nbsp;&nbsp;&nbsp;&nbsp;
 		<i class="" ng-click="bookmark.Editable = !bookmark.Editable">edit</i>
 		<i class="" ng-click="bookmarkManager.remove(bookmark);">remove</i>

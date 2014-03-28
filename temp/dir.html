@@ -1,3 +1,4 @@
+<!-- 
 <script type="text/ng-template"  id="tree_item_renderer.html">
 	<b><a href="{{'#/node/'+node.id}}"  >{{node.title || '~~~~'}}</a></b>
     <ul ng-if="node.children || !node.url">
@@ -8,4 +9,15 @@
 <ul id="view">
 	<li ng-repeat="node in tree | isTree" ng-include="'tree_item_renderer.html'"></li>
 </ul>
+ -->
 
+<script type="text/ng-template"  id="tree_item_renderer.html">
+	<b><a href="{{'#/node/'+node.id}}"  >{{node.title || '~~~~'}}</a></b>
+    <ul ng-if="node.children || !node.url">
+        <li ng-repeat="node in node.children | isTree"  ng-include="'tree_item_renderer.html'"></li>
+    </ul>
+</script>
+
+<ul id="view">
+	<li ng-repeat="node in tree | isTree" ng-include="'tree_item_renderer.html'"></li>
+</ul>

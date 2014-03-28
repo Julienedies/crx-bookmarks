@@ -72,12 +72,12 @@ function loaded(){
         checkDOMChanges: true
 		//useTransition: true,
     });
-    var GiScroll2 = new iScroll('mainwrapper', {checkDOMChanges: true  }); 
+    //var GiScroll2 = new iScroll('mainwrapper', {checkDOMChanges: true  }); 
     
 }
 
 document.addEventListener('DOMContentLoaded', function(){
-    setTimeout(loaded, 200);
+    //setTimeout(loaded, 200);
 }, false);
 
 
