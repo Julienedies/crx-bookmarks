@@ -74,10 +74,11 @@ bmDirectives.directive('resizeable',['$document', function($document) {
 		    	
 		    	var disX, startX;
 		    	
-		    	//elm.css({'margin-left':dragLineW+'px'});
-		    	elm.css({'overflow':'hidden'});
+		    	var dragLine = jQuery('<em class="dragLine"><i class="resizeBtn"></i></em>').appendTo(elm);
+		    	var resizeBtn = dragLine.find('.resizeBtn');
 		    	
-		    	var dragLine = jQuery('<i class="resizeBtn"><i>').appendTo(elm);
+		    	//elm.css({'margin-left':dragLineW+'px'});
+		    	elm.css({'overflow':'hidden'});		    	
 		    	
 		    	dragLine.css({
 		    		width: dragLineW+'px',

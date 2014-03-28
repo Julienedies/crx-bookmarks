@@ -1,5 +1,40 @@
 @charset "utf-8";
-/* reset */
+
+/**
+ * 
+ * 
+ * 
+ */
+
+/* scrollbar style start
+=============================================== */
+ ::-webkit-scrollbar {
+    width: 4px;
+}
+ 
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: rgba(231,231,231,0.8); 
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+::-webkit-scrollbar-thumb:window-inactive {
+	background: rgba(231,231,231,0.4); 
+}
+
+/* scrollbar style end
+================================================ */
+/* reset start
+================================================ */
+
 body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, button, textarea, p, blockquote, th, td {
 	margin: 0;
 	padding: 0;
@@ -36,7 +71,7 @@ input, button, textarea, select {
 body {
 	line-height: 1.5;
 }
-ol, ul, li {
+ol, ul {
 	list-style: none;
 }
 /* tables still need 'cellspacing="0"' in the markup */
@@ -63,19 +98,26 @@ blockquote:before, blockquote:after, q:before, q:after {
 	content: '';
 	content: none;
 }
+button{
+	padding:2px;
+	cursor:pointer;
+}
+b{
+	font-weight:normal;
+}
 
-/* reset end */
-	overflow-y:scroll;
-	overflow:hidden;
-/* base */
+/* reset end
+================================================ */
+/* base start
+================================================ */
+
 html{
 	height:100%;
 }
 body{
 	font-size:14px;
 	line-height:1.4;
-	padding:70px 0 0 0;
-
+	overflow:hidden;
 	height:100%;
 }
 a:link,
@@ -86,12 +128,11 @@ a:visited{
 a:hover{
 	color:red;
 }
-b a{
-	color:inherit;
-}
-/* base end */
 
-
+/* base end 
+================================================ */
+/* common class start 
+================================================ */
 
 .search-query{
 	color:#B4B4B4;
@@ -104,14 +145,65 @@ a.btn{
 	color:#fff;
 }
 
+/* common class end 
+================================================ */
+/* components start 
+================================================ */
 
-/* modules */
-#btnGroup{
-	position:fixed;
-	top:4px;
-	right:4px;
-	z-index:11;
+.scroller{
+	position:absolute;
+	width:100%;
 }
+.dragLine{
+	display:table-cell;
+	vertical-align:middle;
+	background: lightgrey;
+}
+.resizeBtn{
+	display:inline-block;
+	width:9px;
+	height:38px;
+	background:url(../img/resize.png) no-repeat 0 50%;
+}
+
+.divider-vertical{
+	height: 40px;
+	margin: 0 3px;
+	border-left: 1px solid #f2f2f2;
+	border-right: 1px solid #ffffff;
+}
+
+/* components end 
+================================================ */
+/* modules start 
+================================================ */
+
+#dirwrapper{
+	position:fixed;
+	left:0;
+	right:10px;
+	top:70px;
+	bottom:0px;
+	z-index:1;	
+	background:#F5F5F5;
+}
+#mainwrapper{
+	position:absolute;
+	left:0;
+	top:70px;
+	bottom:0;
+	z-index:4;
+	width:100%;
+	background:#F5F5F5;
+}
+
+#main{
+	position:relative;
+	min-height:100%;
+	padding:0 0 20px 30px;
+	background:#fff333;
+}
+
 #path{
 	position:fixed;
 	top:40px;
@@ -165,13 +257,14 @@ a.btn{
 	font-family: arial, sans-serif;
 	cursor:pointer;
 }
-/* modules end */
-#main{
-	position:relative;
-	z-index:12;
-	background:#fff333;
-	min-height:100%;
-}
-.resizeBtn{
-	background:url(../img/resize.png) no-repeat 0 50% blue;
-}
+
+/* modules end 
+================================================ */
+/* xxx start 
+================================================ */
+
+
+
+
+
+

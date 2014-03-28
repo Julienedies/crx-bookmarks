@@ -71,16 +71,28 @@
 </div>
 </div>
 
+
+
+
+<div id="path">
+	<i ng-repeat="node in paths">
+	<a href="{{'#/node/'+node.id}}">{{node.title || '~~~~'}}</a>&nbsp;›&nbsp;
+	</i>
+</div>
 <!-- Navbar end
-    ================================================== -->
+    ====================================================== -->
 
 
-<div id="leftwrapper" style="width:420px;background:#F5F5F5;position:fixed;left:0;top:70px;bottom:0px;z-index:2;" >
-<div id="scroller" style="position:absolute;width:100%;" ng-controller="dirCtrl" ng-include="'temp/dir.html'"></div>
+<div id="dirwrapper"  >
+<div class="scroller">
+<div ng-controller="dirCtrl" ng-include="'temp/dir.html'"></div>
+</div>
 </div>
 
-<div id="leftwrapper2" style="width:100%;background:#F5F5F5;position:absolute;left:0;top:70px;bottom:0px;" >
-<div id="main" ng-view  resizeable></div>
+<div id="mainwrapper" resizeable>
+<div class="scroller">
+<div id="main" class="view-animate" ng-view ></div>
+</div>
 </div>
 
 </body>

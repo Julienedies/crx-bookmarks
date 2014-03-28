@@ -26,15 +26,6 @@
 </div>
 
 
-
-
-
-<div id="path">
-	<i ng-repeat="node in paths">
-	<a href="{{'#/node/'+node.id}}">{{node.title || '~~~~'}}</a>&nbsp;›&nbsp;
-	</i>
-</div>
-
 <ul id="view">
 	<li ng-repeat="bookmark in bookmarks | filter:query | orderBy:orderProp">
 	

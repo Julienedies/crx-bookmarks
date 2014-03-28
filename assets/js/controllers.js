@@ -141,6 +141,37 @@ function mainCtrl($scope, $location, bookmarkManager){
 		$location.path('/search/'+$scope.searchText);
 		//alert($scope.searchText);
 	};
+	
+	
+	/*
+	 * iscroll 控件
+	 
+	    var iScroll = new iScroll('leftwrapper', {
+			//snap: true,
+			//momentum: false,
+			//hScrollbar: true,
+	        checkDOMChanges: true
+			//useTransition: true,
+	    });
+	    var iScroll2 = new iScroll('leftwrapper2', {
+			//snap: true,
+			//momentum: false,
+			//hScrollbar: true,
+	        checkDOMChanges: true
+			//useTransition: true,
+	    });   
+	
+	
+	    $scope.$on('$routeChangeSuccess', function () {
+	    	iScroll2.refresh();
+        });	
+	*/ 
+	
+	
+	
+	
+	
+	
 }
 
 
