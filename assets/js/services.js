@@ -58,6 +58,52 @@ bmServices.factory('actionRecord', ['$q','$rootScope', function($q, $rootScope) 
 	return {action:null, result:null};
 }]);
 
+/*
+ * 封装 chrome.tabs接口;
+ */
+bmServices.factory('cTabsInterface', ['$q', '$rootScope', function($q, $rootScope) {
+	
+	var cInterface = {};
+	
+	var _interface = chrome.tabs;
+	
+	var events = ['onChanged'];
+	
+	var fs = ['getSelected'];
+	
+	var fn;
+	
+	for(var i in _interface){
+		
+		fn = _interface[i];
+		
+		if(fn.constructor === Function){
+			cInterface[i] = (function(i){
+				
+				return function(){
+					var deferred = $q.defer();
+					
+					var args = Array.prototype.slice.call(arguments, 0);
+					
+					var call = function(data){
+						deferred.resolve(data);
+					};
+					
+					args.push(call); 
+					
+					_interface[i].apply(_interface, args);
+					
+					return deferred.promise;				
+				};
+
+			})(i);			
+		}
+		
+	}
+	
+	return cInterface;
+	
+}]);
 
 /*
  * 对chrome.bookmarks进行封装,做为一个service提供给其它模块使用;
@@ -200,12 +246,16 @@ bmServices.factory('recordManager', ['cStorageInterface', function(cStorageInter
 	}
 	
 	fn.prototype = {
-			get: function(id){
+			get: function(key){
 				var classify = this.classify;
 				return cStorageInterface.get(classify).then(function(records){
-					console.log(JSON.stringify(records));
 					records = records && records[classify];
-					return angular.copy(records && records[id] || records);
+					//console.log(JSON.stringify(records));
+					if(key){
+						return records && records[key];
+					}else{
+						return records;
+					}
 				});
 			},
 			set: function(record){
@@ -356,6 +406,21 @@ bmServices.factory('bookmarkManager', ['$rootScope', 'cbInterface','rmBookmarkMa
         		return this._get(id);
         	}
         },
+        add: function(bookmark){
+        	return cbInterface.create(bookmark);
+        },
+        create: function(bookmark) {
+            return cbInterface.create(bookmark);
+        },
+        recover: function(bookmark){
+        	var obj = {};
+        	obj.title = bookmark.title;
+        	obj.url = bookmark.url;
+        	obj.parentId = bookmark.parentId;
+        	obj.index = bookmark.index;
+        	rmBookmarkManager.remove(bookmark);
+        	return cbInterface.create(obj);
+        },        
         remove: function(bookmark) {
         	if(bookmark.url){
         		rmBookmarkManager.set(bookmark);
@@ -378,10 +443,6 @@ bmServices.factory('bookmarkManager', ['$rootScope', 'cbInterface','rmBookmarkMa
         getSubTree: function(id){
         	return cbInterface.getSubTree(id);
         },      
-        /* 创建新书签  */
-        create: function(bookmark) {
-            return cbInterface.create(bookmark);
-        },
         /* 取得最近使用的书签 ,默认为最近使用的100项   */
         getRecent: function(size) {
         	return cbInterface.getRecent(size || 100).then(function(r){

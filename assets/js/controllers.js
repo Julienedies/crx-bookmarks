@@ -113,22 +113,26 @@ function hotCtrl($scope, bookmarkManager) {
 
 //
 function trashCtrl($scope, bookmarkManager, rmBookmarkManager) {
+	
 	$scope.rmBookmarkManager = rmBookmarkManager;
+	
+	//$scope.recover
+	
+	$scope.clear = function(){
+		rmBookmarkManager.clear();
+	};	
+	
+	rmBookmarkManager.get().then(function(r){
+		console.log(r);
+		$scope.bookmarks = JSON.stringify(r) == '{}' ? false : r;
+	});	
 	
 	$scope.$on('chrome.storage.change',function(e,data){
 		rmBookmarkManager.get().then(function(r){
 			$scope.bookmarks = JSON.stringify(r) == '{}' ? false : r;
 		});		
 	});
-	
-	rmBookmarkManager.get().then(function(r){
-		console.log(r);
-		$scope.bookmarks = JSON.stringify(r) == '{}' ? false : r;
-	});
-	
-	$scope.clear = function(){
-		rmBookmarkManager.clear();
-	};
+
 }
 
 //
@@ -148,7 +152,7 @@ function setingCtrl($scope) {
  */
 
 //
-function mainCtrl($scope, $location, bookmarkManager){
+function mainCtrl($scope, $window, $location, bookmarkManager){
 	
 	var navs = $scope.navs = [{text:'Main',href:'node/1'},
 	              {text:'目录',href:'dir'},
@@ -165,12 +169,17 @@ function mainCtrl($scope, $location, bookmarkManager){
 		$scope.current = nav;
 	};
 	
+	 //$scope.orderProp = 'index';
 	
 	$scope.bookmarkManager = bookmarkManager;
 	
 	$scope.searchf = function(){
 		$location.path('/search/'+$scope.searchText);
 	};	
+	
+	$scope.open = function(bookmark){
+		$window.open(bookmark.url);
+	};		
 	
 	 $scope.$on('$locationChangeSuccess',function(e,msg){
 		 delete $scope.paths;
@@ -195,7 +204,7 @@ function mainCtrl($scope, $location, bookmarkManager){
 
 var bmControllers = angular.module('bmControllers', []);
                                                          
-bmControllers.controller('mainCtrl',['$scope', '$location', 'bookmarkManager', mainCtrl]);
+bmControllers.controller('mainCtrl',['$scope', '$window', '$location', 'bookmarkManager', mainCtrl]);
 
 bmControllers.controller('nodeCtrl',['$scope', '$routeParams', 'bookmarkManager', nodeCtrl]);
 

@@ -1,15 +1,11 @@
+<div>
 
-<div class="navbar">
+<div class="toolbar">
 
-<div class="navbar-collapse collapse navbar-responsive-collapse">
-
-<ul class="nav navbar-nav">
-</ul>
-
-<div class="navbar-left">
- Search: <input ng-model="query" placeholder="搜索当前位置">
-  Sort by:
-  <select ng-model="orderProp">
+<div class="left">
+ Search: <input ng-model="query" class="input-sm" placeholder="搜索当前位置">
+ &nbsp;&nbsp;&nbsp; Sort by:
+  <select class="select-sm" ng-model="orderProp">
     <option value="title">Alphabetical</option>
     <option value="index">index</option>
     <option value="url">url</option>
@@ -18,44 +14,38 @@
   </select>
 </div>
 	
-<div class="nav navbar-nav navbar-right">
+<div class="right">
 <button type="button" class="btn btn-danger btn-sm" ng-click="clear();" ng-show="bookmarks?true:false;">清空回收站</button>
 </div>
 
 </div>
-</div>
 
 
-<ul id="view">
+<ul class="bm-list">
 	<li ng-repeat="bookmark in bookmarks | filter:query | orderBy:orderProp">
 	
 	<div ng-if="bookmark.url">
-		<img ng-src="{{bookmark.url | getIcon}}" />
-		<a href="{{bookmark.url}}" 
-		   contenteditable="{{bookmark.Editable?'true':'false'}}"
-		   ng-model="bookmark.title"
-		   target="_blank" >
+		<img class="icon" ng-src="{{bookmark.url | getIcon}}" />
+		<a href="{{bookmark.url}}" target="_blank" >
 		   {{bookmark.title || bookmark.url}}
 		</a>
-		&nbsp;&nbsp;&nbsp;&nbsp;
-		<i class="" ng-click="bookmark.Editable = !bookmark.Editable">edit</i>
-		<i class="" ng-click="rmBookmarkManager.remove(bookmark);">remove</i>
-		<i class="" ng-click="bookmarkManager.update(bookmark);">update</i>
+		<div class="btn-group">
+			<button class="btn btn-xs" ng-click="rmBookmarkManager.remove(bookmark);"> ✘ </button>
+			<button class="btn btn-xs" ng-click="bookmarkManager.recover(bookmark);">恢复</button>
+		</div>
 	</div>
 	
 	<div ng-if="!bookmark.url">
-		<b>
-		<a href="{{'#/node/'+bookmark.id}}"
-		   contenteditable="{{bookmark.Editable?'true':'false'}}"
-		   ng-model="bookmark.title">
-		{{bookmark.title || '~~~~'}}</a>
-		</b>
-		&nbsp;&nbsp;&nbsp;&nbsp;
-		<i class="" ng-click="bookmark.Editable = !bookmark.Editable">edit</i>
-		<i class="" ng-click="rmBookmarkManager.remove(bookmark);">remove</i>
-		<i class="" ng-click="bookmarkManager.update(bookmark);">update</i>
+		<a class="dir" href="{{'#/node/'+bookmark.id}}">
+		{{bookmark.title || '~~~~'}}
+		</a>
+		<div class="btn-group">
+			<button class="btn btn-xs" ng-click="rmBookmarkManager.remove(bookmark);"> ✘  </button>
+			<button class="btn btn-xs" ng-click="bookmarkManager.recover(bookmark);">恢复</button>
+		</div>
 	</div>	
 	
 	</li>
 </ul>
 
+</div>

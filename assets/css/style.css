@@ -116,7 +116,7 @@ html{
 }
 body{
 	font-size:14px;
-	line-height:1.4;
+	line-height:1.5;
 	overflow:hidden;
 	height:100%;
 }
@@ -137,7 +137,13 @@ a:hover{
 ================================================ */
 /* common class start 
 ================================================ */
-
+.text-overflow{
+	display:inline-block;
+	min-height:1em;
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;	
+}
 .search-query{
 	color:#B4B4B4;
 }
@@ -149,6 +155,35 @@ a.btn{
 	color:#fff;
 }
 
+
+.divider-vertical{
+	height: 40px;
+	margin: 0 3px;
+	border-left: 1px solid #f2f2f2;
+	border-right: 1px solid #ffffff;
+}
+
+
+.input-sm,
+.select-sm{
+	height: 24px;
+	padding: 1px 1px;
+	font-size: 13px;
+	line-height: 1.5;
+	border-radius: 0;
+}
+.left{
+	float:left;
+}
+.right{
+	float:right;	
+}
+.left:after,
+.right:after{
+	content: " ";
+	display: table;
+	clear:both;
+}
 /* common class end 
 ================================================ */
 /* components start 
@@ -177,24 +212,46 @@ a.btn{
 	background:url(../img/resize.png) no-repeat 0 50%;
 }
 
-.divider-vertical{
-	height: 40px;
-	margin: 0 3px;
-	border-left: 1px solid #f2f2f2;
-	border-right: 1px solid #ffffff;
+.toolbar{
+	min-height:28px;
+	margin:0 0 28px 0;
+	padding:4px 20px;
+	background-color: #honeydew;
 }
 
 
+.dir-tree{
+	position:relative;
+	top:0px;
+}
+.dir-tree li li{
+	margin:0 0 0 3.2em;
+}
+.dir-tree li b:hover{
+	background:rgba(220,250,160,0.7);
+	border-color:rgba(200,220,140,1);
+}
+
+.bm-list{
+	margin:10px 20px;
+}
 .bm-list li{
-	padding:5px 0 5px 6px;
+	position:relative;
+	padding:5px 0 5px 8px;
 }
 .bm-list li:hover{
 	background:#fff333;
-	background:#F5F5F5;
+	background:honeydew;
+	background:#F5F5F5;	
 }
+
 .bm-list li .icon,
+.bm-list li .text-overflow,	
 .bm-list li a{
 	vertical-align:middle;
+}
+.bm-list li .text-overflow{
+	width:80%;
 }
 .bm-list li .icon{
 	width:1.2em;
@@ -208,6 +265,17 @@ a.btn{
 	font-family: arial, sans-serif;
 	cursor:pointer;
 }
+
+.bm-list li .btn-group{
+	position:absolute;
+	right:5px;
+}
+
+.bm-list li .btn{
+	background:transparent;
+}
+
+
 /* components end 
 ================================================ */
 /* modules start 
@@ -238,7 +306,7 @@ a.btn{
 #main{
 	position:relative;
 	min-height:100%;
-	padding:0 20px 20px 30px;
+	padding:5px 20px;
 }
 
 #path{
@@ -261,19 +329,6 @@ a.btn{
 	cursor:defalut;
 }
 
-
-
-#view{
-	position:relative;
-	top:0px;
-}
-#view li li{
-	margin:0 0 0 1em;
-}
-#view li b:hover{
-	background:rgba(220,250,160,0.7);
-	border-color:rgba(200,220,140,1);
-}
 
 
 

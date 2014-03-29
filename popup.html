@@ -1,11 +1,125 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="bmApp">
 <head>
+<title>创建新书签</title>
 <meta charset="utf-8" />
+<link rel="stylesheet" href="assets/css/bootstrap-theme-superhero.css" />
+<link rel="stylesheet" href="assets/css/animations.css" />
+<link rel="stylesheet" href="assets/css/style.css" />
+
+<script src="assets/js/libs/jquery-1.10.2.min.js"></script>
+<script src="assets/js/libs/angular.min.js"></script>
+<script src="assets/js/libs/angular-animate.js"></script>
+<script src="assets/js/libs/angular-resource.js"></script>
+<script src="assets/js/libs/angular-route.js"></script>
+
+<script src="assets/js/services.js"></script>
+<script src="assets/js/directives.js"></script>
+<script src="assets/js/animations.js"></script>
+<script src="assets/js/controllers.js"></script>
+<script src="assets/js/filters.js"></script>
 <script src="assets/js/popup.js"></script>
+<style>
+.form-horizontal .control-label {
+text-align: right;
+}
+.col-lg-2 {
+	float:left;
+width: 16.66666667%;
+}
+.col-lg-10 {
+	float:left;
+width: 83.33333333%;
+}
+.col-lg-offset-2 {
+margin-left: 16.66666667%;
+}
+.control-label{
+	text-align:left;
+}
+.input-sm{
+	padding-left:3px;
+	width:274px;
+	height:28px;
+}
+.btn,.btn:hover{
+	color:#333;
+	background-color:#f8f8f8;
+	border:solid 1px #b3b3b3;
+}
+.help-block{
+	margin-bottom:0;
+	color:#ACABAB;
+}
+legend{
+	font-size:18px;
+	color:#333;
+	border:none;
+	padding-bottom:10px;
+}
+form{
+	font-family: Microsoft YaHei, Arial,Helvetica,Garuda,sans-serif;
+}
+body{
+	background-color:#fbfbfb;
+}
+#box{
+padding:10px; width:400px;
+}
+#dir-box{
+	border:solid 1px #b3b3b3;
+	overflow-y:scroll;
+}
+</style>
 </head>
 
-<body>
-<!-- 此页面不用显示，主要用于启动书签管理页面。-->
+<body ng-controller="addCtrl">
+<div id="box">
+
+              <form class="form-horizontal">
+                <fieldset>
+                  <legend>添加新书签！</legend>
+                  
+                  <div class="form-group">
+                    <label class="col-lg-2 control-label">名称:</label>
+                    <div class="col-lg-10">
+                    <input class="controls input-sm" type="text" ng-model="bookmark.title">
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label class="col-lg-2 control-label">url:</label>
+                    <div class="col-lg-10">
+                    <input class="controls input-sm" type="text" ng-model="bookmark.url">
+                    </div>
+                  </div>                       
+
+                  <div class="form-group">
+                    <label class="col-lg-2 control-label">tag:</label>
+                    <div class="col-lg-10">
+                    <input class="controls input-sm" type="text" ng-model="tag">
+                    	<span class="help-block">多个标签请用逗号分隔.</span>
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label class="col-lg-2 control-label">目录:</label>
+                    <div class="col-lg-10">
+                    	<button type="submit" class="btn btn-sm">选择目录</button>
+                    	<!-- <div id="dir-box" ng-controller="dirCtrl" ng-include="'temp/dir.html'"></div>   -->
+                    </div>
+                  </div>                  
+                                    
+                  <div class="form-group">
+                  <div class="col-lg-10 col-lg-offset-2">
+                      <button class="btn" ng-click="bookmarkManager.remove(bookmark);">删除</button>
+                      <button class="btn" type="button" ng-click="add(bookmark);">添加</button>
+                      <button class="btn" ng-click="openBookmarkManager();">打开书签管理器</button>
+                  </div>                              
+ 				  </div>
+                </fieldset>
+              </form>
+
+</div>
 </body>
 </html>

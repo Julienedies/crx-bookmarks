@@ -1,18 +1,38 @@
-var openUrl = 'bookmarkManager.html';
-/*
-chrome.tabs.getAllInWindow(null, function (tabs) {
-	
-    for (var i = 0; i < tabs.length; i++) {
-        if (tabs[i].url.length >= prefixUrl.length && tabs[i].url.substr(0, prefixUrl.length) == prefixUrl) {
-            chrome.tabs.update(tabs[i].id, { selected: true });
-            window.close();
-            return;
-        }
-    }
-   
-    chrome.tabs.create({ url: openUrl, selected: true });
-    window.close();
-});
-	 */
-chrome.tabs.create({ url: openUrl, selected: true });
+
+chrome.tabs.create({ url: 'bookmarkManager.html', selected: true });
 window.close();
+
+
+chrome.browserAction.onClicked.addListener(function(tab) {alert(JSON.stringify(tab));});
+
+
+var bmApp = angular.module('bmApp', [ 'bmServices', 'bmDirectives', 'bmFilters' ]);
+
+bmApp.controller('addCtrl',['$scope', 'cTabsInterface', 'bookmarkManager', function($scope, cTabsInterface, bookmarkManager){
+	
+	$scope.bookmarkManager = bookmarkManager;
+	
+	$scope.openBookmarkManager = function(){
+		var openUrl = 'bookmarkManager.html';
+		chrome.tabs.create({ url: openUrl, selected: true });
+	};
+	
+	var bookmark = $scope.bookmark = {};
+	
+	$scope.add = function(){
+		bookmarkManager.add(bookmark).then(function(bk){
+			bookmark.id = bk.id;
+		});		
+	};
+	
+	//获取当前标签的title和url,添加到书签栏
+	cTabsInterface.getSelected().then(function(tab){
+		
+	    //alert(JSON.stringify(tab));
+		bookmark.title = tab.title;
+		bookmark.url = tab.url;
+		//bookmark.favIconUrl = tab.favIconUrl;
+		
+	});
+	
+}]);
