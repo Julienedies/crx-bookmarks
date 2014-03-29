@@ -25,7 +25,7 @@
 	<li ng-repeat="bookmark in bookmarks | filter:query | orderBy:orderProp" tabindex="{{$index}}">
 	
 	<div ng-if="bookmark.url">
-		<img qng-src="{{bookmark.url | getIcon}}" class="icon" />
+		<img ng-src="{{bookmark.url | getIcon}}" class="icon" />
 		<span class="text-overflow" qtitle="{{bookmark.url+'   双击打开 '}}" ng-dblclick="open(bookmark);">
 		<a href="{{bookmark.url}}" 
 		   contenteditable="{{bookmark.Editable?'true':'false'}}"
@@ -35,6 +35,7 @@
 		</a>
 		</span>
 		<div class="btn-group">
+			<button class="btn btn-xs" ng-click="open(bookmark);">open</button>
 			<button class="btn btn-xs" ng-click="bookmark.Editable = !bookmark.Editable">edit</button>
 			<button class="btn btn-xs" ng-click="bookmarkManager.remove(bookmark);"> ✘  </button>
 			<button class="btn btn-xs" ng-click="bookmarkManager.update(bookmark);">update</button>			

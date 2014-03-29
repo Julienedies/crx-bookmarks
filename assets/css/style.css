@@ -115,7 +115,7 @@ html{
 	height:100%;
 }
 body{
-	font-size:14px;
+	font-size:13px;
 	line-height:1.5;
 	overflow:hidden;
 	height:100%;
@@ -154,7 +154,9 @@ a:hover{
 a.btn{
 	color:#fff;
 }
-
+.btn:hover{
+	color:inherit;
+}
 
 .divider-vertical{
 	height: 40px;
@@ -251,7 +253,7 @@ a.btn{
 	vertical-align:middle;
 }
 .bm-list li .text-overflow{
-	width:80%;
+	max-width:80%;
 }
 .bm-list li .icon{
 	width:1.2em;
@@ -268,14 +270,17 @@ a.btn{
 
 .bm-list li .btn-group{
 	position:absolute;
-	right:5px;
+	margin-left:30px;
+	display:none;
 }
 
 .bm-list li .btn{
 	background:transparent;
 }
 
-
+.bm-list li:hover .btn-group{
+	display:inline-block;
+}
 /* components end 
 ================================================ */
 /* modules start 

@@ -53,32 +53,3 @@ bmApp.config( [
 
 
 
-
-
-
-
-
-
-
-
-/*
- * iscroll 控件
- */ 
-function loaded(){
-    var GiScroll = new iScroll('dirwrapper', {
-		//snap: true,
-		//momentum: false,
-		//hScrollbar: true,
-        checkDOMChanges: true
-		//useTransition: true,
-    });
-    //var GiScroll2 = new iScroll('mainwrapper', {checkDOMChanges: true  }); 
-    
-}
-
-document.addEventListener('DOMContentLoaded', function(){
-    //setTimeout(loaded, 200);
-}, false);
-
-
-
