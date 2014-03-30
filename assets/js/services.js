@@ -51,6 +51,15 @@ bmServices.factory('bmUtils', ['$q', function($q) {
 	
 }]);
 
+
+/*
+ * d3
+ */
+bmServices.factory('d3', ['$rootScope', function($rootScope) {
+	return d3;
+}]);
+
+
 /*
  * action record
  */

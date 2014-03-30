@@ -3,10 +3,7 @@ chrome.tabs.create({ url: 'bookmarkManager.html', selected: true });
 window.close();
 
 
-chrome.browserAction.onClicked.addListener(function(tab) {alert(JSON.stringify(tab));});
-
-
-var bmApp = angular.module('bmApp', [ 'bmServices', 'bmDirectives', 'bmFilters' ]);
+var bmApp = angular.module('bmApp', [ 'bmServices']);
 
 bmApp.controller('addCtrl',['$scope', 'cTabsInterface', 'bookmarkManager', function($scope, cTabsInterface, bookmarkManager){
 	

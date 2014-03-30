@@ -1,6 +1,6 @@
 <div>
 <script type="text/ng-template"  id="tree_item_renderer.html">
-	<a href="{{'#/node/'+node.id}}"  >{{node.title || 'root'}}</a>
+	<a href="{{'#/node/'+node.id}}"  >{{node.title || '~~~~'}}</a>
     <ul ng-if="node.children || !node.url">
         <li ng-repeat="node in node.children | isTree"  ng-include="'tree_item_renderer.html'"></li>
     </ul>

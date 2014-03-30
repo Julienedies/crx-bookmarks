@@ -46,13 +46,13 @@ function nodeCtrl($scope, $routeParams, bookmarkManager) {
 	});
 
 	bookmarkManager.getSubTree(id).then(function(r){
+		//console.log(JSON.stringify(r));
 		$scope.bookmarks = r[0].children;
 	});	
 	
-	
 }
 
-// 列出书签树中所有书签目录
+//列出书签树中所有书签目录
 function dirCtrl($scope, bookmarkManager) {
 	
 	$scope.$on('bookmarkTree.change',function(e,data){
@@ -62,11 +62,69 @@ function dirCtrl($scope, bookmarkManager) {
 	});
 	
 	bookmarkManager.getTree().then(function(r){
-		//console.log(r); 
 		$scope.tree = r;
 	});		
 	
 }
+
+
+//书签树可视化
+function vdirCtrl($scope, $routeParams, bookmarkManager) {
+	
+	var isCtree = function (r){
+			for(var i in r){
+				if('children' in r[i]){
+					return 1;
+				} 
+			}
+		return 0;
+	};
+	
+	var call = function(r){
+		//console.log(r); 
+		//r = [{children:[{children:[{name:111},{name:112}],name:11},{children:[{name:121},{name:122}],name:12}],name:1},{name:2},{name:3}];
+		(function f(r){
+			var v;
+			for(var i=0; i<r.length; i++){
+				v = r[i];
+				if(v.children){
+					if(isCtree(v.children)){
+						f(v.children);
+					}else{
+						delete v.children;
+					}					
+				}else{
+					r.splice(i,1);
+					i--;
+				}
+			}
+			
+		})(r);
+		
+		//console.log(r); 
+		//console.log(JSON.stringify(r[0]));
+		$scope.vtree = r[0]; 		
+	};
+	
+	var call2 = function(r){
+		$scope.vtree = r[0]; 
+	};
+	
+	var id = $routeParams.nodeId;
+	
+	$scope.$on('bookmarkTree.change',function(e,data){
+		bookmarkManager.getTree().then(call);			
+	});
+	
+	if(id){
+		bookmarkManager.getSubTree(id).then(call2);
+	}else{
+		bookmarkManager.getTree().then(call);
+	}
+			
+	
+}
+
 
 // 列出最近使用的书签
 function recentCtrl($scope, bookmarkManager){
@@ -209,6 +267,8 @@ bmControllers.controller('mainCtrl',['$scope', '$window', '$location', 'bookmark
 bmControllers.controller('nodeCtrl',['$scope', '$routeParams', 'bookmarkManager', nodeCtrl]);
 
 bmControllers.controller('dirCtrl',['$scope', 'bookmarkManager', dirCtrl]);
+
+bmControllers.controller('vdirCtrl',['$scope', '$routeParams', 'bookmarkManager', vdirCtrl]);
 
 bmControllers.controller('recentCtrl',['$scope', 'bookmarkManager', recentCtrl]);
 

@@ -1,5 +1,6 @@
-<div class="toolbar">
+<div class="content">
 
+<div class="toolbar">
 <div class="left">
  Search: <input ng-model="query" class="input-sm" placeholder="搜索当前位置">
  &nbsp;&nbsp;&nbsp; Sort by:
@@ -11,14 +12,10 @@
     <option value="children">children</option>
   </select>
 </div>
-	
 <div class="right">
 添加一个书签关联表和管理器。+ 编辑模式
 </div>
-
 </div>
-
-
 
 
 <ul class="bm-list">
@@ -35,7 +32,7 @@
 		</a>
 		</span>
 		<div class="btn-group">
-			<button class="btn btn-xs" ng-click="open(bookmark);">open</button>
+			<button class="btn btn-xs" ng-click="open(bookmark);">go</button>
 			<button class="btn btn-xs" ng-click="bookmark.Editable = !bookmark.Editable">edit</button>
 			<button class="btn btn-xs" ng-click="bookmarkManager.remove(bookmark);"> ✘  </button>
 			<button class="btn btn-xs" ng-click="bookmarkManager.update(bookmark);">update</button>			
@@ -58,3 +55,4 @@
 	</li>
 </ul>
 
+</div>
