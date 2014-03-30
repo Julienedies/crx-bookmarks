@@ -232,7 +232,9 @@ function mainCtrl($scope, $window, $location, bookmarkManager){
 	$scope.bookmarkManager = bookmarkManager;
 	
 	$scope.searchf = function(){
-		$location.path('/search/'+$scope.searchText);
+		if($scope.searchText){
+			$location.path('/search/'+$scope.searchText);
+		}
 	};	
 	
 	$scope.open = function(bookmark){

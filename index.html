@@ -45,22 +45,8 @@
 
 <form class="navbar-form navbar-left">
 <input type="text" class="form-control col-lg-8 search-query" placeholder="搜索所有书签" enter-press="searchf" ng-model="searchText" />
-<a ng-href="#/search/{{searchText}}" class="btn btn-small btn-info">search</a>
+<button ng-click="searchf();" class="btn btn-small btn-info">search</button>
 </form>
-	
-<ul class="nav navbar-nav navbar-right">
-	<li><a href="javascript:void 0;">Link</a></li>
-	<li class="dropdown">
-		<a href="javascript:void 0;" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-	<ul class="dropdown-menu">
-		<li><a href="javascript:void 0;">Action</a></li>
-		<li><a href="javascript:void 0;">Another action</a></li>
-		<li><a href="javascript:void 0;">Something else here</a></li>
-		<li class="divider"></li>
-		<li><a href="javascript:void 0;">Separated link</a></li>
-	</ul>
-	</li>
-</ul>
 
 </div>
 </div>
