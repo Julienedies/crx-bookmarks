@@ -33,7 +33,8 @@
 	data-target=".navbar-responsive-collapse"><span
 	class="icon-bar"></span> <span class="icon-bar"></span> <span
 	class="icon-bar"></span></button>
-<a class="navbar-brand" href="https://github.com/julienedies/chrome-extension-bookmarkManager" target="_blank">Julien</a></div>
+<a class="navbar-brand" href="https://github.com/julienedies/chrome-extension-bookmarkManager" target="_blank">
+<img src="assets/img/home.png" width="24px" /></a></div>
 
 <div class="navbar-collapse collapse navbar-responsive-collapse">
 
@@ -45,7 +46,7 @@
 
 <form class="navbar-form navbar-left">
 <input type="text" class="form-control col-lg-8 search-query" placeholder="搜索所有书签" enter-press="searchf" ng-model="searchText" />
-<button ng-click="searchf();" class="btn btn-small btn-info">search</button>
+<a ng-click="searchf();" class="btn btn-small">search</a>
 </form>
 
 </div>
@@ -70,7 +71,7 @@
 </div>
 
 <div id="mainwrapper" resizeable>
-<div class="scroller">
+<div class="scroller"  return-top>
 <div id="main" class="view-animate" ng-view ></div>
 </div>
 </div>

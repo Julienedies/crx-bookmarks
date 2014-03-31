@@ -9,7 +9,7 @@
 
 var bmAnimations = angular.module('bmAnimations', ['ngAnimate']);
 
-bmAnimations.animation('.phone', function() {
+bmAnimations.animation('.view', function() {
 
   var animateUp = function(element, className, done) {
     if(className != 'active') {
@@ -31,7 +31,7 @@ bmAnimations.animation('.phone', function() {
         element.stop();
       }
     };
-  }
+  };
 
   var animateDown = function(element, className, done) {
     if(className != 'active') {
@@ -52,7 +52,7 @@ bmAnimations.animation('.phone', function() {
         element.stop();
       }
     };
-  }
+  };
 
   return {
     addClass: animateUp,

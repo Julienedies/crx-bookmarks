@@ -14,43 +14,55 @@
 </div>
 <div class="right">
 
-做一个数据同步器 + 添加一个书签关联表 + 编辑模式
+添加一个书签关联表 + 数据同步器
 </div>
 </div>
 
+<div ng-show="!bookmarks">loading...</div>
 
 <ul class="bm-list">
 	<li ng-repeat="bookmark in bookmarks | filter:query | orderBy:orderProp" tabindex="{{$index}}">
 	
-	<div ng-if="bookmark.url">
+	<div ng-if="bookmark.url" class="editing-{{bookmark.editing}}">
 		<img ng-src="{{bookmark.url | getIcon}}" class="icon" />
 		<span class="text-overflow" qtitle="{{bookmark.url+'   双击打开 '}}" ng-dblclick="open(bookmark);">
-		<a href="{{bookmark.url}}" 
-		   contenteditable="{{bookmark.Editable?'true':'false'}}"
-		   ng-model="bookmark.title"
-		   target="_blank" >
-		   {{ bookmark.title}}
-		</a>
+		<input type="text"
+			   class="edit-text"
+		       ng-model="bookmark.title"
+		       value="{{bookmark.title}}"
+		       target="_blank"
+		       set-focus="bookmark.editing"
+		       auto-width="bookmark.title"
+		       ng-disabled="!!!bookmark.editing"
+	    />
 		</span>
-		<div class="btn-group">
-			<button class="btn btn-xs" ng-click="open(bookmark);">go</button>
-			<button class="btn btn-xs" ng-click="bookmark.Editable = !bookmark.Editable">edit</button>
-			<button class="btn btn-xs" ng-click="bookmarkManager.remove(bookmark);"> ✘  </button>
-			<button class="btn btn-xs" ng-click="bookmarkManager.update(bookmark);">update</button>			
+		<div class="tag">
+		{额外信息}
 		</div>
+		<div class="btn-group">
+			<a class="" ng-click="open(bookmark);">go</a>
+			<a class="" ng-click="edit(bookmark);">edit</a>
+			<a class="" ng-click="remove(bookmark, $index);">del</a>
+			<a class="" ng-click="update(bookmark);">update</a>			
+		</div>
+		<span class="close" ng-click="exit(bookmark)">X</span>
 	</div>
 	
-	<div ng-if="!bookmark.url">
-		<a class="dir"
+	<div ng-if="!bookmark.url" class="editing-{{bookmark.editing}}">
+		<img src="assets/img/folder-1.png" class="icon" />
+		<input type="text" class="edit-text"
 		   href="{{'#/node/'+bookmark.id}}"
-		   contenteditable="{{bookmark.Editable?'true':'false'}}"
-		   ng-model="bookmark.title">
-		{{bookmark.title || '~~~~'}}</a>
+		   ng-model="bookmark.title"
+		   value="{{bookmark.title}}"
+		   set-focus="bookmark.editing"  auto-width="bookmark.title" disabled />
+		   
 		<div class="btn-group">
-			<button class="btn btn-xs" ng-click="bookmark.Editable = !bookmark.Editable">edit</button>
-			<button class="btn btn-xs" ng-click="bookmarkManager.remove(bookmark);"> ✘  </button>
-			<button class="btn btn-xs" ng-click="bookmarkManager.update(bookmark);">update</button>			
+			<a class="" ng-click="open(bookmark);">open</a>
+			<a class="" ng-click="edit(bookmark);">edit</a>
+			<a class="" ng-click="remove(bookmark, $index);">del</a>
+			<a class="" ng-click="update(bookmark);">update</a>			
 		</div>
+		<span class="close" ng-click="exit(bookmark)">X</span>
 	</div>	
 	
 	</li>

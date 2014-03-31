@@ -8,7 +8,7 @@
 
 var bmApp = angular.module('bmApp', [ 'ngRoute', 'bmServices', 'bmDirectives', 'bmFilters', 'bmAnimations', 'bmControllers' ]);
 		
-
+//
 bmApp.config([ '$routeProvider', function($routeProvider) {
 	$routeProvider.when('/node/:nodeId?', {
 		templateUrl : 'temp/list.html',
@@ -42,6 +42,8 @@ bmApp.config([ '$routeProvider', function($routeProvider) {
 	});
 } ]);
 
+
+//
 bmApp.config( [
                '$compileProvider',
                function( $compileProvider )

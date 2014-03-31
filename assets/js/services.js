@@ -310,6 +310,21 @@ bmServices.factory('recordManager', ['cStorageInterface', function(cStorageInter
 }]);
 
 /*
+ * 数据同步管理器，主要用于管理前端数据和后端数据的同步
+ * DS(Data Synchronism)
+ */
+bmServices.factory('DSmanager', ['$rootScope', function($rootScope) {
+	
+	function fn(){
+		
+	}
+	
+	return fn;
+	
+}]);
+
+
+/*
  * bookmarkRelTableManager用于管理每个书签额外的相关信息
  */
 bmServices.factory('bookmarkRelTableManager', ['$rootScope', 'recordManager', function($rootScope, recordManager) {
@@ -380,40 +395,11 @@ bmServices.factory('Bookmark', ['cbInterface', function(cbInterface) {
 /*
  * 书签管理器
  */
-bmServices.factory('bookmarkManager', ['$rootScope', 'cbInterface','rmBookmarkManager', 'Bookmark', function( $rootScope, cbInterface, rmBookmarkManager, Bookmark) {
+bmServices.factory('bookmarkManager', ['$rootScope', 'cbInterface', 'Bookmark', function( $rootScope, cbInterface, Bookmark) {
 	
     var bookmarkManager = {
-        _pool: {},
-        _retrieveInstance: function(bookmarkId, bookmarkTreeNode) {
-            var instance = this._pool[bookmarkId];
- 
-            if (instance) {
-                instance.setData(bookmarkTreeNode);
-            } else {
-                instance = new Book(bookmarkTreeNode);
-                this._pool[bookmarkId] = instance;
-            }
- 
-            return instance;
-        },
-        _search: function(bookmarkId) {
-            return this._pool[bookmarkId];
-        },
-        _get: function(bookId) {
-            var scope = this;
-            
-            return cbInterface.get(bookmarkId).then(function(bookmarkTreeNode){
-            	scope._retrieveInstance(bookmarkTreeNode.id, bookmarkTreeNode);
-            });
-        },
         get: function(id){
         	return cbInterface.get(id);
-        	var bookmark = this._search(id);
-        	if(bookmark){
-        		return bookmark;
-        	}else{
-        		return this._get(id);
-        	}
         },
         add: function(bookmark){
         	return cbInterface.create(bookmark);
@@ -427,12 +413,10 @@ bmServices.factory('bookmarkManager', ['$rootScope', 'cbInterface','rmBookmarkMa
         	obj.url = bookmark.url;
         	obj.parentId = bookmark.parentId;
         	obj.index = bookmark.index;
-        	rmBookmarkManager.remove(bookmark);
         	return cbInterface.create(obj);
         },        
         remove: function(bookmark) {
         	if(bookmark.url){
-        		rmBookmarkManager.set(bookmark);
         		return cbInterface.remove(bookmark.id);
         	}else{
         		return cbInterface.removeTree(bookmark.id);

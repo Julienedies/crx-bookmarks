@@ -15,14 +15,14 @@
 </div>
 	
 <div class="right">
-<button type="button" class="btn btn-danger btn-sm" ng-click="clear();" ng-show="bookmarks?true:false;">清空回收站</button>
+<button type="button" class="btn btn-danger btn-sm" ng-click="clear();" ng-show="bookmarks.length?true:false;">清空回收站</button>
 </div>
 
 </div>
 
 
 <ul class="bm-list">
-	<li ng-repeat="bookmark in bookmarks | filter:query | orderBy:orderProp">
+	<li ng-repeat="(key, bookmark) in bookmarks | filter:query | orderBy:orderProp">
 	
 	<div ng-if="bookmark.url">
 		<img class="icon" ng-src="{{bookmark.url | getIcon}}" />
@@ -30,8 +30,9 @@
 		   {{bookmark.title || bookmark.url}}
 		</a>
 		<div class="btn-group">
-			<button class="btn btn-xs" ng-click="rmBookmarkManager.remove(bookmark);"> ✘ </button>
-			<button class="btn btn-xs" ng-click="bookmarkManager.recover(bookmark);">恢复</button>
+			<button class="btn btn-xs" ng-click="open(bookmark);">go</button>
+			<button class="btn btn-xs" ng-click="remove(bookmark,key);">del</button>
+			<button class="btn btn-xs" ng-click="recover(bookmark,key);">恢复</button>
 		</div>
 	</div>
 	
@@ -40,8 +41,8 @@
 		{{bookmark.title || '~~~~'}}
 		</a>
 		<div class="btn-group">
-			<button class="btn btn-xs" ng-click="rmBookmarkManager.remove(bookmark);"> ✘  </button>
-			<button class="btn btn-xs" ng-click="bookmarkManager.recover(bookmark);">恢复</button>
+			<button class="btn btn-xs" ng-click="remove(bookmark,key);">del</button>
+			<button class="btn btn-xs" ng-click="recover(bookmark,key);">恢复</button>
 		</div>
 	</div>	
 	

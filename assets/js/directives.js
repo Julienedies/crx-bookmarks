@@ -122,20 +122,80 @@ bmDirectives.directive('resizeable',['$document', function($document) {
 		}]);
 
 //
-bmDirectives.directive('currenActive',['$location', function($location) {
+bmDirectives.directive('autoWidth',[function() {
 	  return {
 		  	restrict : 'A',
 		    link: function(scope, elm, attrs) {
-		    	elm.children().click(function(){
-		    		console.log($location);
-		    		var th = jQuery(this);
-		    		th.siblings().removeClass('active');
-		    		th.addClass('active');
-		    		
-		    	});
+		    	
+			      scope.$watch(attrs.autoWidth, function(value) {
+			    	  elm.width(textWidth(value));
+				      });		    	
+		    	
+		    	  function textWidth(text){ 
+		    	        var sensor = jQuery('<pre>'+ text +'</pre>').css({display: 'none'}); 
+		    	        jQuery('body').append(sensor); 
+		    	        var width = sensor.width();
+		    	        sensor.remove(); 
+		    	        //console.log(text,width);
+		    	        return width;
+		    	    };		    	
+		    	
+		    	 //jQuery(elm).unbind('keydown').bind('keydown', function(){
+		    	    	//jQuery(this).width(textWidth(jQuery(this).val()));
+		    	 //});		    	
 		    }
 		  };
 		}]);
+
+
+//
+bmDirectives.directive('setFocus', [function() {
+	  return {
+		  	restrict : 'A',
+	        scope : {
+	        	setFocus : '='
+	        }, 		  
+	    link: function(scope, elm, attrs) {
+	    	
+	      scope.$watch('setFocus', function(value) {
+	        if(value == true) { 
+	        	//elm[0].disabled = false;
+	        	elm[0].focus();
+	            //scope[attrs.setFocus] = false;
+	        }else{
+	        	//elm[0].disabled = true;
+	        }
+	      });
+	      
+	    }
+	  };
+	}]);
+
+//
+bmDirectives.directive('returnTop', [function() {
+	  return {
+		  	restrict : 'A',
+		  	link: function(scope, elm, attrs) {
+		  		
+		  		var $ = jQuery;
+		  		var $backToTopTxt = "返回顶部",
+		  		$backToTopEle = $('<div class="returnTop"></div>').appendTo($("body"))
+	            .text($backToTopTxt).attr("title", $backToTopTxt).click(function () {
+	                elm.animate({
+	                    scrollTop: 0
+	                }, 120);
+	            }),
+	        $backToTopFun = function () {
+	            var st = elm.scrollTop(),
+	                winh = elm.parent().height();console.log(st,winh);
+	            (st > winh) ? $backToTopEle.fadeIn() : $backToTopEle.fadeOut();
+	        };
+	        
+	        elm.bind("scroll", $backToTopFun);
+	    	
+	    }
+	  };
+	}]);
 
 
 //
@@ -153,12 +213,11 @@ bmDirectives.directive('vtree',['d3', function(d3) {
 		    	
 		    	elm = elm[0];	
 		    	
-		    	//alert(ew+' '+eh);
-		    		
 		    	scope.$watch('vtree', function (data, oldVal){
-//------------------------
-		    		if(!data) return;
+		    		
+		    		//------------------------
 		    		//console.log(JSON.stringify(data));
+		    		if(!data) return;
 
 		    		var w = ew || 1280 - 80,
 		    		    h = eh || 800 - 180,
@@ -184,7 +243,6 @@ bmDirectives.directive('vtree',['d3', function(d3) {
 		    		  .append("svg:g")
 		    		    .attr("transform", "translate(.5,.5)");
 
-		    		//d3.json("flare.json", function(data) {
 		    		  node = root = data;
 
 		    		  var nodes = treemap.nodes(root)
@@ -207,11 +265,11 @@ bmDirectives.directive('vtree',['d3', function(d3) {
 		    		      .attr("y", function(d) { return d.dy / 2; })
 		    		      .attr("dy", ".35em")
 		    		      .attr("text-anchor", "middle")
-		    		      //.attr("href", function(d) { return '#/node/'+d.id; })
 		    		      .text(function(d) { return d.title; })
 		    		      .style("opacity", function(d) { d.w = this.getComputedTextLength(); return d.dx > d.w ? 1 : 0; })
+		    		      //.attr("class", "text-overflow")
 		    		      .on('click',function(d,i){
-		    		    	  location.hash = '#/node/'+d.id;
+		    		    	  location.hash = '#/dir/'+d.id;
 		    		      });
 
 		    		  d3.select(window).on("click", function() { zoom(root); });
@@ -220,7 +278,6 @@ bmDirectives.directive('vtree',['d3', function(d3) {
 		    		    treemap.value(this.value == "size" ? size : count).nodes(root);
 		    		    zoom(node);
 		    		  });
-		    		//});
 
 		    		function size(d) {
 		    		  return  79;/*d.index;*/
@@ -252,12 +309,7 @@ bmDirectives.directive('vtree',['d3', function(d3) {
 		    		  d3.event.stopPropagation();
 		    		}
 		    		
-		    		
-		    		
-		    		
-		    		
-		    		
-//----------------------------------		    		
+		    		//----------------------------------		    		
 		    	});
 		    	
 		    }

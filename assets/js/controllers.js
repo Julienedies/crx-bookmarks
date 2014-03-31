@@ -8,9 +8,8 @@
 // 列出书签树单个节点下所有子节点
 function nodeCtrl($scope, $routeParams, bookmarkManager) {
 	
-	function getPathById(id,call){
+	var getPathById = function(id,call){
 		var results = [];
-		
 		(function f(id){
 			bookmarkManager.get(id).then(function (arr){
 				var node = arr[0];
@@ -27,59 +26,76 @@ function nodeCtrl($scope, $routeParams, bookmarkManager) {
 				}
 			});			
 		})(id);
+	};	
+	
+	var id = $routeParams.nodeId || 1;
+	
+	var main = function(){
+		getPathById(id, function(r){
+			$scope.$emit("paths.change", r);
+		});
 
-	}
+		bookmarkManager.getSubTree(id).then(function(r){
+			//console.log(JSON.stringify(r));
+			$scope.bookmarks = r[0].children;
+		});				
+	};
 	
-	var id = $routeParams.nodeId;
+	/////////////////////////////////////////////////////
+
+	main();
 	
-	//当书签树发生变化的时候更新数据
+	/////////////////////////////////////////////////////	
+	
+	$scope.remove = function(bookmak, index){
+		$scope.removef(bookmak);
+		$scope.bookmarks.splice(index, 1);
+	};
+	
+	/////////////////////////////////////////////////////	
+	//event handler
 	$scope.$on('bookmarkTree.change',function(e,data){
 		console.log(data);
 		console.log(e);
-		bookmarkManager.getSubTree(id).then(function(r){
-			$scope.bookmarks = r[0].children;
-		});		
+		main();	
 	});
-	
-	getPathById(id, function(r){
-		$scope.$emit("paths.change", r);
-	});
-
-	bookmarkManager.getSubTree(id).then(function(r){
-		//console.log(JSON.stringify(r));
-		$scope.bookmarks = r[0].children;
-	});	
 	
 }
 
 //列出书签树中所有书签目录
 function dirCtrl($scope, bookmarkManager) {
 	
-	$scope.$on('bookmarkTree.change',function(e,data){
+	var main = function(){
 		bookmarkManager.getTree().then(function(r){
 			$scope.tree = r;
 		});			
-	});
+	};
+
+	/////////////////////////////////////////////////////
 	
-	bookmarkManager.getTree().then(function(r){
-		$scope.tree = r;
-	});		
+	main();
+	
+	/////////////////////////////////////////////////////
+	
+	$scope.$on('bookmarkTree.change',function(e,data){
+		main();			
+	});
 	
 }
 
 
 //书签树可视化
 function vdirCtrl($scope, $routeParams, bookmarkManager) {
-	
+
 	var isCtree = function (r){
-			for(var i in r){
-				if('children' in r[i]){
-					return 1;
-				} 
-			}
+		for(var i in r){
+			if('children' in r[i]){
+				return 1;
+			} 
+		}
 		return 0;
 	};
-	
+
 	var call = function(r){
 		//console.log(r); 
 		//r = [{children:[{children:[{name:111},{name:112}],name:11},{children:[{name:121},{name:122}],name:12}],name:1},{name:2},{name:3}];
@@ -98,99 +114,142 @@ function vdirCtrl($scope, $routeParams, bookmarkManager) {
 					i--;
 				}
 			}
-			
 		})(r);
-		
+	
 		//console.log(r); 
 		//console.log(JSON.stringify(r[0]));
 		$scope.vtree = r[0]; 		
 	};
-	
+
 	var call2 = function(r){
 		$scope.vtree = r[0]; 
 	};
 	
+	
 	var id = $routeParams.nodeId;
 	
-	$scope.$on('bookmarkTree.change',function(e,data){
-		bookmarkManager.getTree().then(call);			
-	});
+	var main = function(){
+		if(!id){
+			bookmarkManager.getTree().then(call);
+		}else{
+			bookmarkManager.getSubTree(id).then(call2);
+		}		
+	};	
+
+	/////////////////////////////////////////////////////
+
+	main();
+				
+	/////////////////////////////////////////////////////	
 	
-	if(id){
-		bookmarkManager.getSubTree(id).then(call2);
-	}else{
-		bookmarkManager.getTree().then(call);
-	}
-			
+	$scope.$on('bookmarkTree.change',function(e,data){
+		main();			
+	});
 	
 }
 
 
 // 列出最近使用的书签
 function recentCtrl($scope, bookmarkManager){
+
+	var main = function(){
+		bookmarkManager.getRecent(4).then(function(r){
+			$scope.bookmarks = r;
+		});			
+	};
+	/////////////////////////////////////////////////////
+	
+	main();	
+	
+	/////////////////////////////////////////////////////	
+	
+	$scope.remove = function(bookmak, index){
+		$scope.removef(bookmak);
+		$scope.bookmarks.splice(index, 1);
+	};
+	
+	/////////////////////////////////////////////////////
 	
 	$scope.$on('bookmarkTree.change',function(e,data){
 		console.log(data);
-		bookmarkManager.getRecent(120).then(function(r){
-			$scope.bookmarks = r;
-		});		
+		main();		
 	});
-	
-	bookmarkManager.getRecent(120).then(function(r){
-		$scope.bookmarks = r;
-	});
+
 }
 
 //
 function searchCtrl($scope, $routeParams, bookmarkManager) {
 	
-	$scope.$on('bookmarkTree.change',function(e,data){
+	var main = function(){
 		if($routeParams.searchText){
 			bookmarkManager.search($routeParams.searchText).then(function(r){
-				$scope.bookmarks = r;
+				$scope.bookmarks = r || [];
 			});		
-		}		
-	});
+		}			
+	};
 	
-	if($routeParams.searchText){
-		bookmarkManager.search($routeParams.searchText).then(function(r){
-			$scope.bookmarks = r;
-		});		
-	}
+	/////////////////////////////////////////////////////
+	
+	main();
+	
+	/////////////////////////////////////////////////////	
+	
+	$scope.remove = function(bookmak, index){
+		//调用父控制器的removef方法
+		$scope.removef(bookmak);
+		$scope.bookmarks.splice(index, 1);
+	};
+	
+	/////////////////////////////////////////////////////
+	
+
 }
 
 //
-function classifyCtrl($scope, bookmarkManager) {
+function classifyCtrl($scope) {
 	
 }
 
 //
-function hotCtrl($scope, bookmarkManager) {
+function hotCtrl($scope) {
 	
 }
 
 //
 function trashCtrl($scope, bookmarkManager, rmBookmarkManager) {
 	
-	$scope.rmBookmarkManager = rmBookmarkManager;
+	$scope.bookmarks = null;
 	
-	//$scope.recover
+	/////////////////////////////////////////////////////
+	//main
+	
+	rmBookmarkManager.get().then(function(r){
+		//console.log(r);
+		$scope.bookmarks = JSON.stringify(r) == '{}' ? false : r;
+	});		
+	
+	/////////////////////////////////////////////////////
 	
 	$scope.clear = function(){
+		$scope.bookmarks = false;
 		rmBookmarkManager.clear();
 	};	
 	
-	rmBookmarkManager.get().then(function(r){
-		console.log(r);
-		$scope.bookmarks = JSON.stringify(r) == '{}' ? false : r;
-	});	
+	$scope.remove = function(bookmark, key){
+		rmBookmarkManager.remove(bookmark);
+		delete $scope.bookmarks[key];
+	};	
 	
-	$scope.$on('chrome.storage.change',function(e,data){
-		rmBookmarkManager.get().then(function(r){
-			$scope.bookmarks = JSON.stringify(r) == '{}' ? false : r;
-		});		
-	});
-
+	$scope.recover = function(bookmark, key){
+		bookmarkManager.recover(bookmark);
+		rmBookmarkManager.remove(bookmark);
+		delete $scope.bookmarks[key];
+	};	
+	
+	/////////////////////////////////////////////////////
+	//event handler
+	//$scope.$on('chrome.storage.change',function(e,data){});
+	
 }
 
 //
@@ -210,7 +269,7 @@ function setingCtrl($scope) {
  */
 
 //
-function mainCtrl($scope, $window, $location, bookmarkManager){
+function mainCtrl($scope, $window, $location, $timeout, bookmarkManager, rmBookmarkManager, DSmanager){
 	
 	var navs = $scope.navs = [{text:'Main',href:'node/1'},
 	              {text:'目录',href:'dir'},
@@ -230,6 +289,10 @@ function mainCtrl($scope, $window, $location, bookmarkManager){
 	 //$scope.orderProp = 'index';
 	
 	$scope.bookmarkManager = bookmarkManager;
+	$scope.rmBookmarkManager = rmBookmarkManager;
+	$scope.DSmanager = DSmanager;
+	
+	////////////////////////////////////////////////////////////
 	
 	$scope.searchf = function(){
 		if($scope.searchText){
@@ -237,9 +300,41 @@ function mainCtrl($scope, $window, $location, bookmarkManager){
 		}
 	};	
 	
+	$scope.edit = function(bookmark){
+		var currentEditing = $scope.currentEditing;
+		if(!bookmark.editing){
+			currentEditing && (currentEditing.editing = false);
+			bookmark.editing = true;
+			$scope.currentEditing = bookmark;
+		}else{
+			bookmark.editing = false;
+		}
+	};
+	
+	$scope.exit = function(bookmark){
+		bookmark.editing = false;
+	};
+	
 	$scope.open = function(bookmark){
-		$window.open(bookmark.url);
+		if(bookmark.url){
+			$window.open(bookmark.url);
+		}else{
+			$location.path('/node/'+bookmark.id);
+		}
 	};		
+	
+	
+	$scope.removef = function(bookmark, index){
+		rmBookmarkManager.set(bookmark);
+		bookmarkManager.remove(bookmark);
+	};
+	
+	$scope.update = function(bookmark){
+		bookmarkManager.update(bookmark);
+	};
+
+	
+	//////////////////////////////////////////////////////////////
 	
 	 $scope.$on('$locationChangeSuccess',function(e,msg){
 		 delete $scope.paths;
@@ -264,7 +359,7 @@ function mainCtrl($scope, $window, $location, bookmarkManager){
 
 var bmControllers = angular.module('bmControllers', []);
                                                          
-bmControllers.controller('mainCtrl',['$scope', '$window', '$location', 'bookmarkManager', mainCtrl]);
+bmControllers.controller('mainCtrl',['$scope', '$window', '$location', '$timeout', 'bookmarkManager', 'rmBookmarkManager', 'DSmanager', mainCtrl]);
 
 bmControllers.controller('nodeCtrl',['$scope', '$routeParams', 'bookmarkManager', nodeCtrl]);
 

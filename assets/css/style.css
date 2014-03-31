@@ -119,6 +119,9 @@ body{
 	line-height:1.6;
 	overflow:hidden;
 	height:100%;
+	color:#0070c0;	
+	/*font-family: "Helvetica Neue","Hiragino Sans GB","Microsoft Yahei",Helvetica,Arial,sans-serif;
+		*/
 }
 p{
 	padding:20px 10px 10px 0;
@@ -127,10 +130,10 @@ p{
 a:link,
 a:visited{
 	color:#333;
-	color:#0070c0;
+	color:#0070c0;	
 }
 a:hover{
-	color:red;
+	text-decoration: none;
 }
 
 /* base end 
@@ -155,7 +158,7 @@ a.btn{
 	color:#fff;
 }
 .btn:hover{
-	color:#inherit;
+	color:inherit;
 }
 
 .divider-vertical{
@@ -168,6 +171,7 @@ a.btn{
 
 .input-sm,
 .select-sm{
+	width: 160px;
 	height: 24px;
 	padding: 1px 1px;
 	font-size: 13px;
@@ -190,6 +194,75 @@ a.btn{
 ================================================ */
 /* components start 
 ================================================ */
+.editing-true{
+	position: absolute;
+	z-index: 10000;
+	width: 100%;
+	min-height: 80px;
+	padding:6px 8px 6px 8px;
+	background: rgba(254, 254, 254,1);
+	box-shadow: 0 0 4px rgb(200,200,200); 
+	border-radius: 5px;
+
+	-webkit-animation-duration: 1s;
+	        animation-duration: 1s;
+	-webkit-animation-fill-mode: both;
+	        animation-fill-mode: both;		
+	-webkit-animation-name: fadeIn;	
+	animation-name: fadeIn;
+}
+.editing-,
+.editing-false{
+	padding:6px 8px 6px 8px;
+	-webkit-animation-duration: 0.5s;
+	        animation-duration: 0.5s;
+	-webkit-animation-fill-mode: both;
+	        animation-fill-mode: both;		
+}
+.tag,
+.close{
+	display:none;
+}
+.edit-text{
+	min-width: 4em;
+	padding:0 5px;
+	border: solid 1px transparent;
+	background:transparent;
+}
+.close{
+	position:absolute;
+	top:0;
+	right:0;
+	background:#fff;
+	color:#444;
+}
+.editing-true .close{
+	display:block;
+}
+.editing-true .tag{
+	display:block;
+}
+.editing-true .edit-text{
+	background:#fff;
+	border:solid 1px  rgba(82,168,236,0.8);
+}
+
+.returnTop{
+    display: none;
+    width: 18px;
+    line-height: 1.2;
+    padding: 5px 0;
+    background-color: #000;
+    color: #fff;
+    font-size: 12px;
+    text-align: center;
+    position: fixed;
+    right: 10px;
+    bottom: 30px;
+    cursor: pointer;
+    opacity: .6;
+    z-index:3000;
+}
 
 .scroller{
 	position:absolute;
@@ -214,6 +287,9 @@ a.btn{
 	background:url(../img/resize.png) no-repeat 0 50%;
 }
 
+.navbar{
+	background:url(../img/navbar-bg.png) 0 50%;
+}
 .toolbar{
 	min-height:28px;
 	margin:0 0 28px 0;
@@ -239,11 +315,12 @@ a.btn{
 }
 .bm-list li{
 	position:relative;
-	padding:5px 0 5px 8px;
+	height:32px;
 }
 .bm-list li:hover{
 	background:#fff333;
 	background:honeydew;
+	background:#B2CEEB;
 	background:#F5F5F5;	
 }
 
@@ -257,13 +334,13 @@ a.btn{
 }
 .bm-list li .icon{
 	width:1.2em;
-	margin:0 12px 0 0;
+	margin:0 4px 0 0;
 }
 
 .bm-list li .dir{
-	padding-left:32px;
-	background:url(../img/folder.png) -4px 50% no-repeat;
-	background-size:28px 28px;
+	padding-left:36px;
+	background:url(../img/folder-1.png) -0px 50% no-repeat;
+	background-size:20px 20px;
 	font-family: arial, sans-serif;
 	cursor:pointer;
 }
@@ -347,11 +424,36 @@ a.btn{
 
 /* modules end 
 ================================================ */
-/* xxx start 
+/* animate start 
 ================================================ */
 
+.view-animate {
+  
+}
+ 
+.view-animate.ng-enter{
+	-webkit-animation-duration: 0.5s;
+	        animation-duration: 0.5s;
+	-webkit-animation-fill-mode: both;
+	        animation-fill-mode: both;	
+}
+ 
+.view-animate.ng-enter {
+	
+}
 
+.view-animate.ng-enter.ng-enter-active {
+	-webkit-animation-name: fadeInUp;
+	animation-name: fadeInUp;
+}
 
+.view-animate.ng-leave.ng-leave-active {
+  
+}
 
+/* animate end 
+================================================ */
+/* xxx start 
+================================================ */
 
 

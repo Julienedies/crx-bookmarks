@@ -1,5 +1,5 @@
 
-chrome.tabs.create({ url: 'bookmarkManager.html', selected: true });
+chrome.tabs.create({ url: 'index.html', selected: true });
 window.close();
 
 
