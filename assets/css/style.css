@@ -115,11 +115,12 @@ html{
 	height:100%;
 }
 body{
-	font-size:14px;
+	font-size:13px;
 	line-height:1.6;
 	overflow:hidden;
 	height:100%;
-	color:#0070c0;	
+	color: #0063dc;
+	color:#0070c0;
 	/*font-family: "Helvetica Neue","Hiragino Sans GB","Microsoft Yahei",Helvetica,Arial,sans-serif;
 		*/
 }
@@ -154,12 +155,21 @@ a:hover{
 	color:#000;
 }
 
-a.btn{
-	color:#fff;
+
+
+.btn.btn-text{
+	font-size:12px;
+	background: transparent;
+	color:#ff6600;
+	
 }
-.btn:hover{
-	color:inherit;
+.btn.btn-text:hover{
+	background: transparent;
+	color:#ff6600;
 }
+
+
+
 
 .divider-vertical{
 	height: 40px;
@@ -203,7 +213,7 @@ a.btn{
     width: 32px;
     padding: 8px;
     color: #fff;
-    background-color: rgba(18, 51, 133, 0.68);
+    background: #4383ef;
     text-align: center;
     cursor: pointer;
 }
@@ -224,16 +234,27 @@ a.btn{
 	background:url(../img/resize.png) no-repeat 0 50%;
 }
 
+.editing-,
+.editing-false{
+	padding:3px 8px 5px 8px;
+	-webkit-animation-duration: 0.5s;
+	        animation-duration: 0.5s;
+	-webkit-animation-fill-mode: both;
+	        animation-fill-mode: both;		
+}
 
 .editing-true{
 	position: absolute;
 	z-index: 10000;
 	width: 100%;
 	min-height: 80px;
-	padding:6px 8px 6px 8px;
+	padding:3px 8px 5px 8px;
 	background: rgba(254, 254, 254,1);
-	box-shadow: 0 0 5px rgb(120,120,120); 
+	background:#F8F8F8;
+	box-shadow: 0 0 5px rgb(210,210,210);
+	border: solid 1px #d9d9d9;
 	border-radius: 5px;
+	
 
 	-webkit-animation-duration: 1s;
 	        animation-duration: 1s;
@@ -242,16 +263,12 @@ a.btn{
 	-webkit-animation-name: fadeIn;	
 	animation-name: fadeIn;
 }
-.editing-,
-.editing-false{
-	padding:6px 8px 6px 8px;
-	-webkit-animation-duration: 0.5s;
-	        animation-duration: 0.5s;
-	-webkit-animation-fill-mode: both;
-	        animation-fill-mode: both;		
-}
-.tag,
-.close{
+
+.save,
+.cancel,
+.close,
+.tag
+{
 	display:none;
 }
 .edit-text{
@@ -267,6 +284,15 @@ a.btn{
 	background:#fff;
 	color:#444;
 }
+.editing-true .edit{
+	display:none;
+}
+.editing-true .save{
+	display:inline-block;
+}
+.editing-true .cancel{
+	display:inline-block;
+}
 .editing-true .close{
 	display:block;
 }
@@ -276,6 +302,20 @@ a.btn{
 .editing-true .edit-text{
 	background:#fff;
 	border:solid 1px rgba(82,168,236,0.8);
+}
+
+.btn.search,
+.btn.search:hover,
+.btn.search:focus{
+	outline:none;
+	background:transparent;
+}
+.dir{
+	padding-left:28px;
+	background:url(../img/folder.png) -0px 50% no-repeat;
+	background-size:24px 24px;
+	font-family: arial, sans-serif;
+	cursor:pointer;
 }
 
 .dir-tree{
@@ -295,13 +335,15 @@ a.btn{
 }
 .bm-list li{
 	position:relative;
-	height:32px;
+	height:28px;
 }
 .bm-list li:hover{
 	background:#fff333;
 	background:honeydew;
 	background:#B2CEEB;
-	background:#F5F5F5;	
+	background:#F5F5F5;
+	background:#dddddd;
+	background:#eee;
 }
 
 .bm-list li .icon,
@@ -317,22 +359,10 @@ a.btn{
 	margin:0 4px 0 0;
 }
 
-.bm-list li .dir{
-	padding-left:36px;
-	background:url(../img/folder-1.png) -0px 50% no-repeat;
-	background-size:20px 20px;
-	font-family: arial, sans-serif;
-	cursor:pointer;
-}
-
 .bm-list li .btn-group{
 	position:absolute;
 	margin-left:30px;
 	display:none;
-}
-
-.bm-list li .btn{
-	background:transparent;
 }
 
 .bm-list li:hover .btn-group{

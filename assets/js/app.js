@@ -14,8 +14,8 @@ bmApp.config([ '$routeProvider', function($routeProvider) {
 		templateUrl : 'temp/list.html',
 		controller : 'nodeCtrl'
 	}).when('/dir/:nodeId?', {
-		templateUrl : 'temp/vdir.html',
-		controller : 'vdirCtrl'			
+		templateUrl : 'temp/dir.html',
+		controller : 'dirCtrl'			
 	}).when('/recent', {
 		templateUrl : 'temp/list.html',
 		controller : 'recentCtrl'

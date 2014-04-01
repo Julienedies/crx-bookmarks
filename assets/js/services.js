@@ -13,7 +13,7 @@ bmServices.factory('ex', ['$q','$rootScope', function($q, $rootScope) {
 }]);
 
 /*
- * 工具函数
+ * 打包工具函数
  */
 bmServices.factory('bmUtils', ['$q', function($q) {
 	
@@ -60,12 +60,6 @@ bmServices.factory('d3', ['$rootScope', function($rootScope) {
 }]);
 
 
-/*
- * action record
- */
-bmServices.factory('actionRecord', ['$q','$rootScope', function($q, $rootScope) {
-	return {action:null, result:null};
-}]);
 
 /*
  * 封装 chrome.tabs接口;
@@ -114,6 +108,8 @@ bmServices.factory('cTabsInterface', ['$q', '$rootScope', function($q, $rootScop
 	
 }]);
 
+
+
 /*
  * 对chrome.bookmarks进行封装,做为一个service提供给其它模块使用;
  */
@@ -121,7 +117,7 @@ bmServices.factory('cbInterface', ['$q','$rootScope', function($q, $rootScope) {
 	
 	var cbInterface = {};
 	
-	var _bookmarks = chrome.bookmarks;
+	var _interface = chrome.bookmarks;
 	
 	var events = ['onCreated', 'onRemoved', 'onChanged', 'onMoved', 'onChildrenReordered', 'onImportBegan', 'onImportEnded'];
 	
@@ -145,7 +141,7 @@ bmServices.factory('cbInterface', ['$q','$rootScope', function($q, $rootScope) {
 				
 				args.push(call); 
 				
-				_bookmarks[i].apply(_bookmarks, args);
+				_interface[i].apply(_interface, args);
 				
 				return deferred.promise;				
 			};
@@ -163,20 +159,21 @@ bmServices.factory('cbInterface', ['$q','$rootScope', function($q, $rootScope) {
 			
 			return function(){
 				var args = Array.prototype.slice.call(arguments, 0); 
-				console.log('>>>>'+j);
+				console.log('chrome.bookmarks',j);
 				args.unshift(j);
 				$rootScope.$broadcast('bookmarkTree.change',args);
 			};
 			
 		})(j);
 		
-		_bookmarks[j].addListener(callback);
+		_interface[j].addListener(callback);
 		
 	}
 	
 	return cbInterface;
 	
 }]);
+
 
 
 /*
@@ -232,7 +229,8 @@ bmServices.factory('cStorageInterface', ['$q', '$rootScope', function($q, $rootS
 			
 			return function(){
 				var args = Array.prototype.slice.call(arguments, 0); 
-				console.log('>>>>'+j);
+				console.log('chrome.storage.sync',j);
+				args.unshift(j);
 				$rootScope.$broadcast('chrome.storage.change',args);
 			};
 			
@@ -244,6 +242,7 @@ bmServices.factory('cStorageInterface', ['$q', '$rootScope', function($q, $rootS
 	return cStorageInterface;
 	
 }]);
+
 
 
 /*
@@ -310,6 +309,7 @@ bmServices.factory('recordManager', ['cStorageInterface', function(cStorageInter
 	
 }]);
 
+
 /*
  * 数据同步管理器，主要用于管理前端数据和后端数据的同步
  * DS(Data Synchronism)
@@ -339,6 +339,7 @@ bmServices.factory('bookmarkRelTableManager', ['$rootScope', 'recordManager', fu
 bmServices.factory('configManager', ['$rootScope', 'recordManager', function($rootScope, recordManager) {
 	return new recordManager('config');
 }]);
+
 
 /*
  * rmBookmarkManager用于管理删除的书签记录
@@ -392,7 +393,9 @@ bmServices.factory('Bookmark', ['cbInterface', function(cbInterface) {
     return Bookmark;
     
 }]);
-  
+ 
+
+
 /*
  * 书签管理器
  */
@@ -430,32 +433,23 @@ bmServices.factory('bookmarkManager', ['$rootScope', 'cbInterface', 'Bookmark', 
         move: function(bookmark,destination){
         	return cbInterface.move(bookmark.id,destination);
         },        
-        /* 取得整个书签树  */
         getTree: function() {
         	return cbInterface.getTree();
         },
         getSubTree: function(id){
         	return cbInterface.getSubTree(id);
         },      
-        /* 取得最近使用的书签 ,默认为最近使用的100项   */
         getRecent: function(size) {
         	return cbInterface.getRecent(size || 100).then(function(r){
         		return r;
         	}); 
         },  
-        /* 取得符合查询条件的书签  */
         search: function(query) {
         	return cbInterface.search(query);
         }        
  
     };
     
-	/*
-	var _cache;
-    $rootScope.$on('bookmarkTree.change',function(e,data){
-    	console.log('>>>bookmarkTree.change>>>需要更新缓存结果');
-    });
-    */
     return bookmarkManager;
     
 }]);

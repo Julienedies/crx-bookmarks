@@ -44,12 +44,13 @@
 		{额外信息}
 		</div>
 		<div class="btn-group">
-			<a class="" ng-click="open(bookmark);">go</a>
-			<a class="" ng-click="edit(bookmark);">edit</a>
-			<a class="" ng-click="remove(bookmark, $index);">del</a>
-			<a class="" ng-click="update(bookmark);">update</a>			
+			<button class="btn btn-xs btn-text" ng-click="open(bookmark);">打开</button>
+			<button class="btn btn-xs btn-text edit" ng-click="edit(bookmark);">修改</button>
+			<button class="btn btn-xs btn-text cancel" ng-click="exit(bookmark);">取消</button>
+			<button class="btn btn-xs btn-text save" ng-click="update(bookmark);">更新</button>			
+			<button class="btn btn-xs btn-text" ng-click="remove(bookmark, $index);">删除</button>
 		</div>
-		<span class="close" ng-click="exit(bookmark)">X</span>
+		<span class="close" ng-click="exit(bookmark);">X</span>
 	</div>
 	
 	<div ng-if="!bookmark.url" class="editing-{{bookmark.editing}}">
@@ -61,10 +62,11 @@
 		   set-focus="bookmark.editing"  auto-width="bookmark.title" disabled />
 		   
 		<div class="btn-group">
-			<a class="" ng-click="open(bookmark);">open</a>
-			<a class="" ng-click="edit(bookmark);">edit</a>
-			<a class="" ng-click="remove(bookmark, $index);">del</a>
-			<a class="" ng-click="update(bookmark);">update</a>			
+			<button class="btn btn-xs btn-text" ng-click="open(bookmark);">打开</button>
+			<button class="btn btn-xs btn-text edit" ng-click="edit(bookmark);">修改</button>
+			<button class="btn btn-xs btn-text cancel" ng-click="exit(bookmark);">取消</button>
+			<button class="btn btn-xs btn-text save" ng-click="update(bookmark);">更新</button>			
+			<button class="btn btn-xs btn-text" ng-click="remove(bookmark, $index);">删除</button>
 		</div>
 		<span class="close" ng-click="exit(bookmark)">X</span>
 	</div>	

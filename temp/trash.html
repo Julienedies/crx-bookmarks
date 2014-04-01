@@ -24,25 +24,25 @@
 <ul class="bm-list">
 	<li ng-repeat="(key, bookmark) in bookmarks | filter:query | orderBy:orderProp">
 	
-	<div ng-if="bookmark.url">
+	<div ng-if="bookmark.url" class="editing-">
 		<img class="icon" ng-src="{{bookmark.url | getIcon}}" />
 		<a href="{{bookmark.url}}" target="_blank" >
 		   {{bookmark.title || bookmark.url}}
 		</a>
 		<div class="btn-group">
-			<button class="btn btn-xs" ng-click="open(bookmark);">go</button>
-			<button class="btn btn-xs" ng-click="remove(bookmark,key);">del</button>
-			<button class="btn btn-xs" ng-click="recover(bookmark,key);">恢复</button>
+			<button class="btn btn-xs btn-text" ng-click="open(bookmark);">打开</button>
+			<button class="btn btn-xs btn-text" ng-click="recover(bookmark,key);">恢复</button>
+			<button class="btn btn-xs btn-text" ng-click="remove(bookmark,key);">删除</button>
 		</div>
 	</div>
 	
-	<div ng-if="!bookmark.url">
+	<div ng-if="!bookmark.url" class="editing-">
 		<a class="dir" href="{{'#/node/'+bookmark.id}}">
 		{{bookmark.title || '~~~~'}}
 		</a>
 		<div class="btn-group">
-			<button class="btn btn-xs" ng-click="remove(bookmark,key);">del</button>
-			<button class="btn btn-xs" ng-click="recover(bookmark,key);">恢复</button>
+			<button class="btn btn-xs btn-text" ng-click="recover(bookmark,key);">恢复</button>
+			<button class="btn btn-xs btn-text" ng-click="remove(bookmark,key);">删除</button>
 		</div>
 	</div>	
 	

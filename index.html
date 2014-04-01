@@ -14,8 +14,6 @@
 <script src="assets/js/libs/angular-resource.js"></script>
 <script src="assets/js/libs/angular-route.js"></script>
 
-<script src="assets/js/libs/bootstrap.min.js"></script>
-
 <script src="assets/js/app.js"></script>
 <script src="assets/js/services.js"></script>
 <script src="assets/js/directives.js"></script>
@@ -25,8 +23,6 @@
 </head>
 <body ng-controller="mainCtrl">
 
-<!-- Navbar start
-    ================================================== -->
 <div class="navbar navbar-default navbar-fixed-top">
 <div class="navbar-header">
 <button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -46,13 +42,11 @@
 
 <form class="navbar-form navbar-left">
 <input type="text" class="form-control col-lg-8 search-query" placeholder="搜索所有书签" enter-press="searchf" ng-model="searchText" />
-<a ng-click="searchf();" class="btn btn-small">search</a>
+<button ng-click="searchf();" class="btn btn-small btn-default search">search</button>
 </form>
 
 </div>
 </div>
-
-
 
 
 <div id="path">
@@ -60,8 +54,6 @@
 	<a href="{{'#/node/'+node.id}}">{{node.title || '~~~~'}}</a>&nbsp;›&nbsp;
 	</i>
 </div>
-<!-- Navbar end
-    ====================================================== -->
 
 
 <div id="dirwrapper">

@@ -15,7 +15,7 @@ bmDirectives.directive('enterPress', function() {
         scope : {
         	enterPress : '='
         },        
-        link : function(scope, element, attrs) {
+        link : function(scope, elm, attrs) {
         	//var call = jQuery.proxy(scope.enterPress,element);
         	
         	var fn = function(e){
@@ -24,13 +24,35 @@ bmDirectives.directive('enterPress', function() {
         		}		
         	};
         	
-        	element.focus(function(){
-        		element.keypress(fn);
+        	elm.focus(function(){
+        		elm.keypress(fn);
         	});
-        	element.blur(function(){
-        		element.unbind('keypress',fn);
+        	elm.blur(function(){
+        		elm.unbind('keypress',fn);
         	});        	
         	
+        }
+    };
+    
+});
+
+//
+bmDirectives.directive('toggle', function() {
+    return {
+        restrict : 'A',
+        link : function(scope, elm, attrs) {
+        	var status;
+        	var call = function(){
+        		if(!status){
+        			elm.next().hide();
+        			status = 1;
+        		}else{
+        			elm.next().show();
+        			status = 0;
+        		}
+        	};
+        	
+        	elm[0].addEventListener('click',call,false);
         }
     };
     
@@ -60,7 +82,7 @@ bmDirectives.directive('contenteditable', function() {
 		  };
 		});
 
-//expanderable
+//
 bmDirectives.directive('resizeable',['$document', function($document) {
 	  return {
 		    link: function(scope, elm, attrs) {
@@ -86,7 +108,7 @@ bmDirectives.directive('resizeable',['$document', function($document) {
 		    		cursor: 'w-resize',
 		    		position: 'absolute',
 		    		top: '0',
-		    		left: '0px'
+		    		left: '0'
 		    	});
 		    	
 		    	//originalEvent 
@@ -136,8 +158,7 @@ bmDirectives.directive('autoWidth',[function() {
 		    	        jQuery('body').append(sensor); 
 		    	        var width = sensor.width();
 		    	        sensor.remove(); 
-		    	        //console.log(text,width);
-		    	        return width;
+		    	        return width+4;
 		    	    };		    	
 		    	
 		    	 //jQuery(elm).unbind('keydown').bind('keydown', function(){
@@ -267,7 +288,6 @@ bmDirectives.directive('vtree',['d3', function(d3) {
 		    		      .attr("text-anchor", "middle")
 		    		      .text(function(d) { return d.title; })
 		    		      .style("opacity", function(d) { d.w = this.getComputedTextLength(); return d.dx > d.w ? 1 : 0; })
-		    		      //.attr("class", "text-overflow")
 		    		      .on('click',function(d,i){
 		    		    	  location.hash = '#/dir/'+d.id;
 		    		      });
@@ -309,7 +329,8 @@ bmDirectives.directive('vtree',['d3', function(d3) {
 		    		  d3.event.stopPropagation();
 		    		}
 		    		
-		    		//----------------------------------		    		
+		    	//----------------------------------	
+		    		
 		    	});
 		    	
 		    }
