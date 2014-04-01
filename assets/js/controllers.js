@@ -153,7 +153,7 @@ function vdirCtrl($scope, $routeParams, bookmarkManager) {
 function recentCtrl($scope, bookmarkManager){
 
 	var main = function(){
-		bookmarkManager.getRecent(4).then(function(r){
+		bookmarkManager.getRecent(2).then(function(r){
 			$scope.bookmarks = r;
 		});			
 	};
@@ -171,7 +171,12 @@ function recentCtrl($scope, bookmarkManager){
 	/////////////////////////////////////////////////////
 	
 	$scope.$on('bookmarkTree.change',function(e,data){
-		console.log(data);
+		//console.log(JSON.stringify(e));
+		console.log(JSON.stringify(data));
+		//e = JSON.stringify(e);
+		//data = JSON.stringify(data);
+		//alert(e);
+		//alert(data);		
 		main();		
 	});
 
@@ -325,7 +330,7 @@ function mainCtrl($scope, $window, $location, $timeout, bookmarkManager, rmBookm
 	
 	
 	$scope.removef = function(bookmark, index){
-		rmBookmarkManager.set(bookmark);
+		//rmBookmarkManager.set(bookmark);
 		bookmarkManager.remove(bookmark);
 	};
 	

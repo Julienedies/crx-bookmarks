@@ -16,6 +16,9 @@
   ],
   
   //"background": { "scripts": ["background.js"] },
+  "background": {
+    "page": "background.html"
+  },
   
    "icons": {
           "16": "assets/img/icon-bitty.png",

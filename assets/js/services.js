@@ -164,6 +164,7 @@ bmServices.factory('cbInterface', ['$q','$rootScope', function($q, $rootScope) {
 			return function(){
 				var args = Array.prototype.slice.call(arguments, 0); 
 				console.log('>>>>'+j);
+				args.unshift(j);
 				$rootScope.$broadcast('bookmarkTree.change',args);
 			};
 			

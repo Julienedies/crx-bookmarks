@@ -178,20 +178,20 @@ bmDirectives.directive('returnTop', [function() {
 		  	link: function(scope, elm, attrs) {
 		  		
 		  		var $ = jQuery;
-		  		var $backToTopTxt = "返回顶部",
-		  		$backToTopEle = $('<div class="returnTop"></div>').appendTo($("body"))
-	            .text($backToTopTxt).attr("title", $backToTopTxt).click(function () {
+		  		var topBth = $('<div class="returnTop">top</div>').appendTo($("body"))
+	            .click(function () {
 	                elm.animate({
 	                    scrollTop: 0
 	                }, 120);
-	            }),
-	        $backToTopFun = function () {
-	            var st = elm.scrollTop(),
-	                winh = elm.parent().height();console.log(st,winh);
-	            (st > winh) ? $backToTopEle.fadeIn() : $backToTopEle.fadeOut();
-	        };
+	            });
+	            
+		  		var fn = function () {
+		  			var s = elm.scrollTop();
+		  			var vh = elm.parent().height(); 
+		  			(s > 2*vh) ? topBth.fadeIn() : topBth.fadeOut();
+		  		};
 	        
-	        elm.bind("scroll", $backToTopFun);
+	        elm.bind("scroll", fn);
 	    	
 	    }
 	  };

@@ -194,6 +194,37 @@ a.btn{
 ================================================ */
 /* components start 
 ================================================ */
+.returnTop{
+    position: fixed;
+    right: 10px;
+    bottom: 30px;
+    z-index:3000;
+    display: none;
+    width: 32px;
+    padding: 8px;
+    color: #fff;
+    background-color: rgba(18, 51, 133, 0.68);
+    text-align: center;
+    cursor: pointer;
+}
+
+.dragLine{
+	display:table;
+	background: #lightgrey;
+	cursor:col-resize;
+}
+.dragLine .cell{
+	display:table-cell;
+	vertical-align:middle;
+}
+.resizeBtn{
+	display:inline-block;
+	width:9px;
+	height:38px;
+	background:url(../img/resize.png) no-repeat 0 50%;
+}
+
+
 .editing-true{
 	position: absolute;
 	z-index: 10000;
@@ -201,7 +232,7 @@ a.btn{
 	min-height: 80px;
 	padding:6px 8px 6px 8px;
 	background: rgba(254, 254, 254,1);
-	box-shadow: 0 0 4px rgb(200,200,200); 
+	box-shadow: 0 0 5px rgb(120,120,120); 
 	border-radius: 5px;
 
 	-webkit-animation-duration: 1s;
@@ -244,59 +275,8 @@ a.btn{
 }
 .editing-true .edit-text{
 	background:#fff;
-	border:solid 1px  rgba(82,168,236,0.8);
+	border:solid 1px rgba(82,168,236,0.8);
 }
-
-.returnTop{
-    display: none;
-    width: 18px;
-    line-height: 1.2;
-    padding: 5px 0;
-    background-color: #000;
-    color: #fff;
-    font-size: 12px;
-    text-align: center;
-    position: fixed;
-    right: 10px;
-    bottom: 30px;
-    cursor: pointer;
-    opacity: .6;
-    z-index:3000;
-}
-
-.scroller{
-	position:absolute;
-	width:100%;
-	height: 100%;
-	overflow-y: scroll;
-	min-height:100%;
-}
-.dragLine{
-	display:table;
-	background: #lightgrey;
-	cursor:col-resize;
-}
-.dragLine .cell{
-	display:table-cell;
-	vertical-align:middle;
-}
-.resizeBtn{
-	display:inline-block;
-	width:9px;
-	height:38px;
-	background:url(../img/resize.png) no-repeat 0 50%;
-}
-
-.navbar{
-	background:url(../img/navbar-bg.png) 0 50%;
-}
-.toolbar{
-	min-height:28px;
-	margin:0 0 28px 0;
-	padding:4px 20px;
-	background-color: #honeydew;
-}
-
 
 .dir-tree{
 	position:relative;
@@ -358,6 +338,7 @@ a.btn{
 .bm-list li:hover .btn-group{
 	display:inline-block;
 }
+
 /* components end 
 ================================================ */
 /* modules start 
@@ -385,14 +366,34 @@ a.btn{
 	background:#fff333;
 	background:#fff;
 }
-#main{
-	position:relative;
+
+.scroller{
+	position:absolute;
+	width:100%;
+	height: 100%;
+	overflow-y: scroll;
 	min-height:100%;
+}
+
+.navbar{
+	background:url(../img/navbar-bg.png) 0 50%;
+}
+.toolbar{
+	min-height:28px;
+	margin:0 0 28px 0;
+	padding:4px 20px;
+	background-color: #honeydew;
 }
 
 .content{
 	padding:5px 20px;
 }
+
+#main{
+	position:relative;
+	min-height:100%;
+}
+
 #path{
 	position:fixed;
 	top:40px;
