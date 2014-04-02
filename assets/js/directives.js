@@ -96,8 +96,8 @@ bmDirectives.directive('resizeable',['$document', function($document) {
 		    	
 		    	var disX, startX;
 		    	
-		    	var dragLine = jQuery('<em class="dragLine"><em class="cell"><i class="resizeBtn"></i></em></em>').appendTo(elm);
-		    	var resizeBtn = dragLine.find('.resizeBtn');
+		    	var dragLine = jQuery('<em class="drag-line"><em class="cell"><i class="resize-btn"></i></em></em>').appendTo(elm);
+		    	var resizeBtn = dragLine.find('.resize-btn');
 		    	
 		    	//elm.css({'margin-left':dragLineW+'px'});
 		    	elm.css({'overflow':'hidden'});		    	
@@ -199,11 +199,11 @@ bmDirectives.directive('returnTop', [function() {
 		  	link: function(scope, elm, attrs) {
 		  		
 		  		var $ = jQuery;
-		  		var topBth = $('<div class="returnTop">top</div>').appendTo($("body"))
+		  		var topBth = $('<div class="return-top">top</div>').appendTo($("body"))
 	            .click(function () {
 	                elm.animate({
 	                    scrollTop: 0
-	                }, 120);
+	                }, 240);
 	            });
 	            
 		  		var fn = function () {

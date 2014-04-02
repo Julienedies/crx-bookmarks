@@ -6,7 +6,10 @@
     </ul>
 </script>
 
-<ul class="dir-tree">
+<div>
+<ul class="dir-tree" >
 	<li ng-repeat="node in tree | isTree" ng-include="'tree_item_renderer.html'"></li>
 </ul>
+</div>
+
 </div>

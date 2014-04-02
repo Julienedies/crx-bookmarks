@@ -115,7 +115,7 @@ html{
 	height:100%;
 }
 body{
-	font-size:13px;
+	font-size:14px;
 	line-height:1.6;
 	overflow:hidden;
 	height:100%;
@@ -204,7 +204,7 @@ a:hover{
 ================================================ */
 /* components start 
 ================================================ */
-.returnTop{
+.return-top{
     position: fixed;
     right: 10px;
     bottom: 30px;
@@ -218,58 +218,66 @@ a:hover{
     cursor: pointer;
 }
 
-.dragLine{
+.drag-line{
 	display:table;
 	background: #lightgrey;
 	cursor:col-resize;
 }
-.dragLine .cell{
+.drag-line .cell{
 	display:table-cell;
 	vertical-align:middle;
 }
-.resizeBtn{
+.resize-btn{
 	display:inline-block;
 	width:9px;
 	height:38px;
 	background:url(../img/resize.png) no-repeat 0 50%;
 }
 
+.edit-box{
+	height:24px;
+	padding:12px 8px 15px 8px;
+	border: solid 1px transparent;
+	background:rgba(1,1,1,0);
+	
+  -webkit-transition: all 800ms;
+  		  transition: all 800ms;	        
+}
+
 .editing-,
 .editing-false{
-	padding:3px 8px 5px 8px;
-	-webkit-animation-duration: 0.5s;
-	        animation-duration: 0.5s;
-	-webkit-animation-fill-mode: both;
-	        animation-fill-mode: both;		
 }
 
 .editing-true{
 	position: absolute;
 	z-index: 10000;
 	width: 100%;
-	min-height: 80px;
-	padding:3px 8px 5px 8px;
-	background: rgba(254, 254, 254,1);
+	min-height: 96px;
 	background:#F8F8F8;
+	background: rgba(254, 254, 254,1);
 	box-shadow: 0 0 5px rgb(210,210,210);
 	border: solid 1px #d9d9d9;
 	border-radius: 5px;
-	
-
-	-webkit-animation-duration: 1s;
-	        animation-duration: 1s;
-	-webkit-animation-fill-mode: both;
-	        animation-fill-mode: both;		
-	-webkit-animation-name: fadeIn;	
-	animation-name: fadeIn;
+	background:#eee;
 }
 
 .save,
 .cancel,
-.close,
-.tag
+.close
 {
 	display:none;
+}
+.edit-box .tag{
+	margin:10px 0 0 0;
+	height:0;
+	opacity:0;
+	overflow:hidden;
+  -webkit-transition: all 800ms linear 800ms;
+  		  transition: all 800ms linear 800ms;	
+}
+.editing-true .tag{
+	height:auto;
+	opacity:1;
 }
 .edit-text{
 	min-width: 4em;
@@ -280,9 +288,10 @@ a:hover{
 .close{
 	position:absolute;
 	top:0;
-	right:0;
-	background:#fff;
+	right:4px;
 	color:#444;
+	font-weight:normal;
+	font-size:24px;
 }
 .editing-true .edit{
 	display:none;
@@ -296,13 +305,12 @@ a:hover{
 .editing-true .close{
 	display:block;
 }
-.editing-true .tag{
-	display:block;
-}
+
 .editing-true .edit-text{
 	background:#fff;
-	border:solid 1px rgba(82,168,236,0.8);
+	border:solid 1px #AFAEAE;
 }
+
 
 .btn.search,
 .btn.search:hover,
@@ -335,7 +343,13 @@ a:hover{
 }
 .bm-list li{
 	position:relative;
-	height:28px;
+	height:48px;
+	border-bottom:solid 1px #eee;
+	/*
+	background: #f8faff;
+	border: 1px solid #dae2ea;
+	margin-top:-1px;
+	*/
 }
 .bm-list li:hover{
 	background:#fff333;
@@ -344,6 +358,8 @@ a:hover{
 	background:#F5F5F5;
 	background:#dddddd;
 	background:#eee;
+
+	
 }
 
 .bm-list li .icon,
@@ -479,12 +495,75 @@ a:hover{
 }
 
 .view-animate.ng-leave.ng-leave-active {
-  
+
 }
 
+
+/*
+.animate.ng-enter, 
+.animate.ng-leave
+{ 
+  -webkit-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+  transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+  position: relative;
+  display: block;
+} 
+ 
+.animate.ng-enter.animate.ng-enter-active, 
+.animate.ng-leave {
+  opacity: 1;
+  top: 0;
+}
+ 
+.animate.ng-leave.animate.ng-leave-active,
+.animate.ng-enter {
+  opacity: 0;
+  top: -20px;
+}
+*/
 /* animate end 
 ================================================ */
 /* xxx start 
 ================================================ */
+.animate.ng-enter,
+.animate.ng-leave
+{ 
+  -webkit-transition: 300ms linear all;
+  transition: 300ms linear all;	
+} 
+ 
+.animate.ng-enter.animate.ng-enter-active, 
+.animate.ng-leave {
+  opacity: 1;
+  top: 0;
+}
+ 
+
+.animate.ng-enter {
+  opacity: 0;
+}
+
+.animate.ng-leave
+{ 
+  -webkit-transition: 300ms linear all;
+  transition: 300ms linear all;
+} 
+
+.animate.ng-leave.animate.ng-leave-active{
+  opacity: 0;
+  top: -20px;	
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 

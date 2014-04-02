@@ -25,24 +25,21 @@
 </div>
 
 <ul class="bm-list">
-	<li ng-repeat="bookmark in bookmarks | filter:query | orderBy:orderProp" tabindex="{{$index}}">
+	<li ng-repeat="bookmark in bookmarks | filter:query | orderBy:orderProp">
 	
-	<div ng-if="bookmark.url" class="editing-{{bookmark.editing}}">
+	<div ng-if="bookmark.url" class="edit-box editing-{{bookmark.editing}}">
 		<img ng-src="{{bookmark.url | getIcon}}" class="icon" />
-		<span class="text-overflow" qtitle="{{bookmark.url+'   双击打开 '}}" ng-dblclick="open(bookmark);">
+		<span class="text-overflow"  ng-dblclick="open(bookmark);">
 		<input type="text"
 			   class="edit-text"
 		       ng-model="bookmark.title"
 		       value="{{bookmark.title}}"
-		       target="_blank"
 		       set-focus="bookmark.editing"
-		       auto-width="bookmark.title"
 		       ng-disabled="!!!bookmark.editing"
+		       auto-width="bookmark.title"
 	    />
 		</span>
-		<div class="tag">
-		{额外信息}
-		</div>
+
 		<div class="btn-group">
 			<button class="btn btn-xs btn-text" ng-click="open(bookmark);">打开</button>
 			<button class="btn btn-xs btn-text edit" ng-click="edit(bookmark);">修改</button>
@@ -50,16 +47,25 @@
 			<button class="btn btn-xs btn-text save" ng-click="update(bookmark);">更新</button>			
 			<button class="btn btn-xs btn-text" ng-click="remove(bookmark, $index);">删除</button>
 		</div>
-		<span class="close" ng-click="exit(bookmark);">X</span>
+		
+		<div class="tag">
+		tag: <input type="text" ng-model="bookmark.tag" class="input-sm" auto-width="bookmark.tag">
+		</div>		
+		
+		<span class="close" ng-click="exit(bookmark);">x</span>
 	</div>
 	
-	<div ng-if="!bookmark.url" class="editing-{{bookmark.editing}}">
+	<div ng-if="!bookmark.url" class="edit-box editing-{{bookmark.editing}}">
 		<img src="assets/img/folder-1.png" class="icon" />
-		<input type="text" class="edit-text"
+		<input type="text"
+		   class="edit-text"
 		   href="{{'#/node/'+bookmark.id}}"
 		   ng-model="bookmark.title"
 		   value="{{bookmark.title}}"
-		   set-focus="bookmark.editing"  auto-width="bookmark.title" disabled />
+		   set-focus="bookmark.editing"
+		   ng-disabled="!!!bookmark.editing"
+		   auto-width="bookmark.title"
+		/>
 		   
 		<div class="btn-group">
 			<button class="btn btn-xs btn-text" ng-click="open(bookmark);">打开</button>
@@ -68,7 +74,7 @@
 			<button class="btn btn-xs btn-text save" ng-click="update(bookmark);">更新</button>			
 			<button class="btn btn-xs btn-text" ng-click="remove(bookmark, $index);">删除</button>
 		</div>
-		<span class="close" ng-click="exit(bookmark)">X</span>
+		<span class="close" ng-click="exit(bookmark)">x</span>
 	</div>	
 	
 	</li>

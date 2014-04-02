@@ -153,10 +153,11 @@ function vdirCtrl($scope, $routeParams, bookmarkManager) {
 function recentCtrl($scope, bookmarkManager){
 
 	var main = function(){
-		bookmarkManager.getRecent(140).then(function(r){
+		bookmarkManager.getRecent(100).then(function(r){
 			$scope.bookmarks = r;
 		});			
 	};
+	
 	/////////////////////////////////////////////////////
 	
 	main();	
@@ -180,8 +181,9 @@ function recentCtrl($scope, bookmarkManager){
 function searchCtrl($scope, $routeParams, bookmarkManager) {
 	
 	var main = function(){
-		if($routeParams.searchText){
-			bookmarkManager.search($routeParams.searchText).then(function(r){
+		var q = $routeParams.q;
+		if(q){
+			bookmarkManager.search(q).then(function(r){
 				$scope.bookmarks = r || [];
 			});		
 		}			
@@ -217,15 +219,16 @@ function hotCtrl($scope) {
 //
 function trashCtrl($scope, bookmarkManager, rmBookmarkManager) {
 	
-	$scope.bookmarks = null;
+	var main = function(){
+		rmBookmarkManager.get().then(function(r){
+			//console.log(r);
+			$scope.bookmarks = JSON.stringify(r) == '{}' ? false : r;
+		});			
+	};
 	
 	/////////////////////////////////////////////////////
-	//main
 	
-	rmBookmarkManager.get().then(function(r){
-		//console.log(r);
-		$scope.bookmarks = JSON.stringify(r) == '{}' ? false : r;
-	});		
+	main();
 	
 	/////////////////////////////////////////////////////
 	
@@ -246,8 +249,11 @@ function trashCtrl($scope, bookmarkManager, rmBookmarkManager) {
 	};	
 	
 	/////////////////////////////////////////////////////
-	//event handler
-	//$scope.$on('chrome.storage.change',function(e,data){});
+	
+	$scope.$on('chrome.storage.change',function(e,data){
+		console.log('data',data);
+		main();
+	});
 	
 }
 
@@ -286,7 +292,7 @@ function mainCtrl($scope, $window, $location, $timeout, bookmarkManager, rmBookm
 	};
 	
 	 //$scope.orderProp = 'index';
-	
+	$scope.$location = $location;
 	$scope.bookmarkManager = bookmarkManager;
 	$scope.rmBookmarkManager = rmBookmarkManager;
 	$scope.DSmanager = DSmanager;
@@ -294,8 +300,8 @@ function mainCtrl($scope, $window, $location, $timeout, bookmarkManager, rmBookm
 	////////////////////////////////////////////////////////////
 	
 	$scope.searchf = function(){
-		if($scope.searchText){
-			$location.path('/search/'+$scope.searchText);
+		if($scope.q){
+			$location.path('/search/'+$scope.q);
 		}
 	};	
 	
@@ -329,6 +335,7 @@ function mainCtrl($scope, $window, $location, $timeout, bookmarkManager, rmBookm
 	};
 	
 	$scope.update = function(bookmark){
+		bookmark.editing = false;
 		bookmarkManager.update(bookmark);
 	};
 
