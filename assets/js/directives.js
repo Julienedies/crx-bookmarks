@@ -82,6 +82,43 @@ bmDirectives.directive('contenteditable', function() {
 		  };
 		});
 
+
+//
+bmDirectives.directive('bmDraggable', ['$document', function($document) {
+    return function(scope, element, attr) {
+      var startX = 0, startY = 0, x = 0, y = 0;
+ 
+      element.css({
+       position: 'relative',
+       cursor: 'pointer'
+      });
+ 
+      element.on('mousedown', function(event) {
+        // Prevent default dragging of selected content
+        event.preventDefault();
+        startX = event.pageX - x;
+        startY = event.pageY - y;
+        $document.on('mousemove', mousemove);
+        $document.on('mouseup', mouseup);
+      });
+ 
+      function mousemove(event) {
+        y = event.pageY - startY;
+        x = event.pageX - startX;
+        element.css({
+          top: y + 'px',
+          left:  x + 'px'
+        });
+      }
+ 
+      function mouseup() {
+        $document.unbind('mousemove', mousemove);
+        $document.unbind('mouseup', mouseup);
+      }
+    };
+  }]);
+
+
 //
 bmDirectives.directive('resizeable',['$document', function($document) {
 	  return {
@@ -193,18 +230,20 @@ bmDirectives.directive('setFocus', [function() {
 	}]);
 
 //
-bmDirectives.directive('returnTop', [function() {
+bmDirectives.directive('returnTop', ['$compile',function($compile) {
 	  return {
 		  	restrict : 'A',
 		  	link: function(scope, elm, attrs) {
 		  		
 		  		var $ = jQuery;
-		  		var topBth = $('<div class="return-top">top</div>').appendTo($("body"))
+		  		var topBth = $('<div class="return-top" bmDraggable>top</div>').appendTo($("body"))
 	            .click(function () {
 	                elm.animate({
 	                    scrollTop: 0
 	                }, 240);
 	            });
+		  		
+		  		//$compile(topBth[0])(scope);
 	            
 		  		var fn = function () {
 		  			var s = elm.scrollTop();

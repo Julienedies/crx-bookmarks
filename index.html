@@ -23,31 +23,18 @@
 </head>
 <body ng-controller="mainCtrl">
 
-<div class="navbar navbar-default navbar-fixed-top">
-<div class="navbar-header">
-<button type="button" class="navbar-toggle" data-toggle="collapse"
-	data-target=".navbar-responsive-collapse"><span
-	class="icon-bar"></span> <span class="icon-bar"></span> <span
-	class="icon-bar"></span></button>
-<a class="navbar-brand" href="https://github.com/julienedies/chrome-extension-bookmarkManager" target="_blank">
-<img src="assets/img/home.png" width="24px" /></a></div>
+<header>
 
-<div class="navbar-collapse collapse navbar-responsive-collapse">
+<nav class="left">
+	<a ng-repeat="nav in navs"  ng-href="{{'#/'+nav.href}}" ng-bind="nav.text"  ng-class="nav.cla" ng-click="setActive(nav)"></a>
+</nav>
 
-<ul class="nav navbar-nav">
-	<li ng-repeat="nav in navs"  ng-class="nav.cla" ng-click="setActive(nav)">
-	<a ng-href="{{'#/'+nav.href}}" ng-bind="nav.text"></a>
-	</li>
-</ul>
-
-<form class="navbar-form navbar-left">
-<input type="text" class="form-control col-lg-8 search-query" placeholder="搜索所有书签" enter-press="searchf" ng-model="q" />
-<button ng-click="searchf();" class="btn btn-small btn-default search">search</button>
+<form class="left">
+<input type="text" class="input-sm search-query" placeholder="搜索所有书签" enter-press="searchf" ng-model="q" />
+<button ng-click="searchf();" class="btn btn-xs btn-text search">search</button>
 </form>
 
-</div>
-</div>
-
+</header>
 
 <div id="path">
 	<i ng-repeat="node in paths">
@@ -56,7 +43,7 @@
 </div>
 
 
-<div id="dirwrapper">
+<div id="dirwrapper" resizeable>
 <div class="scroller">
 <div ng-controller="dirCtrl" ng-include="'temp/dir.html'"></div>
 </div>

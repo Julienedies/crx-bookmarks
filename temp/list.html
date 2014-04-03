@@ -25,11 +25,11 @@
 </div>
 
 <ul class="bm-list">
-	<li ng-repeat="bookmark in bookmarks | filter:query | orderBy:orderProp">
+	<li ng-repeat="bookmark in bookmarks | filter:query | orderBy:orderProp:true">
 	
-	<div ng-if="bookmark.url" class="edit-box editing-{{bookmark.editing}}">
+	<div ng-if="bookmark.url" class="edit-box editing-{{bookmark.editing}}"  ng-dblclick="open(bookmark);">
 		<img ng-src="{{bookmark.url | getIcon}}" class="icon" />
-		<span class="text-overflow"  ng-dblclick="open(bookmark);">
+		<span class="text-overflow">
 		<input type="text"
 			   class="edit-text"
 		       ng-model="bookmark.title"

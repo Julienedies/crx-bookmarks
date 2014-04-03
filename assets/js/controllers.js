@@ -42,6 +42,8 @@ function nodeCtrl($scope, $routeParams, bookmarkManager) {
 	};
 	
 	/////////////////////////////////////////////////////
+	
+	$scope.orderProp = 'dateAdded';
 
 	main();
 	
@@ -172,6 +174,12 @@ function recentCtrl($scope, bookmarkManager){
 	/////////////////////////////////////////////////////
 	
 	$scope.$on('bookmarkTree.change',function(e,data){
+		var event = data.splice(0,1)[0];console.log(event);
+		if(event !== "onRemoved"){
+			
+		}else{
+			
+		}
 		main();		
 	});
 
