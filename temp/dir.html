@@ -1,13 +1,17 @@
 <div>
 <script type="text/ng-template"  id="tree_item_renderer.html">
-	<span class="dir" toggle><a href="{{'#/node/'+node.id}}"  >{{node.title || '~~~~'}}</a></span>
-    <ul ng-if="node.children || !node.url">
+	<span class="dir">
+		<em ng-if="node.children || !node.url"  ng-click="node.open=!node.open"> </em>
+		<a href="{{'#/node/'+node.id}}"  >{{node.title || '目录'}}</a>
+	</span>
+
+    <ul ng-if="node.children || !node.url"  ng-show="!node.open">
         <li ng-repeat="node in node.children | isTree"  ng-include="'tree_item_renderer.html'"></li>
     </ul>
 </script>
 
 <div>
-<ul class="dir-tree" >
+<ul class="dir-tree" ng-show="!node.open">
 	<li ng-repeat="node in tree | isTree" ng-include="'tree_item_renderer.html'"></li>
 </ul>
 </div>

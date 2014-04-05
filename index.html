@@ -42,18 +42,21 @@
 	</i>
 </div>
 
+<div id="window">
 
-<div id="dirwrapper" resizeable>
+<div id="dirwrapper">
 <div class="scroller">
+<div ng-controller="tagsCtrl" ng-include="'temp/tags.html'"></div>
 <div ng-controller="dirCtrl" ng-include="'temp/dir.html'"></div>
 </div>
 </div>
 
 <div id="mainwrapper" resizeable>
 <div class="scroller"  return-top>
-<div id="main" class="view-animate" ng-view ></div>
+<div id="main" class="view-animate" ng-view></div>
 </div>
 </div>
 
+</div>
 </body>
 </html>

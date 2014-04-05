@@ -43,7 +43,7 @@ function nodeCtrl($scope, $routeParams, bookmarkManager) {
 	
 	/////////////////////////////////////////////////////
 	
-	$scope.orderProp = 'dateAdded';
+	$scope.orderProp = 'index';
 
 	main();
 	
@@ -154,9 +154,35 @@ function vdirCtrl($scope, $routeParams, bookmarkManager) {
 // 列出最近使用的书签
 function recentCtrl($scope, bookmarkManager){
 
-	var main = function(){
+	var main = function(e,msg){
+		
 		bookmarkManager.getRecent(100).then(function(r){
-			$scope.bookmarks = r;
+			
+			var e = e;
+			var msg = msg;
+			
+			if(!e){//如果不是事件回调
+				
+				$scope.bookmarks = r;
+				
+			}else{
+				
+				//对新值和旧值进行比较，如果变化，根据变化修改旧值;避免直接覆盖旧值，导致dom全部更新，造成性能下降;
+				if(JSON.stringify($scope.bookmarks) !== JSON.stringify(r)){
+					console.log('It\'s changed,it have to update!',new Date);
+					$scope.bookmarks.unshift(msg.splice(1,1)[0]);
+					/*
+					var eventName = msg.splice(0,1)[0];
+					if(eventName == 'onCreated'){
+						console.log(eventName,msg.splice(1,1)[0]);
+						
+					}
+					*/
+					
+				}				
+			}
+
+			
 		});			
 	};
 	
@@ -167,20 +193,17 @@ function recentCtrl($scope, bookmarkManager){
 	/////////////////////////////////////////////////////	
 	
 	$scope.remove = function(bookmak, index){
-		$scope.removef(bookmak);
 		$scope.bookmarks.splice(index, 1);
+		$scope.removef(bookmak);
 	};
 	
 	/////////////////////////////////////////////////////
 	
-	$scope.$on('bookmarkTree.change',function(e,data){
-		var event = data.splice(0,1)[0];console.log(event);
-		if(event !== "onRemoved"){
-			
-		}else{
-			
+	$scope.$on('bookmarkTree.change',function(e,msg){
+		var eventName = msg.splice(0,1)[0];
+		if(eventName == 'onCreated'){
+			main(e,msg);
 		}
-		main();		
 	});
 
 }
@@ -214,9 +237,117 @@ function searchCtrl($scope, $routeParams, bookmarkManager) {
 
 }
 
+// 显示标签列表
+function tagsCtrl($scope) {
+	
+	var bmRelTableManager = $scope.bmRelTableManager = $scope.bmRelTableManager;
+	var bookmarkManager = $scope.bookmarkManager = $scope.bookmarkManager;
+	
+	var getTags = function(m){
+		var o = {};
+		var r=[];
+		for(var i in m){
+			r = m[i].tags;
+			r = r.replace(/，/g,',').replace(/\s+/g,'').split(',');
+			for(var j = 0,v; j< r.length; j++){
+				v = r[j];
+				o[v] = o[v] || [];
+				o[v].push(i);
+			}
+		}
+		return o;
+	};
+	
+	var main = function(){
+		bmRelTableManager.get().then(function(bmRelTable){
+			var tagsMap;
+			//console.log(bmRelTable);
+			$scope.bmRelTable = bmRelTable;
+			tagsMap = $scope.tagsMap = getTags(bmRelTable);
+			$scope.$emit("tagsMap", tagsMap);
+		});
+	};
+	
+	/////////////////////////////////////////////////////
+	main();
+	
+	/////////////////////////////////////////////////////
+	$scope.$on('chrome.storage.change',function(e,data){
+		console.log('chrome.storage.change.tags',data);
+		//main();
+	});
+		
+}
+
+//显示某标签下的所有书签
+function tagCtrl($scope, $routeParams, bookmarkManager) {
+	
+	var tags = $routeParams.tag;
+	var tagsMap = $scope.tagsMap;
+	var ids = tagsMap[tags];
+	
+	var main = function(){
+		bookmarkManager.get(ids).then(function(r){
+			$scope.bookmarks = r;
+		});			
+	};
+	
+	/////////////////////////////////////////////////////
+	
+	//$scope.orderProp = 'dateAdded';
+
+	main();
+	
+	/////////////////////////////////////////////////////	
+	
+	$scope.remove = function(bookmak, index){
+		$scope.removef(bookmak);
+		$scope.bookmarks.splice(index, 1);
+	};
+	
+	/////////////////////////////////////////////////////	
+	
+}
+
+
 //
 function classifyCtrl($scope) {
 	
+	var bmRelTableManager = $scope.bmRelTableManager = $scope.bmRelTableManager;
+	var bookmarkManager = $scope.bookmarkManager = $scope.bookmarkManager;
+	
+	var getTags = function(m){
+		var o = {};
+		var r=[];
+		for(var i in m){
+			r = m[i].tags;
+			r = r.replace(/，/g,',').replace(/\s+/g,'').split(',');
+			for(var j = 0,v; j< r.length; j++){
+				v = r[j];
+				o[v] = o[v] || [];
+				o[v].push(i);
+			}
+		}
+		return o;
+	};
+	
+	var main = function(){
+		bmRelTableManager.get().then(function(bmRelTable){
+			console.log(bmRelTable);
+			$scope.bmRelTable = bmRelTable;
+			$scope.tags = getTags(bmRelTable);
+		});
+	};
+	
+	/////////////////////////////////////////////////////
+	main();
+	
+	////////////////////////////////////////////////////
+	$scope.getBmByTag = function(ids){
+		bookmarkManager.get(ids).then(function(r){
+			$scope.bookmarks = r;
+		});
+	};
 }
 
 //
@@ -282,13 +413,13 @@ function setingCtrl($scope) {
  */
 
 //
-function mainCtrl($scope, $window, $location, $timeout, bookmarkManager, rmBookmarkManager, DSmanager){
+function mainCtrl($scope, $window, $location, $timeout, bookmarkManager, bmRelTableManager, rmBookmarkManager, DSmanager){
 	
 	var navs = $scope.navs = [{text:'Main',href:'node/1'},
 	              {text:'目录',href:'dir'},
 	              {text:'最近',href:'recent'},
 	              {text:'hot',href:'hot'},
-	              {text:'分类',href:'classify'},
+	              //{text:'分类',href:'classify'},
 	              {text:'回收站',href:'trash'},
 	              {text:'设置',href:'seting'},
 	              {text:'help',href:'help'}];
@@ -302,6 +433,7 @@ function mainCtrl($scope, $window, $location, $timeout, bookmarkManager, rmBookm
 	 //$scope.orderProp = 'index';
 	$scope.$location = $location;
 	$scope.bookmarkManager = bookmarkManager;
+	$scope.bmRelTableManager = bmRelTableManager;
 	$scope.rmBookmarkManager = rmBookmarkManager;
 	$scope.DSmanager = DSmanager;
 	
@@ -319,6 +451,13 @@ function mainCtrl($scope, $window, $location, $timeout, bookmarkManager, rmBookm
 			currentEditing && (currentEditing.editing = false);
 			bookmark.editing = true;
 			$scope.currentEditing = bookmark;
+			if(typeof bookmark.tags === 'undefined'){
+				bmRelTableManager.get(bookmark.id).then(function(bmRel){
+					if(bmRel){
+						bookmark.tags = bmRel.tags;
+					}
+				});				
+			}
 		}else{
 			bookmark.editing = false;
 		}
@@ -340,13 +479,46 @@ function mainCtrl($scope, $window, $location, $timeout, bookmarkManager, rmBookm
 	$scope.removef = function(bookmark, index){
 		//rmBookmarkManager.set(bookmark);
 		bookmarkManager.remove(bookmark);
+		bmRelTableManager.remove(bookmark);
 	};
 	
 	$scope.update = function(bookmark){
 		bookmark.editing = false;
 		bookmarkManager.update(bookmark);
+		console.log(typeof bookmark.tags);
+		if(typeof bookmark.tags !== 'undefined'){
+			bmRelTableManager.set({id:bookmark.id,tags:bookmark.tags});
+		}
 	};
-
+	
+	
+	// bookmarkTreeChange事件处理程序，用于被子控制器继承
+	$scope.bookmarkTreeChangeHandler = function(e, msg){
+		var fs = {
+				onCreated: function(){
+					
+				},
+				onRemoved: function(){
+					
+				},
+				onChanged: function(){
+					
+				},
+				onMoved: function(){
+					
+				},
+				onChildrenReordered: function(){
+					
+				}				
+				
+		};
+		//具体事件名
+		var eventName = data.splice(0,1)[0];
+		
+		this.updateBms().then(function(data){
+			
+		});
+	};
 	
 	//////////////////////////////////////////////////////////////
 	
@@ -367,13 +539,17 @@ function mainCtrl($scope, $window, $location, $timeout, bookmarkManager, rmBookm
 	 $scope.$on('paths.change',function(e,msg){
 		 $scope.paths = msg;
 	 });
+	 
+	 $scope.$on('tagsMap',function(e,msg){
+		 $scope.tagsMap = msg;
+	 });	 
 	
 }
 
 
 var bmControllers = angular.module('bmControllers', []);
                                                          
-bmControllers.controller('mainCtrl',['$scope', '$window', '$location', '$timeout', 'bookmarkManager', 'rmBookmarkManager', 'DSmanager', mainCtrl]);
+bmControllers.controller('mainCtrl',['$scope', '$window', '$location', '$timeout', 'bookmarkManager', 'bmRelTableManager', 'rmBookmarkManager', 'DSmanager', mainCtrl]);
 
 bmControllers.controller('nodeCtrl',['$scope', '$routeParams', 'bookmarkManager', nodeCtrl]);
 

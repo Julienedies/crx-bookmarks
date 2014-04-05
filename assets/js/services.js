@@ -326,12 +326,26 @@ bmServices.factory('DSmanager', ['$rootScope', function($rootScope) {
 
 
 /*
- * bookmarkRelTableManager用于管理每个书签额外的相关信息
+ * bmRelTableManager用于管理每个书签额外的相关信息
  */
-bmServices.factory('bookmarkRelTableManager', ['$rootScope', 'recordManager', function($rootScope, recordManager) {
-	return new recordManager('bookmarkRelTable');
+bmServices.factory('bmRelTableManager', ['$rootScope', 'recordManager', function($rootScope, recordManager) {
+	return new recordManager('bmRelTable');
 }]);
 
+
+/*
+ * visitManager用于管理书签访问信息
+ */
+bmServices.factory('visitManager', ['$rootScope', 'recordManager', function($rootScope, recordManager) {
+	return new recordManager('visit');
+}]);
+
+/*
+ * searchManager用于管理书签搜索信息
+ */
+bmServices.factory('searchManager', ['$rootScope', 'recordManager', function($rootScope, recordManager) {
+	return new recordManager('search');
+}]);
 
 /*
  * configManager用于管理应用配置信息
