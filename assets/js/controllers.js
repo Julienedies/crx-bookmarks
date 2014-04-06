@@ -50,8 +50,8 @@ function nodeCtrl($scope, $routeParams, bookmarkManager) {
 	/////////////////////////////////////////////////////	
 	
 	$scope.remove = function(bookmak, index){
-		$scope.removef(bookmak);
 		$scope.bookmarks.splice(index, 1);
+		$scope.removef(bookmak);
 	};
 	
 	/////////////////////////////////////////////////////	
@@ -166,23 +166,20 @@ function recentCtrl($scope, bookmarkManager){
 				$scope.bookmarks = r;
 				
 			}else{
-				
+				$scope.bookmarks.unshift(msg.splice(1,1)[0]);
+				/*
 				//对新值和旧值进行比较，如果变化，根据变化修改旧值;避免直接覆盖旧值，导致dom全部更新，造成性能下降;
 				if(JSON.stringify($scope.bookmarks) !== JSON.stringify(r)){
 					console.log('It\'s changed,it have to update!',new Date);
 					$scope.bookmarks.unshift(msg.splice(1,1)[0]);
-					/*
+					
 					var eventName = msg.splice(0,1)[0];
 					if(eventName == 'onCreated'){
 						console.log(eventName,msg.splice(1,1)[0]);
-						
 					}
-					*/
-					
-				}				
+				}	
+				*/			
 			}
-
-			
 		});			
 	};
 	
@@ -274,7 +271,7 @@ function tagsCtrl($scope) {
 	/////////////////////////////////////////////////////
 	$scope.$on('chrome.storage.change',function(e,data){
 		console.log('chrome.storage.change.tags',data);
-		//main();
+		main();
 	});
 		
 }
@@ -490,6 +487,18 @@ function mainCtrl($scope, $window, $location, $timeout, bookmarkManager, bmRelTa
 			bmRelTableManager.set({id:bookmark.id,tags:bookmark.tags});
 		}
 	};
+
+	//拖动处理
+	$scope.dropSuccessHandler = function($event,index,bookmark,bookmarks){
+		bookmarks.splice(index,1);
+    };
+     
+    $scope.onDrop = function($event,index,bookmark,$data,bookmarks){
+    	bookmarks.splice(index,0,$data);
+         //console.log($data.id);
+         //console.log($data.id,{parentId:$data.parentId,index:bookmark.index});
+         bookmarkManager.move($data,{parentId:$data.parentId,index:bookmark.index});
+    };	
 	
 	
 	// bookmarkTreeChange事件处理程序，用于被子控制器继承

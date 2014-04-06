@@ -102,45 +102,47 @@ bmDirectives.directive('contenteditable', function() {
 		      // 从DOM中初始化数据
 		      //ctrl.$setViewValue(elm.html());
 		    }
-		  };
-		});
+		};
+		  
+	});
 
 
 //
-bmDirectives.directive('bmDraggable', ['$document', function($document) {
-    return function(scope, element, attr) {
-      var startX = 0, startY = 0, x = 0, y = 0;
- 
-      element.css({
-       position: 'relative',
-       cursor: 'pointer'
-      });
- 
-      element.on('mousedown', function(event) {
-        // Prevent default dragging of selected content
-        event.preventDefault();
-        startX = event.pageX - x;
-        startY = event.pageY - y;
-        $document.on('mousemove', mousemove);
-        $document.on('mouseup', mouseup);
-      });
- 
-      function mousemove(event) {
-        y = event.pageY - startY;
-        x = event.pageX - startX;
-        element.css({
-          top: y + 'px',
-          left:  x + 'px'
-        });
-      }
- 
-      function mouseup() {
-        $document.unbind('mousemove', mousemove);
-        $document.unbind('mouseup', mouseup);
-      }
+bmDirectives.directive('bmDraggable', [function() {
+    return {
+        restrict : 'A',
+        scope : {
+        	drag : '='
+        },        
+        link : function(scope, elm, attrs) {
+        	
+            jQuery.event.props.push('dataTransfer');
+        	
+        	elm.bind("dragstart", function (e) {
+                var sendData = angular.toJson(dragData);
+                var sendChannel = attrs.dragChannel || "defaultchannel";
+                e.dataTransfer.setData("Text", sendData);
+                $rootScope.$broadcast("ANGULAR_DRAG_START", sendChannel);
+        	});
+        	
+        	elm.bind("dragend", function (e) {
+                var sendChannel = attrs.dragChannel || "defaultchannel";
+                $rootScope.$broadcast("ANGULAR_DRAG_END", sendChannel);
+                if (e.dataTransfer.dropEffect !== "none") {
+                    if (attrs.onDropSuccess) {
+                        var fn = $parse(attrs.onDropSuccess);
+                        scope.$apply(function () {
+                            fn(scope, {$event: e});
+                        });
+                    }
+                } 
+                
+        	});
+        	
+        }
     };
-  }]);
-
+    
+}]);
 
 //
 bmDirectives.directive("uiDraggable", [
@@ -148,6 +150,7 @@ bmDirectives.directive("uiDraggable", [
                            '$rootScope',
                            function ($parse, $rootScope) {
                                return function (scope, element, attrs) {
+                            	   
                                    if (window.jQuery && !window.jQuery.event.props.dataTransfer) {
                                        window.jQuery.event.props.push('dataTransfer');
                                    }
@@ -155,10 +158,12 @@ bmDirectives.directive("uiDraggable", [
                                    attrs.$observe("uiDraggable", function (newValue) {
                                        element.attr("draggable", newValue);
                                    });
+                                   
                                    var dragData = "";
                                    scope.$watch(attrs.drag, function (newValue) {
                                        dragData = newValue;
                                    });
+                                   
                                    element.bind("dragstart", function (e) {
                                        var sendData = angular.toJson(dragData);
                                        var sendChannel = attrs.dragChannel || "defaultchannel";
@@ -168,6 +173,7 @@ bmDirectives.directive("uiDraggable", [
                                    element.bind("dragend", function (e) {
                                        var sendChannel = attrs.dragChannel || "defaultchannel";
                                        $rootScope.$broadcast("ANGULAR_DRAG_END", sendChannel);
+                                       
                                        if (e.dataTransfer.dropEffect !== "none") {
                                            if (attrs.onDropSuccess) {
                                                var fn = $parse(attrs.onDropSuccess);
@@ -177,66 +183,78 @@ bmDirectives.directive("uiDraggable", [
                                            }
                                        }
                                    });
-                               };
-                           }
-                       ])
-                       .directive("uiOnDrop", [
-                           '$parse',
-                           '$rootScope',
-                           function ($parse, $rootScope) {
-                               return function (scope, element, attr) {
-                                   var dropChannel = "defaultchannel";
-                                   var dragChannel = "";
-                                   var dragEnterClass = attr.dragEnterClass || "on-drag-enter";
-                                   function onDragOver(e) {
-                                       if (e.preventDefault) {
-                                           e.preventDefault(); // Necessary. Allows us to drop.
-                                       }
-                                       if (e.stopPropagation) {
-                                           e.stopPropagation();
-                                       }
-                                       e.dataTransfer.dropEffect = 'move';
-                                       return false;
-                                   }
-                                   function onDrop(e) {
-                                       if (e.preventDefault) {
-                                           e.preventDefault(); // Necessary. Allows us to drop.
-                                       }
-                                       if (e.stopPropagation) {
-                                           e.stopPropagation(); // Necessary. Allows us to drop.
-                                       }
-                                       var data = e.dataTransfer.getData("Text");
-                                       data = angular.fromJson(data);
-                                       var fn = $parse(attr.uiOnDrop);
-                                       scope.$apply(function () {
-                                           fn(scope, {$data: data, $event: e});
-                                       });
-                                       element.removeClass(dragEnterClass);
-                                   }
-                                   $rootScope.$on("ANGULAR_DRAG_START", function (event, channel) {
-                                       dragChannel = channel;
-                                       if (dropChannel === channel) {
-                                           element.bind("dragover", onDragOver);
-                                           element.bind("drop", onDrop);
-                                           element.addClass(dragEnterClass);
-                                       }
-                                   });
-                                   $rootScope.$on("ANGULAR_DRAG_END", function (e, channel) {
-                                       dragChannel = "";
-                                       if (dropChannel === channel) {
-                                           element.unbind("dragover", onDragOver);
-                                           element.unbind("drop", onDrop);
-                                           element.removeClass(dragEnterClass);
-                                       }
-                                   });
-                                   attr.$observe('dropChannel', function (value) {
-                                       if (value) {
-                                           dropChannel = value;
-                                       }
-                                   });
+                                   
                                };
                            }
                        ]);
+
+bmDirectives.directive("uiOnDrop", [
+                                     '$parse',
+                                     '$rootScope',
+                                     function ($parse, $rootScope) {
+                                         return function (scope, element, attr) {
+                                             var dropChannel = "defaultchannel";
+                                             var dragChannel = "";
+                                             var dragOverClass = attr.dragOverClass || "on-drag-over";
+                                             var dragEnterClass = attr.dragEnterClass || "on-drag-enter";
+                                             
+                                             function onDragOver(e) {
+                                                 e.preventDefault && e.preventDefault(); 
+                                                 e.stopPropagation && e.stopPropagation(); 
+                                                 
+                                                 e.dataTransfer.dropEffect = 'move';
+                                                 element.addClass(dragOverClass);
+                                                 return false;
+                                             }
+                                             function onDragEnter(e) {
+                                            	 element.addClass(dragEnterClass);
+                                             }
+                                             function onDragLeave(e) {
+                                            	 element.removeClass(dragOverClass,dragEnterClass);
+                                             }                                            
+                                             function onDrop(e) {
+                                                 e.preventDefault && e.preventDefault(); 
+                                                 e.stopPropagation && e.stopPropagation(); 
+                                                 
+                                                 var data = e.dataTransfer.getData("Text");
+                                                 data = angular.fromJson(data);
+                                                 var fn = $parse(attr.uiOnDrop);
+                                                 
+                                                 scope.$apply(function () {
+                                                     fn(scope, {$data: data, $event: e});
+                                                 });
+                                                 
+                                                 element.removeClass(dragOverClass,dragEnterClass);
+                                             }
+                                             
+                                             $rootScope.$on("ANGULAR_DRAG_START", function (event, channel) {
+                                                 dragChannel = channel;
+                                                 if (dropChannel === channel) {
+                                                     element.bind("dragover", onDragOver);
+                                                     element.bind("dragenter", onDragEnter);
+                                                     element.bind("dragleave", onDragLeave);
+                                                     element.bind("drop", onDrop);
+                                                     //element.addClass(dragEnterClass);
+                                                 }
+                                             });
+                                             $rootScope.$on("ANGULAR_DRAG_END", function (e, channel) {
+                                                 dragChannel = "";
+                                                 if (dropChannel === channel) {
+                                                     element.unbind("dragover", onDragOver);
+                                                     element.unbind("dragenter", onDragEnter);
+                                                     element.unbind("dragleave", onDragLeave);
+                                                     element.unbind("drop", onDrop);
+                                                     //element.removeClass(dragEnterClass);
+                                                 }
+                                             });
+                                             attr.$observe('dropChannel', function (value) {
+                                                 if (value) {
+                                                     dropChannel = value;
+                                                 }
+                                             });
+                                         };
+                                     }
+                                 ]);
 
 
 //
@@ -306,17 +324,20 @@ bmDirectives.directive('autoWidth',[function() {
 	  return {
 		  	restrict : 'A',
 		    link: function(scope, elm, attrs) {
-		    	
+		    	  
+		    	  //var ghost = elm.prev('.ghost'); 
 			      scope.$watch(attrs.autoWidth, function(value) {
 			    	  elm.width(textWidth(value));
-				      });		    	
+			    	  //var w = ghost ? ghost.width()+10 : textWidth(value);
+			    	  //elm.width(w);
+				    });		    	
 		    	
 		    	  function textWidth(text){ 
 		    	        var sensor = jQuery('<pre>'+ text +'</pre>').css({display: 'none'}); 
 		    	        jQuery('body').append(sensor); 
 		    	        var width = sensor.width();
 		    	        sensor.remove(); 
-		    	        return width+4;
+		    	        return width;
 		    	    };		    	
 		    	
 		    	 //jQuery(elm).unbind('keydown').bind('keydown', function(){

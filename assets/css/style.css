@@ -1,10 +1,5 @@
 @charset "utf-8";
 
-/**
- * 
- * 
- * 
- */
 /* scrollbar style start
 =============================================== */
 ::-webkit-scrollbar {
@@ -123,6 +118,14 @@ b {
 	font-weight: normal;
 }
 
+[draggable] {
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  /* Required to make elements draggable in old WebKit */
+  -khtml-user-drag: element;
+  -webkit-user-drag: element;
+}
 /* reset end
 ================================================ */
 /* base start
@@ -279,7 +282,7 @@ nav a:link,nav a:visited {
 }
 
 .tags .selected,.tags li:hover {
-	background: blue;
+	background: #1A5DB6;
 	color: #fff;
 }
 
@@ -296,7 +299,7 @@ nav a:link,nav a:visited {
 }
 
 .dir-tree li.selected >span a {
-	background:blue;
+	background: #1A5DB6;
 	color:#fff;
 }
 
@@ -317,7 +320,7 @@ nav a:link,nav a:visited {
 }
 
 .dir-tree li span:hover, .dir-tree li span:hover a {
-	background-color: blue;
+	background-color: #1A5DB6;
 	color:#fff;
 }
 
@@ -370,6 +373,10 @@ nav a:link,nav a:visited {
 	display: inline-block;
 }
 
+.bm-list li.on-drag-over{
+	border-top-color:rgb(192, 5, 5)!important;
+}
+
 
 .edit-box {
 	height: 28px;
@@ -402,6 +409,10 @@ nav a:link,nav a:visited {
 	border-radius: 5px;
 	background: -webkit-linear-gradient(top, rgba(231, 239, 250, 1) 0%,
 		rgba(222, 234, 250, 1) 100% );
+}
+.ghost{
+	padding:0 25px 0 5px;
+	border: solid 1px transparent;
 }
 
 .save,.remove,.cancel,.close {
@@ -490,9 +501,9 @@ header {
 		rgba(225, 225, 225, 1) 72%, rgba(225, 225, 225, 1) 75%,
 		rgba(225, 225, 225, 1) 100%, rgba(241, 241, 241, 1) 100%,
 		rgba(255, 255, 255, 1) 100%, rgba(225, 225, 225, 1) 100% );
-	background: #4072b4;
 	background: -webkit-linear-gradient(top, rgba(153, 181, 209, 1) 0%,
 		rgba(183, 207, 232, 1) 100% );
+	background: #1A5DB6;
 }
 
 nav a:link {
@@ -507,9 +518,10 @@ nav a:hover,nav a.active {
 		rgba(225, 225, 225, 1) 100%, rgba(241, 241, 241, 1) 100%,
 		rgba(255, 255, 255, 1) 100%, rgba(175, 175, 175, 1) 100% );
 	background: #2D5B99;
-	background: #5381BE;
+	
 	background: -webkit-linear-gradient(top, rgba(123, 151, 179, 1) 0%,
 		rgba(153, 177, 202, 1) 100% );
+	background: #1D4D8F;
 }
 
 header form {
