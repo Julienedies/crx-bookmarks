@@ -8,7 +8,8 @@
 
 var bmDirectives = angular.module('bmDirectives', []);
 
-//
+
+// 监听回车键按下
 bmDirectives.directive('enterPress', function() {
     return {
         restrict : 'A',
@@ -36,7 +37,7 @@ bmDirectives.directive('enterPress', function() {
     
 });
 
-//
+// 显示隐藏切换
 bmDirectives.directive('toggle', function() {
     return {
         restrict : 'A',
@@ -59,18 +60,20 @@ bmDirectives.directive('toggle', function() {
 });
 
 
-//
-bmDirectives.directive('currentActive', function() {
+// 当前激活显示
+bmDirectives.directive('bmCurrentActive', function() {
     return {
         restrict : 'A',
         scope : {
-        	currentActive : '@'
+        	bmCurrentActive : '@',
+        	bmCurrentActiveClass : '@'
         },        
         link : function(scope, elm, attrs) {
         	
-        	var cla = scope.currentActive;
+        	var selector = scope.bmCurrentActive;
+        	var cla = scope.bmCurrentActiveClass;
         	var current;
-        	elm.delegate(':nth-child(n)','click',function(e){
+        	elm.delegate(selector,'click',function(e){
         		jQuery(current).removeClass(cla);
         		jQuery(this).addClass(cla);
         		current = this;
@@ -81,7 +84,7 @@ bmDirectives.directive('currentActive', function() {
     
 });
 
-//
+// 使元素可作为编辑模型
 bmDirectives.directive('contenteditable', function() {
 	  return {
 		    require: 'ngModel',
@@ -107,27 +110,37 @@ bmDirectives.directive('contenteditable', function() {
 	});
 
 
-//
-bmDirectives.directive('bmDraggable', [function() {
+// 监听拖动
+bmDirectives.directive('uiDraggable', ['$parse', '$rootScope',function($parse, $rootScope) {
     return {
         restrict : 'A',
-        scope : {
-        	drag : '='
-        },        
-        link : function(scope, elm, attrs) {
+        link : function(scope, element, attrs) {
         	
-            jQuery.event.props.push('dataTransfer');
+        	var dragData = "";
         	
-        	elm.bind("dragstart", function (e) {
+            if (window.jQuery && !window.jQuery.event.props.dataTransfer) {
+                window.jQuery.event.props.push('dataTransfer');
+            }
+            
+            scope.$watch(attrs.uiDraggable, function (newValue) {
+         	   newValue ? element.attr("draggable", newValue) : element.removeAttr('draggable');
+            });
+            
+            scope.$watch(attrs.drag, function (newValue) {
+                dragData = newValue;
+            });
+            
+            element.bind("dragstart", function (e) {
                 var sendData = angular.toJson(dragData);
                 var sendChannel = attrs.dragChannel || "defaultchannel";
                 e.dataTransfer.setData("Text", sendData);
                 $rootScope.$broadcast("ANGULAR_DRAG_START", sendChannel);
-        	});
-        	
-        	elm.bind("dragend", function (e) {
+            });
+            
+            element.bind("dragend", function (e) {
                 var sendChannel = attrs.dragChannel || "defaultchannel";
                 $rootScope.$broadcast("ANGULAR_DRAG_END", sendChannel);
+                
                 if (e.dataTransfer.dropEffect !== "none") {
                     if (attrs.onDropSuccess) {
                         var fn = $parse(attrs.onDropSuccess);
@@ -135,129 +148,124 @@ bmDirectives.directive('bmDraggable', [function() {
                             fn(scope, {$event: e});
                         });
                     }
-                } 
+                }
                 
-        	});
+            });
         	
         }
     };
     
 }]);
 
-//
-bmDirectives.directive("uiDraggable", [
-                           '$parse',
-                           '$rootScope',
-                           function ($parse, $rootScope) {
-                               return function (scope, element, attrs) {
-                            	   
-                                   if (window.jQuery && !window.jQuery.event.props.dataTransfer) {
-                                       window.jQuery.event.props.push('dataTransfer');
-                                   }
-                                   element.attr("draggable", false);
-                                   attrs.$observe("uiDraggable", function (newValue) {
-                                       element.attr("draggable", newValue);
-                                   });
-                                   
-                                   var dragData = "";
-                                   scope.$watch(attrs.drag, function (newValue) {
-                                       dragData = newValue;
-                                   });
-                                   
-                                   element.bind("dragstart", function (e) {
-                                       var sendData = angular.toJson(dragData);
-                                       var sendChannel = attrs.dragChannel || "defaultchannel";
-                                       e.dataTransfer.setData("Text", sendData);
-                                       $rootScope.$broadcast("ANGULAR_DRAG_START", sendChannel);
-                                   });
-                                   element.bind("dragend", function (e) {
-                                       var sendChannel = attrs.dragChannel || "defaultchannel";
-                                       $rootScope.$broadcast("ANGULAR_DRAG_END", sendChannel);
-                                       
-                                       if (e.dataTransfer.dropEffect !== "none") {
-                                           if (attrs.onDropSuccess) {
-                                               var fn = $parse(attrs.onDropSuccess);
-                                               scope.$apply(function () {
-                                                   fn(scope, {$event: e});
-                                               });
-                                           }
-                                       }
-                                   });
-                                   
-                               };
-                           }
-                       ]);
 
-bmDirectives.directive("uiOnDrop", [
-                                     '$parse',
-                                     '$rootScope',
-                                     function ($parse, $rootScope) {
-                                         return function (scope, element, attr) {
-                                             var dropChannel = "defaultchannel";
-                                             var dragChannel = "";
-                                             var dragOverClass = attr.dragOverClass || "on-drag-over";
-                                             var dragEnterClass = attr.dragEnterClass || "on-drag-enter";
-                                             
-                                             function onDragOver(e) {
-                                                 e.preventDefault && e.preventDefault(); 
-                                                 e.stopPropagation && e.stopPropagation(); 
-                                                 
-                                                 e.dataTransfer.dropEffect = 'move';
-                                                 element.addClass(dragOverClass);
-                                                 return false;
-                                             }
-                                             function onDragEnter(e) {
-                                            	 element.addClass(dragEnterClass);
-                                             }
-                                             function onDragLeave(e) {
-                                            	 element.removeClass(dragOverClass,dragEnterClass);
-                                             }                                            
-                                             function onDrop(e) {
-                                                 e.preventDefault && e.preventDefault(); 
-                                                 e.stopPropagation && e.stopPropagation(); 
-                                                 
-                                                 var data = e.dataTransfer.getData("Text");
-                                                 data = angular.fromJson(data);
-                                                 var fn = $parse(attr.uiOnDrop);
-                                                 
-                                                 scope.$apply(function () {
-                                                     fn(scope, {$data: data, $event: e});
-                                                 });
-                                                 
-                                                 element.removeClass(dragOverClass,dragEnterClass);
-                                             }
-                                             
-                                             $rootScope.$on("ANGULAR_DRAG_START", function (event, channel) {
-                                                 dragChannel = channel;
-                                                 if (dropChannel === channel) {
-                                                     element.bind("dragover", onDragOver);
-                                                     element.bind("dragenter", onDragEnter);
-                                                     element.bind("dragleave", onDragLeave);
-                                                     element.bind("drop", onDrop);
-                                                     //element.addClass(dragEnterClass);
-                                                 }
-                                             });
-                                             $rootScope.$on("ANGULAR_DRAG_END", function (e, channel) {
-                                                 dragChannel = "";
-                                                 if (dropChannel === channel) {
-                                                     element.unbind("dragover", onDragOver);
-                                                     element.unbind("dragenter", onDragEnter);
-                                                     element.unbind("dragleave", onDragLeave);
-                                                     element.unbind("drop", onDrop);
-                                                     //element.removeClass(dragEnterClass);
-                                                 }
-                                             });
-                                             attr.$observe('dropChannel', function (value) {
-                                                 if (value) {
-                                                     dropChannel = value;
-                                                 }
-                                             });
-                                         };
-                                     }
-                                 ]);
+// 监听拖入
+bmDirectives.directive('uiOnDrop', ['$parse', '$rootScope',function($parse, $rootScope) {
+    return {
+        restrict : 'A',
+        link : function(scope, element, attrs) {
+        	
+            var dropChannel = "defaultchannel";
+            var dragChannel = "";
+            var dragOverClass = attrs.dragOverClass || "on-drag-over";
+            var dragEnterClass = attrs.dragEnterClass || "on-drag-enter";
+            
+            function onDragOver(e) {
+                e.preventDefault && e.preventDefault(); 
+                e.stopPropagation && e.stopPropagation(); 
+                
+                e.dataTransfer.dropEffect = 'move';
+                
+                
+                //根据鼠标位置判断是移动到目标元素前面还是后面还是目标元素本身
+                var h = element.height();
+                var y = e.originalEvent.layerY;
+                var suffix;
+                
+                if( y/h<1/3){
+                	suffix = 'top';
+                }else if(y/h > 1/3 && y/h < 2/3){
+                	suffix = 'middle';
+                }else{
+                	suffix = 'bottom';
+                }           	
+            	
+           	 	//element.addClass(dragEnterClass+'-'+suffix);                
+                
+                element.addClass(dragOverClass+'-'+suffix);
+                return false;
+            }
+            
+            function onDragEnter(e) {
+            	
+
+            }
+            
+            function onDragLeave(e) {
+           	 	element.removeClass(dragOverClass+'-top'+' '+dragEnterClass+'-top'+' '+dragOverClass+'-middle'+' '+dragEnterClass+'-middle'+' '+dragOverClass+'-bottom'+' '+dragEnterClass+'-bottom');
+            } 
+            
+            function onDrop(e) {
+                e.preventDefault && e.preventDefault(); 
+                e.stopPropagation && e.stopPropagation(); 
+                
+                
+                //根据鼠标位置判断是移动到目标元素前面还是后面还是目标元素本身
+                var h = element.height();
+                var y = e.originalEvent.layerY;
+                var suffix;
+                
+                if( y/h<1/3){
+                	suffix = 'top';
+                }else if(y/h > 1/3 && y/h < 2/3){
+                	suffix = 'middle';
+                }else{
+                	suffix = 'bottom';
+                }                   
+                
+                
+                
+                var data = e.dataTransfer.getData("Text");
+                data = angular.fromJson(data);
+                var fn = $parse(attrs.uiOnDrop);
+                
+                scope.$apply(function () {
+                    fn(scope, {$data: data, $event: e, $suffix:suffix});
+                });
+                
+           	 	element.removeClass(dragOverClass+'-top'+' '+dragEnterClass+'-top'+' '+dragOverClass+'-middle'+' '+dragEnterClass+'-middle'+' '+dragOverClass+'-bottom'+' '+dragEnterClass+'-bottom');
+            }
+            
+            $rootScope.$on("ANGULAR_DRAG_START", function (event, channel) {
+                dragChannel = channel;
+                if (dropChannel === channel) {
+                    element.bind("dragover", onDragOver);
+                    element.bind("dragenter", onDragEnter);
+                    element.bind("dragleave", onDragLeave);
+                    element.bind("drop", onDrop);
+                }
+            });
+            $rootScope.$on("ANGULAR_DRAG_END", function (e, channel) {
+                dragChannel = "";
+                if (dropChannel === channel) {
+                    element.unbind("dragover", onDragOver);
+                    element.unbind("dragenter", onDragEnter);
+                    element.unbind("dragleave", onDragLeave);
+                    element.unbind("drop", onDrop);
+                }
+            });
+            attrs.$observe('dropChannel', function (value) {
+                if (value) {
+                    dropChannel = value;
+                }
+            });
+        	
+        }
+    };
+    
+}]);
 
 
-//
+// 调整元素margin
 bmDirectives.directive('resizeable',['$document', function($document) {
 	  return {
 		    link: function(scope, elm, attrs) {

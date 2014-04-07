@@ -493,11 +493,33 @@ function mainCtrl($scope, $window, $location, $timeout, bookmarkManager, bmRelTa
 		bookmarks.splice(index,1);
     };
      
-    $scope.onDrop = function($event,index,bookmark,$data,bookmarks){
-    	bookmarks.splice(index,0,$data);
-         //console.log($data.id);
-         //console.log($data.id,{parentId:$data.parentId,index:bookmark.index});
-         bookmarkManager.move($data,{parentId:$data.parentId,index:bookmark.index});
+    $scope.onDrop = function($event,index,bookmark,$data,$suffix,bookmarks){
+    	
+    	var destination = {}; console.log($suffix);
+    	var parentId = bookmark.parentId;
+    	
+    	if (bookmark.id == $data.id) return;
+    	
+    	if($suffix == 'top'){
+    		
+    		bookmarks.splice(index,0,$data);
+    		destination.index = index;
+    		
+    	}else if($suffix == 'bottom'){
+    		
+    		index = index+1;
+    		bookmarks.splice(index,0,$data);
+    		destination.index = index;
+    		
+    	}else if(!bookmark.url){
+    		
+    		parentId = bookmark.id;
+    		
+    	}  
+    	
+    	destination.parentId = parentId;
+    	//bookmarkManager.move($data,{parentId:$data.parentId,index:bookmark.index});
+        bookmarkManager.move($data,destination);
     };	
 	
 	

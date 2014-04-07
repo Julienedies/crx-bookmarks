@@ -1,8 +1,8 @@
 <div class="tags">
 <h4 ng-click="tagsOpen=!tagsOpen">标签 </h4>
 
-<ul ng-show="!tagsOpen" current-active="selected">
-<li ng-repeat="(key, ids) in tagsMap" qng-click="getBmByTag(ids)" qng-class="cla" qng-click="cla='selected';">
+<ul ng-show="!tagsOpen" bm-current-active="li:nth-child(n)" bm-current-active-class="selected">
+<li ng-repeat="(key, ids) in tagsMap">
 <a ng-href="{{'#/tag/'+key}}">{{key}}</a>
 </li>
 </ul>

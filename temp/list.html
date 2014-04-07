@@ -1,19 +1,24 @@
 <div class="content">
 
 <div class="toolbar">
-<div class="left">
+<div class="left inline-form">
  Search: <input ng-model="query" class="input-sm" placeholder="搜索当前位置">
- &nbsp;&nbsp;&nbsp; Sort by:
+ <label>排序方式: </label>
   <select class="select-sm" ng-model="orderProp">
-    <option value="">拖动排序</option>
+    <option></option>
     <option value="title">Alphabetical</option>
     <option value="index">index</option>
     <option value="url">url</option>
     <option value="dateAdded">dateAdded</option>
     <option value="children">children</option>
   </select>
+  <span ng-show="orderProp">
+  <label>反转: </label>
+  <input type="checkbox" ng-model="sortReverse">
+  </span>
 </div>
 <div class="right">
+{{orderProp}}
  auto-width="bookmark.title"
 添加一个书签关联表 + 数据同步器
 </div>
@@ -28,11 +33,10 @@
 
 <ul class="bm-list" >
 
-	<li ng-repeat="bookmark in bookmarks | filter:query | orderBy:orderProp:true"
-		ui-draggable="true"
+	<li ng-repeat="bookmark in bookmarks | filter:query | orderBy:orderProp:sortReverse"
+		ui-draggable="!orderProp"
 		drag="bookmark" 
-		dragEnterClass=""
-		ui-on-Drop="onDrop($event,$index,bookmark,$data,bookmarks)"
+		ui-on-Drop="onDrop($event,$index,bookmark,$data,$suffix,bookmarks)"
 		on-drop-success="dropSuccessHandler($event,$index,bookmark,bookmarks)"
 		>
 	
@@ -63,7 +67,7 @@
 		tag: <input type="text" ng-model="bookmark.tags" class="input-sm" auto-width="bookmark.tags" tabindex="2">
 		</div>		
 		
-		<span class="close" ng-click="exit(bookmark);">x</span>
+		<span class="close" ng-click="exit(bookmark);">&times;</span>
 	</div>
 	
 	<div ng-if="!bookmark.url" class="edit-box editing-{{bookmark.editing}}">
@@ -85,7 +89,7 @@
 			<button class="btn btn-xs btn-text save" ng-click="update(bookmark);">更新</button>			
 			<button class="btn btn-xs btn-text" ng-click="remove(bookmark, $index);">删除</button>
 		</div>
-		<span class="close" ng-click="exit(bookmark)">x</span>
+		<span class="close" ng-click="exit(bookmark)">&times;</span>
 	</div>	
 	
 	</li>

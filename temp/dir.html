@@ -11,7 +11,7 @@
 </script>
 
 <div>
-<ul class="dir-tree" ng-show="!node.open">
+<ul class="dir-tree" ng-show="!node.open" bm-current-active="li span" bm-current-active-class="selected">
 	<li ng-repeat="node in tree | isTree" ng-include="'tree_item_renderer.html'"></li>
 </ul>
 </div>

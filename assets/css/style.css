@@ -222,6 +222,10 @@ nav a:link,nav a:visited {
 	clear: both;
 }
 
+.inline-form label{
+	margin-left:20px;
+}
+
 /* common class end 
 ================================================ */
 /* components start 
@@ -298,6 +302,9 @@ nav a:link,nav a:visited {
 	line-height: 2;
 }
 
+.dir-tree li span a{
+	display: block;
+}
 .dir-tree li.selected >span a {
 	background: #1A5DB6;
 	color:#fff;
@@ -319,6 +326,7 @@ nav a:link,nav a:visited {
 	cursor: pointer;
 }
 
+.dir-tree li span.selected,  .dir-tree li span.selected a,
 .dir-tree li span:hover, .dir-tree li span:hover a {
 	background-color: #1A5DB6;
 	color:#fff;
@@ -373,8 +381,17 @@ nav a:link,nav a:visited {
 	display: inline-block;
 }
 
-.bm-list li.on-drag-over{
+.on-drag-over-top,
+.on-drag-enter-top{
 	border-top-color:rgb(192, 5, 5)!important;
+}
+.on-drag-over-middle,
+.on-drag-enter-middle{
+	background:rgb(122, 145, 195)!important;
+}
+.on-drag-over-bottom,
+.on-drag-enter-bottom{
+	border-bottom-color:rgb(192, 5, 5)!important;
 }
 
 
