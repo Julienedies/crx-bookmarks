@@ -30,7 +30,7 @@
 </nav>
 
 <form class="left">
-<input type="text" class="input-sm search-query" placeholder="搜索所有书签" enter-press="searchf" ng-model="q" />
+<input type="text" class="input-sm search-query" placeholder="搜索所有书签" bm-enter-press="searchf" ng-model="q" />
 <button ng-click="searchf();" class="btn btn-xs btn-text search">search</button>
 </form>
 
@@ -47,12 +47,12 @@
 <div id="dirwrapper">
 <div class="scroller">
 <div ng-controller="tagsCtrl" ng-include="'temp/tags.html'"></div>
-<div ng-controller="dirCtrl" ng-include="'temp/dir.html'"></div>
+<div ng-controller="vdirCtrl" ng-include="'temp/dir.html'"></div>
 </div>
 </div>
 
-<div id="mainwrapper" resizeable>
-<div class="scroller"  return-top>
+<div id="mainwrapper" bm-resize-able>
+<div class="scroller" bm-return-top>
 <div id="main" class="view-animate" ng-view></div>
 </div>
 </div>

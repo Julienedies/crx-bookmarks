@@ -445,7 +445,8 @@ bmServices.factory('bookmarkManager', ['$rootScope', 'cbInterface', 'Bookmark', 
         	return cbInterface.update(bookmark.id, changes);
         },
         move: function(bookmark,destination){
-        	return cbInterface.move(bookmark.id,destination);
+        	var id = typeof bookmark === 'object' ? bookmark.id : bookmark;
+        	return cbInterface.move(id,destination);
         },        
         getTree: function() {
         	return cbInterface.getTree();

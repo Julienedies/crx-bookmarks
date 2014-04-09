@@ -119,11 +119,13 @@ function vdirCtrl($scope, $routeParams, bookmarkManager) {
 		})(r);
 	
 		//console.log(r); 
-		//console.log(JSON.stringify(r[0]));
+		//console.log(JSON.stringify(r));
+		$scope.tree = r;
 		$scope.vtree = r[0]; 		
 	};
 
 	var call2 = function(r){
+		$scope.tree = r;
 		$scope.vtree = r[0]; 
 	};
 	
@@ -134,14 +136,134 @@ function vdirCtrl($scope, $routeParams, bookmarkManager) {
 		if(!id){
 			bookmarkManager.getTree().then(call);
 		}else{
-			bookmarkManager.getSubTree(id).then(call2);
+			bookmarkManager.getSubTree(id).then(call);
 		}		
 	};	
 
 	/////////////////////////////////////////////////////
 
 	main();
+	
+	/////////////////////////////////////////////////////
+	// 参数  node id  && tree 
+	var findInTree = function(node, root){
+		
+		var id = typeof node === 'object' ? node.id : node;
+		var _r;
+		var _i;
+		var b = (function f(tree){
+			_r = tree;
+			var node;
+			
+			for(var i=0; i<tree.length; i++){
+				_i = i;
 				
+				node = tree[i];
+				
+				if(node.id == id){
+					return 1;
+				}
+
+			}
+			
+			for(i = 0; i< tree.length; i++){
+				
+				node = tree[i];
+				if(node.children){
+					if( f(node.children) ) return 1;
+				}	
+				
+			}
+			
+		})(root);	
+		
+		return b && {place: _r, index: _i};
+	};
+	
+	
+
+	$scope.dropSuccessHandler = function($event, node, root){
+		
+		// 根据拖动节点的Id找到所在原位置，删除
+		var id = node.id;
+		var z = findInTree(id, root);
+		var place = z.place;
+		var index = z.index;
+		
+		place.splice(index, 1); 
+		
+		// 查找复制的拖动节点，修改id为拖动节点的id
+		z = findInTree('x_' + id, root);
+		place = z.place;
+		index = z.index;
+		node = place[index];
+		if(node){
+			node.id = id;
+		}
+    };
+    
+    
+    $scope.onDrop = function($event, $position, $data, node, root){
+
+    	var destination = {};
+		var z = findInTree(node.id, root);
+		var place = z.place;
+		var index = z.index;
+		
+		var dragId = $data.id;
+		
+		//拖动的是目录节点
+		if(!$data.url){
+			
+			$data.id = 'x_' + dragId;
+			
+	    	//根据鼠标位置对拖动元素进行移动定位
+	    	if($position == 'top'){
+	    		
+	    		place.splice(index, 0, $data); 
+	    		
+	    		destination.index = node.index;
+	    		destination.parentId = node.parentId;	    		
+	    		
+	    	}else if($position == 'bottom'){
+	    		
+	    		index = index+1;
+	    		place.splice(index, 0, $data);
+	    		
+	    		destination.index = node.index+1;
+	    		destination.parentId = node.parentId;	    		
+	    		
+	    	}else if($position == 'middle'){
+	    		
+	    		node.children = node.children || [];
+	    		node.children.push($data);
+	    		
+	    		destination.parentId = node.id;
+	    		
+	    	}  		
+	    	
+		}else{ //或者拖动的是书签节点
+			
+	    	if($position == 'top'){
+	    		
+	    		destination.index = node.index;
+	    		destination.parentId = node.parentId;
+	    		
+	    	}else if($position == 'bottom'){
+	    		
+	    		destination.index = node.index+1;
+	    		destination.parentId = node.parentId;
+	    		
+	    	}else if($position == 'middle'){
+	    		
+	    		destination.parentId = node.id;
+	    	}  			
+		}
+    	
+    	bookmarkManager.move(dragId, destination);
+    	
+    };		
+	
 	/////////////////////////////////////////////////////	
 	
 	$scope.$on('bookmarkTree.change',function(e,data){
@@ -493,19 +615,18 @@ function mainCtrl($scope, $window, $location, $timeout, bookmarkManager, bmRelTa
 		bookmarks.splice(index,1);
     };
      
-    $scope.onDrop = function($event,index,bookmark,$data,$suffix,bookmarks){
+    $scope.onDrop = function($event,index,bookmark,$data,$position,bookmarks){
     	
-    	var destination = {}; console.log($suffix);
+    	var destination = {}; 
     	var parentId = bookmark.parentId;
     	
-    	if (bookmark.id == $data.id) return;
-    	
-    	if($suffix == 'top'){
+    	//根据鼠标位置对拖动元素进行移动定位
+    	if($position == 'top' || ($position == 'middle' && bookmark.url)){
     		
     		bookmarks.splice(index,0,$data);
     		destination.index = index;
     		
-    	}else if($suffix == 'bottom'){
+    	}else if($position == 'bottom'){
     		
     		index = index+1;
     		bookmarks.splice(index,0,$data);
@@ -519,7 +640,7 @@ function mainCtrl($scope, $window, $location, $timeout, bookmarkManager, bmRelTa
     	
     	destination.parentId = parentId;
     	//bookmarkManager.move($data,{parentId:$data.parentId,index:bookmark.index});
-        bookmarkManager.move($data,destination);
+       // bookmarkManager.move($data,destination);
     };	
 	
 	

@@ -302,35 +302,49 @@ nav a:link,nav a:visited {
 	line-height: 2;
 }
 
+
+.dir-tree li span {
+	display: block;
+	margin:0 5px;
+	height:30px;
+	border: solid 1px transparent;
+	cursor: pointer;
+	border-radius:3px;	
+}
+
+.dir-tree li span em{
+	position:absolute;
+	color:#BDBDBD;
+	padding:0 28px 0 4px;
+	
+}
 .dir-tree li span a{
 	display: block;
-}
-.dir-tree li.selected >span a {
-	background: #1A5DB6;
-	color:#fff;
+	height:28px;
+	padding:0 8px 0 42px;
+	background: xurl(../img/folder-1.png) 20px 50% no-repeat;
+	background-size: 16px 16px;
+	border: solid 1px transparent;
+	border-radius:3px;
 }
 
 .dir-tree li span+ul {
 	padding: 0 0 0 2.4em;
 }
 
-.dir-tree li span {
-	
-}
-
-.dir-tree li span {
-	display: block;
-	padding-left: 28px;
-	background: url(../img/folder.png) -0px 50% no-repeat;
-	background-size: 24px 24px;
-	cursor: pointer;
-}
-
-.dir-tree li span.selected,  .dir-tree li span.selected a,
-.dir-tree li span:hover, .dir-tree li span:hover a {
+.dir-tree li span.selected, 
+.dir-tree li span:hover{
 	background-color: #1A5DB6;
-	color:#fff;
+	background: -webkit-linear-gradient(top, rgba(231, 239, 250, 1) 0%,  rgba(222, 234, 250, 1) 100% );
+	border: solid 1px #b8d6fb;
 }
+.dir-tree li span.selected a,
+.dir-tree li span.selected ems,
+.dir-tree li span:hover ems, 
+.dir-tree li span:hover a {
+	border: solid 1px #fff;
+}
+
 
 
 

@@ -10,11 +10,11 @@ var bmDirectives = angular.module('bmDirectives', []);
 
 
 // 监听回车键按下
-bmDirectives.directive('enterPress', function() {
+bmDirectives.directive('bmEnterPress', function() {
     return {
         restrict : 'A',
         scope : {
-        	enterPress : '='
+        	enterPress : '=bmEnterPress'
         },        
         link : function(scope, elm, attrs) {
         	//var call = jQuery.proxy(scope.enterPress,element);
@@ -38,7 +38,7 @@ bmDirectives.directive('enterPress', function() {
 });
 
 // 显示隐藏切换
-bmDirectives.directive('toggle', function() {
+bmDirectives.directive('bmToggle', function() {
     return {
         restrict : 'A',
         link : function(scope, elm, attrs) {
@@ -85,7 +85,7 @@ bmDirectives.directive('bmCurrentActive', function() {
 });
 
 // 使元素可作为编辑模型
-bmDirectives.directive('contenteditable', function() {
+bmDirectives.directive('bmContenteditable', function() {
 	  return {
 		    require: 'ngModel',
 		    link: function(scope, elm, attrs, ctrl) {
@@ -111,7 +111,7 @@ bmDirectives.directive('contenteditable', function() {
 
 
 // 监听拖动
-bmDirectives.directive('uiDraggable', ['$parse', '$rootScope',function($parse, $rootScope) {
+bmDirectives.directive('bmDraggable', ['$parse', '$rootScope',function($parse, $rootScope) {
     return {
         restrict : 'A',
         link : function(scope, element, attrs) {
@@ -122,28 +122,28 @@ bmDirectives.directive('uiDraggable', ['$parse', '$rootScope',function($parse, $
                 window.jQuery.event.props.push('dataTransfer');
             }
             
-            scope.$watch(attrs.uiDraggable, function (newValue) {
+            scope.$watch(attrs.bmDraggable, function (newValue) {
          	   newValue ? element.attr("draggable", newValue) : element.removeAttr('draggable');
             });
             
-            scope.$watch(attrs.drag, function (newValue) {
+            scope.$watch(attrs.bmDrag, function (newValue) {
                 dragData = newValue;
             });
             
             element.bind("dragstart", function (e) {
                 var sendData = angular.toJson(dragData);
-                var sendChannel = attrs.dragChannel || "defaultchannel";
+                var sendChannel = attrs.bmDragChannel || "defaultchannel";
                 e.dataTransfer.setData("Text", sendData);
-                $rootScope.$broadcast("ANGULAR_DRAG_START", sendChannel);
+                $rootScope.$broadcast("ANGULAR_DRAG_START", {channel:sendChannel, dom:element});
             });
             
             element.bind("dragend", function (e) {
-                var sendChannel = attrs.dragChannel || "defaultchannel";
-                $rootScope.$broadcast("ANGULAR_DRAG_END", sendChannel);
+                var sendChannel = attrs.bmDragChannel || "defaultchannel";
+                $rootScope.$broadcast("ANGULAR_DRAG_END", {channel:sendChannel, dom:element});
                 
                 if (e.dataTransfer.dropEffect !== "none") {
-                    if (attrs.onDropSuccess) {
-                        var fn = $parse(attrs.onDropSuccess);
+                    if (attrs.bmOnDropSuccess) {
+                        var fn = $parse(attrs.bmOnDropSuccess);
                         scope.$apply(function () {
                             fn(scope, {$event: e});
                         });
@@ -159,15 +159,15 @@ bmDirectives.directive('uiDraggable', ['$parse', '$rootScope',function($parse, $
 
 
 // 监听拖入
-bmDirectives.directive('uiOnDrop', ['$parse', '$rootScope',function($parse, $rootScope) {
+bmDirectives.directive('bmOnDrop', ['$parse', '$rootScope',function($parse, $rootScope) {
     return {
         restrict : 'A',
         link : function(scope, element, attrs) {
         	
             var dropChannel = "defaultchannel";
             var dragChannel = "";
-            var dragOverClass = attrs.dragOverClass || "on-drag-over";
-            var dragEnterClass = attrs.dragEnterClass || "on-drag-enter";
+            var dragOverClass = attrs.bmDragOverClass || "on-drag-over";
+            var dragEnterClass = attrs.bmDragEnterClass || "on-drag-enter";
             
             function onDragOver(e) {
                 e.preventDefault && e.preventDefault(); 
@@ -175,29 +175,26 @@ bmDirectives.directive('uiOnDrop', ['$parse', '$rootScope',function($parse, $roo
                 
                 e.dataTransfer.dropEffect = 'move';
                 
-                
                 //根据鼠标位置判断是移动到目标元素前面还是后面还是目标元素本身
                 var h = element.height();
-                var y = e.originalEvent.layerY;
-                var suffix;
-                
+                var y = e.originalEvent.offsetY;
+                var position;
+                //console.log(e.originalEvent);
                 if( y/h<1/3){
-                	suffix = 'top';
+                	position = 'top';
                 }else if(y/h > 1/3 && y/h < 2/3){
-                	suffix = 'middle';
+                	position = 'middle';
                 }else{
-                	suffix = 'bottom';
+                	position = 'bottom';
                 }           	
-            	
-           	 	//element.addClass(dragEnterClass+'-'+suffix);                
+           	 	//element.addClass(dragEnterClass+'-'+position);                
                 
-                element.addClass(dragOverClass+'-'+suffix);
+                element.addClass(dragOverClass+'-'+position);
                 return false;
             }
             
             function onDragEnter(e) {
             	
-
             }
             
             function onDragLeave(e) {
@@ -208,52 +205,52 @@ bmDirectives.directive('uiOnDrop', ['$parse', '$rootScope',function($parse, $roo
                 e.preventDefault && e.preventDefault(); 
                 e.stopPropagation && e.stopPropagation(); 
                 
-                
                 //根据鼠标位置判断是移动到目标元素前面还是后面还是目标元素本身
                 var h = element.height();
-                var y = e.originalEvent.layerY;
-                var suffix;
+                var y = e.originalEvent.offsetY;
+                var position;
                 
                 if( y/h<1/3){
-                	suffix = 'top';
+                	position = 'top';
                 }else if(y/h > 1/3 && y/h < 2/3){
-                	suffix = 'middle';
+                	position = 'middle';
                 }else{
-                	suffix = 'bottom';
+                	position = 'bottom';
                 }                   
-                
-                
                 
                 var data = e.dataTransfer.getData("Text");
                 data = angular.fromJson(data);
-                var fn = $parse(attrs.uiOnDrop);
+                var fn = $parse(attrs.bmOnDrop);
                 
                 scope.$apply(function () {
-                    fn(scope, {$data: data, $event: e, $suffix:suffix});
+                    fn(scope, {$data: data, $event: e, $position:position});
                 });
                 
            	 	element.removeClass(dragOverClass+'-top'+' '+dragEnterClass+'-top'+' '+dragOverClass+'-middle'+' '+dragEnterClass+'-middle'+' '+dragOverClass+'-bottom'+' '+dragEnterClass+'-bottom');
             }
             
-            $rootScope.$on("ANGULAR_DRAG_START", function (event, channel) {
-                dragChannel = channel;
-                if (dropChannel === channel) {
+            $rootScope.$on("ANGULAR_DRAG_START", function (event, msg) {
+                dragChannel = msg.channel;
+                
+                var dragElement = msg.dom;
+                
+                if (dropChannel === msg.channel && element !== dragElement && !!!jQuery(dragElement.parent()).find(element.parent()).length) {
                     element.bind("dragover", onDragOver);
                     element.bind("dragenter", onDragEnter);
                     element.bind("dragleave", onDragLeave);
                     element.bind("drop", onDrop);
                 }
             });
-            $rootScope.$on("ANGULAR_DRAG_END", function (e, channel) {
+            $rootScope.$on("ANGULAR_DRAG_END", function (e, msg) {
                 dragChannel = "";
-                if (dropChannel === channel) {
+                if (dropChannel === msg.channel) {
                     element.unbind("dragover", onDragOver);
                     element.unbind("dragenter", onDragEnter);
                     element.unbind("dragleave", onDragLeave);
                     element.unbind("drop", onDrop);
                 }
             });
-            attrs.$observe('dropChannel', function (value) {
+            attrs.$observe('bmDropChannel', function (value) {
                 if (value) {
                     dropChannel = value;
                 }
@@ -266,7 +263,7 @@ bmDirectives.directive('uiOnDrop', ['$parse', '$rootScope',function($parse, $roo
 
 
 // 调整元素margin
-bmDirectives.directive('resizeable',['$document', function($document) {
+bmDirectives.directive('bmResizeAble',['$document', function($document) {
 	  return {
 		    link: function(scope, elm, attrs) {
 		    	
@@ -328,13 +325,13 @@ bmDirectives.directive('resizeable',['$document', function($document) {
 		}]);
 
 //
-bmDirectives.directive('autoWidth',[function() {
+bmDirectives.directive('bmAutoWidth',[function() {
 	  return {
 		  	restrict : 'A',
 		    link: function(scope, elm, attrs) {
 		    	  
 		    	  //var ghost = elm.prev('.ghost'); 
-			      scope.$watch(attrs.autoWidth, function(value) {
+			      scope.$watch(attrs.bmAutoWidth, function(value) {
 			    	  elm.width(textWidth(value));
 			    	  //var w = ghost ? ghost.width()+10 : textWidth(value);
 			    	  //elm.width(w);
@@ -380,7 +377,7 @@ bmDirectives.directive('setFocus', [function() {
 	}]);
 
 //
-bmDirectives.directive('returnTop', ['$compile',function($compile) {
+bmDirectives.directive('bmReturnTop', ['$compile',function($compile) {
 	  return {
 		  	restrict : 'A',
 		  	link: function(scope, elm, attrs) {
@@ -410,11 +407,11 @@ bmDirectives.directive('returnTop', ['$compile',function($compile) {
 
 
 //
-bmDirectives.directive('vtree',['d3', function(d3) {
+bmDirectives.directive('bmVtree',['d3', function(d3) {
 	  return {
 		  	restrict : 'A',
 	        scope : {
-	        	vtree : '='
+	        	vtree : '=bmVtree'
 	        },  		  	
 		    link: function(scope, elm, attrs) {
 		    	
