@@ -179,16 +179,15 @@ bmDirectives.directive('bmOnDrop', ['$parse', '$rootScope',function($parse, $roo
                 var h = element.height();
                 var y = e.originalEvent.offsetY;
                 var position;
-                //console.log(e.originalEvent);
-                if( y/h<1/3){
+                if(y/h < 1/5){
                 	position = 'top';
-                }else if(y/h > 1/3 && y/h < 2/3){
+                }else if(y/h > 1/5 && y/h < 4/5){
                 	position = 'middle';
                 }else{
                 	position = 'bottom';
-                }           	
-           	 	//element.addClass(dragEnterClass+'-'+position);                
+                }    
                 
+           	 	//element.addClass(dragEnterClass+'-'+position);                
                 element.addClass(dragOverClass+'-'+position);
                 return false;
             }
@@ -210,9 +209,9 @@ bmDirectives.directive('bmOnDrop', ['$parse', '$rootScope',function($parse, $roo
                 var y = e.originalEvent.offsetY;
                 var position;
                 
-                if( y/h<1/3){
+                if(y/h<1/5){
                 	position = 'top';
-                }else if(y/h > 1/3 && y/h < 2/3){
+                }else if(y/h > 1/5 && y/h < 4/5){
                 	position = 'middle';
                 }else{
                 	position = 'bottom';

@@ -20,7 +20,8 @@
 <div class="right">
 {{orderProp}}
  auto-width="bookmark.title"
-添加一个书签关联表 + 数据同步器
+		bm-drag-channel="dir" 
+		bm-drop-channel="dir"
 </div>
 </div>
 
@@ -35,10 +36,12 @@
 
 	<li ng-repeat="bookmark in bookmarks | filter:query | orderBy:orderProp:sortReverse"
 		bm-draggable="!orderProp"
+		bm-drag-channel="a" 
+		bm-drop-channel="b"		
 		bm-drag="bookmark" 
-		bm-on-Drop="onDrop($event,$index,bookmark,$data,$position,bookmarks)"
-		bm-on-drop-success="dropSuccessHandler($event,$index,bookmark,bookmarks)"
-		>
+		bm-on-Drop="onDrop($event, $position, $data, bookmark, bookmarks)"
+		bm-on-drop-success="dropSuccessHandler($event, bookmark, bookmarks)" >
+		
 	
 	<div ng-if="bookmark.url" class="edit-box editing-{{bookmark.editing}}"  ng-dblclick="open(bookmark);">
 		<img qng-src="{{bookmark.url | getIcon}}" class="icon" />{{$index}}&nbsp;&nbsp;{{bookmark.id}}&nbsp;&nbsp;

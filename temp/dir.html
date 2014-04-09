@@ -2,13 +2,14 @@
 
 <span class="dir" xng-click="$location.path('/node/'+node.id);"
 		bm-draggable="true"
+		bm-drag-channel="a" 
+		bm-drop-channel="a"	
 		bm-drag="node" 
 		bm-on-drop="onDrop($event, $position, $data, node, tree)"
-		bm-on-drop-success="dropSuccessHandler($event, node, tree)" 
-	>
+		bm-on-drop-success="dropSuccessHandler($event, node, tree)" >
 	
 	<em ng-if="node.children || !node.url"  ng-click="node.open=!node.open">▼{{node.id}}</em>
-	<a href xxng-href="{{'#/node/'+node.id}}"  >{{node.title || '目录'}}</a>
+	<a ng-href="{{'#/node/'+node.id}}"  >{{node.title || '目录'}}</a>
 </span>
 
 <ul ng-if="node.children || !node.url"  ng-show="!node.open">

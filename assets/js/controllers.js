@@ -28,38 +28,60 @@ function nodeCtrl($scope, $routeParams, bookmarkManager) {
 		})(id);
 	};	
 	
-	var id = $routeParams.nodeId || 1;
 	
 	var main = function(){
-		getPathById(id, function(r){
-			$scope.$emit("paths.change", r);
-		});
-
+		
 		bookmarkManager.getSubTree(id).then(function(r){
-			//console.log(JSON.stringify(r));
+			
+			var now = JSON.stringify(r);
+			
+			if(now == old) return;
+			
+			old = now;
+
+			getPathById(id, function(r){
+				$scope.$emit("paths.change", r);
+			});	
+			
 			$scope.bookmarks = r[0].children;
+		
 		});				
 	};
 	
+	var id = $routeParams.nodeId || 1;
+	
 	/////////////////////////////////////////////////////
 	
-	$scope.orderProp = 'index';
-
-	main();
+	$scope._getData = function(){
+		return bookmarkManager.getChildren(id);
+	};
 	
-	/////////////////////////////////////////////////////	
+	//$scope._check = function(r){};
+		
+	
+	$scope._update = function(r){
+		getPathById(id, function(r){
+			$scope.$emit("paths.change", r);
+		});	
+		
+		$scope.bookmarks = r;		
+	};
 	
 	$scope.remove = function(bookmak, index){
 		$scope.bookmarks.splice(index, 1);
 		$scope.removef(bookmak);
 	};
 	
+	$scope.orderProp = 'index';
+	
+	/////////////////////////////////////////////////////
+	//main
+	$scope.main();
+	
 	/////////////////////////////////////////////////////	
 	//event handler
-	$scope.$on('bookmarkTree.change',function(e,data){
-		console.log(data);
-		console.log(e);
-		main();	
+	$scope.$on('bookmarkTree.change', function(e, msg){
+		$scope.onBookmarkTreeChangeHandler(e, msg);
 	});
 	
 }
@@ -89,18 +111,27 @@ function dirCtrl($scope, bookmarkManager) {
 //书签树可视化
 function vdirCtrl($scope, $routeParams, bookmarkManager) {
 
-	var isCtree = function (r){
-		for(var i in r){
-			if('children' in r[i]){
-				return 1;
-			} 
-		}
-		return 0;
+	var findInTree = $scope.findInTree;
+	
+	var id = $routeParams.nodeId;
+	
+	/////////////////////////////////////////////////////
+	
+	$scope._getData = function(){
+		return id ? bookmarkManager.getSubTree(id) : bookmarkManager.getTree();
 	};
+	
+	$scope._check = function(r){
+		
+		var isCtree = function (r){
+			for(var i in r){
+				if('children' in r[i]){
+					return 1;
+				} 
+			}
+			return 0;
+		};		
 
-	var call = function(r){
-		//console.log(r); 
-		//r = [{children:[{children:[{name:111},{name:112}],name:11},{children:[{name:121},{name:122}],name:12}],name:1},{name:2},{name:3}];
 		(function f(r){
 			var v;
 			for(var i=0; i<r.length; i++){
@@ -117,91 +148,22 @@ function vdirCtrl($scope, $routeParams, bookmarkManager) {
 				}
 			}
 		})(r);
-	
-		//console.log(r); 
-		//console.log(JSON.stringify(r));
+		
+		return r;
+	};
+		
+	$scope._update = function(r){
 		$scope.tree = r;
 		$scope.vtree = r[0]; 		
-	};
-
-	var call2 = function(r){
-		$scope.tree = r;
-		$scope.vtree = r[0]; 
-	};
-	
-	
-	var id = $routeParams.nodeId;
-	
-	var main = function(){
-		if(!id){
-			bookmarkManager.getTree().then(call);
-		}else{
-			bookmarkManager.getSubTree(id).then(call);
-		}		
 	};	
-
-	/////////////////////////////////////////////////////
-
-	main();
 	
 	/////////////////////////////////////////////////////
-	// 参数  node id  && tree 
-	var findInTree = function(node, root){
-		
-		var id = typeof node === 'object' ? node.id : node;
-		var _r;
-		var _i;
-		var b = (function f(tree){
-			_r = tree;
-			var node;
-			
-			for(var i=0; i<tree.length; i++){
-				_i = i;
-				
-				node = tree[i];
-				
-				if(node.id == id){
-					return 1;
-				}
-
-			}
-			
-			for(i = 0; i< tree.length; i++){
-				
-				node = tree[i];
-				if(node.children){
-					if( f(node.children) ) return 1;
-				}	
-				
-			}
-			
-		})(root);	
-		
-		return b && {place: _r, index: _i};
-	};
+	// main
+	$scope.main();
 	
+	/////////////////////////////////////////////////////	
 	
-
-	$scope.dropSuccessHandler = function($event, node, root){
-		
-		// 根据拖动节点的Id找到所在原位置，删除
-		var id = node.id;
-		var z = findInTree(id, root);
-		var place = z.place;
-		var index = z.index;
-		
-		place.splice(index, 1); 
-		
-		// 查找复制的拖动节点，修改id为拖动节点的id
-		z = findInTree('x_' + id, root);
-		place = z.place;
-		index = z.index;
-		node = place[index];
-		if(node){
-			node.id = id;
-		}
-    };
-    
+	$scope.dropSuccessHandler = $scope.dropSuccessHandler;
     
     $scope.onDrop = function($event, $position, $data, node, root){
 
@@ -212,12 +174,12 @@ function vdirCtrl($scope, $routeParams, bookmarkManager) {
 		
 		var dragId = $data.id;
 		
-		//拖动的是目录节点
+		// 拖动的是目录节点
 		if(!$data.url){
 			
 			$data.id = 'x_' + dragId;
 			
-	    	//根据鼠标位置对拖动元素进行移动定位
+	    	// 根据鼠标位置对拖动元素进行移动定位
 	    	if($position == 'top'){
 	    		
 	    		place.splice(index, 0, $data); 
@@ -242,7 +204,7 @@ function vdirCtrl($scope, $routeParams, bookmarkManager) {
 	    		
 	    	}  		
 	    	
-		}else{ //或者拖动的是书签节点
+		}else{ // 或者拖动的是书签节点
 			
 	    	if($position == 'top'){
 	    		
@@ -260,14 +222,14 @@ function vdirCtrl($scope, $routeParams, bookmarkManager) {
 	    	}  			
 		}
     	
-    	bookmarkManager.move(dragId, destination);
+    	// bookmarkManager.move(dragId, destination);
     	
     };		
 	
 	/////////////////////////////////////////////////////	
 	
-	$scope.$on('bookmarkTree.change',function(e,data){
-		main();			
+	$scope.$on('bookmarkTree.change', function(e, msg){
+		$scope.onBookmarkTreeChangeHandler(e, msg);
 	});
 	
 }
@@ -276,55 +238,28 @@ function vdirCtrl($scope, $routeParams, bookmarkManager) {
 // 列出最近使用的书签
 function recentCtrl($scope, bookmarkManager){
 
-	var main = function(e,msg){
-		
-		bookmarkManager.getRecent(100).then(function(r){
-			
-			var e = e;
-			var msg = msg;
-			
-			if(!e){//如果不是事件回调
-				
-				$scope.bookmarks = r;
-				
-			}else{
-				$scope.bookmarks.unshift(msg.splice(1,1)[0]);
-				/*
-				//对新值和旧值进行比较，如果变化，根据变化修改旧值;避免直接覆盖旧值，导致dom全部更新，造成性能下降;
-				if(JSON.stringify($scope.bookmarks) !== JSON.stringify(r)){
-					console.log('It\'s changed,it have to update!',new Date);
-					$scope.bookmarks.unshift(msg.splice(1,1)[0]);
-					
-					var eventName = msg.splice(0,1)[0];
-					if(eventName == 'onCreated'){
-						console.log(eventName,msg.splice(1,1)[0]);
-					}
-				}	
-				*/			
-			}
-		});			
-	};
-	
-	/////////////////////////////////////////////////////
-	
-	main();	
-	
-	/////////////////////////////////////////////////////	
-	
 	$scope.remove = function(bookmak, index){
 		$scope.bookmarks.splice(index, 1);
 		$scope.removef(bookmak);
 	};
 	
-	/////////////////////////////////////////////////////
+	$scope._getData = function(){
+		return bookmarkManager.getRecent(100);
+	};
 	
-	$scope.$on('bookmarkTree.change',function(e,msg){
-		var eventName = msg.splice(0,1)[0];
-		if(eventName == 'onCreated'){
-			main(e,msg);
-		}
+	$scope._update = function(r){
+		$scope.bookmarks = r;
+	};
+	
+	/////////////////////////////////////////////////////	
+	// main 
+	$scope.main();
+	
+	/////////////////////////////////////////////////////
+	$scope.$on('bookmarkTree.change', function(e, msg){
+		$scope.onBookmarkTreeChangeHandler(e, msg);
 	});
-
+	
 }
 
 //
@@ -594,7 +529,6 @@ function mainCtrl($scope, $window, $location, $timeout, bookmarkManager, bmRelTa
 		}
 	};		
 	
-	
 	$scope.removef = function(bookmark, index){
 		//rmBookmarkManager.set(bookmark);
 		bookmarkManager.remove(bookmark);
@@ -609,67 +543,165 @@ function mainCtrl($scope, $window, $location, $timeout, bookmarkManager, bmRelTa
 			bmRelTableManager.set({id:bookmark.id,tags:bookmark.tags});
 		}
 	};
+	
+	
+	//////////////////////////////////////////////////////////////////////
+
+	// 用于在书签树中通过书签节点id查找书签的位置
+	var findInTree = $scope.findInTree = function(node, root){
+		
+		var id = typeof node === 'object' ? node.id : node;
+		var _r;
+		var _i;
+		var b = (function f(tree){
+			_r = tree;
+			var node;
+			
+			for(var i=0; i<tree.length; i++){
+				_i = i;
+				
+				node = tree[i];
+				
+				if(node.id == id){
+					return 1;
+				}
+
+			}
+			
+			for(i = 0; i< tree.length; i++){
+				
+				node = tree[i];
+				if(node.children){
+					if( f(node.children) ) return 1;
+				}	
+				
+			}
+			
+		})(root);	
+		
+		return b ? {place: _r, index: _i} : {place:{}};
+	};	
+	
+	//////////////////////////////////////////////////////////////////////
 
 	//拖动处理
-	$scope.dropSuccessHandler = function($event,index,bookmark,bookmarks){
-		bookmarks.splice(index,1);
-    };
+	$scope.dropSuccessHandler = function($event, node, root){
+		
+		// 根据拖动节点的Id找到所在原位置，删除
+		var id = node.id;
+		var z = findInTree(id, root);
+		var place = z.place;
+		var index = z.index;
+		
+		place.splice(index, 1); 
+		
+		// 查找复制的拖动节点，修改id为拖动节点的id
+		z = findInTree('x_' + id, root);
+		place = z.place;
+		index = z.index;
+		node = place[index];
+		if(node){
+			node.id = id;
+		}
+    };    
      
-    $scope.onDrop = function($event,index,bookmark,$data,$position,bookmarks){
-    	
-    	var destination = {}; 
-    	var parentId = bookmark.parentId;
+    $scope.onDrop = function($event, $position, $data, node, root){ 
+		
+    	var destination = {};
+		var z = findInTree(node.id, root);
+		var place = z.place;
+		var index = z.index;
+		
+		var dragId = $data.id;
+		
+		$data.id = 'x_' + dragId;
     	
     	//根据鼠标位置对拖动元素进行移动定位
-    	if($position == 'top' || ($position == 'middle' && bookmark.url)){
+    	if($position == 'top' || ($position == 'middle' && node.url)){
     		
-    		bookmarks.splice(index,0,$data);
-    		destination.index = index;
+    		place.splice(index, 0, $data);
+    		destination.index = node.index;
+    		destination.parentId = node.parentId;
     		
     	}else if($position == 'bottom'){
     		
-    		index = index+1;
-    		bookmarks.splice(index,0,$data);
-    		destination.index = index;
+    		index = index + 1;
+    		place.splice(index, 0, $data);
+    		destination.index = node.index + 1;
+    		destination.parentId = node.parentId;
     		
-    	}else if(!bookmark.url){
+    	}else if($position == 'middle' && !node.url){
     		
-    		parentId = bookmark.id;
+    		destination.parentId = node.id;
     		
     	}  
     	
-    	destination.parentId = parentId;
-    	//bookmarkManager.move($data,{parentId:$data.parentId,index:bookmark.index});
-       // bookmarkManager.move($data,destination);
+      //bookmarkManager.move(dragId, destination);
+       
     };	
+    
+    // 检查新数据是否有变化，用于子控制器继承;
+	$scope._check = function(data){
+		var now = JSON.stringify(data);
+		
+		if (this._old == now) return false;
+		
+		this._old = now;
+		
+		return data;		
+	};
 	
+	// 程序入口，用于子控制器继承;
+	$scope.main = function(){
+		
+		var that = this;
+		
+		that._getData()
+		.then(function(data){
+			return that._check(data);
+		})
+		.then(function(data){
+			return data && that._update(data);
+		});			
+		
+	};
+    
+    //////////////////////////////////////////////////////
 	
 	// bookmarkTreeChange事件处理程序，用于被子控制器继承
-	$scope.bookmarkTreeChangeHandler = function(e, msg){
+	$scope.onBookmarkTreeChangeHandler = function(e, msg){
 		var fs = {
 				onCreated: function(){
-					
 				},
 				onRemoved: function(){
-					
 				},
 				onChanged: function(){
-					
 				},
 				onMoved: function(){
-					
 				},
 				onChildrenReordered: function(){
-					
 				}				
-				
 		};
-		//具体事件名
-		var eventName = data.splice(0,1)[0];
 		
-		this.updateBms().then(function(data){
+		//具体事件名
+		console.log(JSON.stringify(msg));
+		var eventName = msg[0];
+		var that = this;
+		
+		// 如果当前标签页后台运行，更新数据
+		if(eventName == 'onCreated'){
 			
-		});
+			that._getData()
+			.then(function(data){
+				return that._check(data);
+			})
+			.then(function(data){
+				return data && that._update(data);
+			});	
+			
+		}
+
+		
 	};
 	
 	//////////////////////////////////////////////////////////////

@@ -315,14 +315,15 @@ nav a:link,nav a:visited {
 .dir-tree li span em{
 	position:absolute;
 	color:#BDBDBD;
-	padding:0 28px 0 4px;
+	margin-left:-32px;
+	padding:0 0 0 4px;
 	
 }
 .dir-tree li span a{
 	display: block;
 	height:28px;
 	padding:0 8px 0 42px;
-	background: xurl(../img/folder-1.png) 20px 50% no-repeat;
+	background: url(../img/folder-1.png) 20px 50% no-repeat;
 	background-size: 16px 16px;
 	border: solid 1px transparent;
 	border-radius:3px;
@@ -626,7 +627,7 @@ article{
 	top: 0;
 	bottom: 0;
 	z-index: 4;
-	margin-left: 240px;
+	margin-left: 280px;
 	background: #F5F5F5;
 }
 
