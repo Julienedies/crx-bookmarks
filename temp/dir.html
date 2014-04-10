@@ -2,8 +2,8 @@
 
 <span class="dir" xng-click="$location.path('/node/'+node.id);"
 		bm-draggable="true"
-		bm-drag-channel="a" 
-		bm-drop-channel="a"	
+		bm-drag-channel="dragChannel" 
+		bm-drop-channel="dropChannel"	
 		bm-drag="node" 
 		bm-on-drop="onDrop($event, $position, $data, node, tree)"
 		bm-on-drop-success="dropSuccessHandler($event, node, tree)" >

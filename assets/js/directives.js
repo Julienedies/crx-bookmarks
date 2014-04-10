@@ -117,28 +117,35 @@ bmDirectives.directive('bmDraggable', ['$parse', '$rootScope',function($parse, $
         link : function(scope, element, attrs) {
         	
         	var dragData = "";
+        	var dragChannel;
         	
             if (window.jQuery && !window.jQuery.event.props.dataTransfer) {
                 window.jQuery.event.props.push('dataTransfer');
             }
             
-            scope.$watch(attrs.bmDraggable, function (newValue) {
-         	   newValue ? element.attr("draggable", newValue) : element.removeAttr('draggable');
+            scope.$watch(attrs.bmDraggable, function (value) {
+            	value ? element.attr("draggable", value) : element.removeAttr('draggable');
             });
             
-            scope.$watch(attrs.bmDrag, function (newValue) {
-                dragData = newValue;
+            scope.$watch(attrs.bmDrag, function (value) {
+                dragData = value;
             });
+            
+            scope.$watch(attrs.bmDragChannel, function (value) {
+            	if(value){
+            		dragChannel = value;
+            	}
+             }); 
             
             element.bind("dragstart", function (e) {
                 var sendData = angular.toJson(dragData);
-                var sendChannel = attrs.bmDragChannel || "defaultchannel";
+                var sendChannel = dragChannel || "defaultchannel";
                 e.dataTransfer.setData("Text", sendData);
                 $rootScope.$broadcast("ANGULAR_DRAG_START", {channel:sendChannel, dom:element});
             });
             
             element.bind("dragend", function (e) {
-                var sendChannel = attrs.bmDragChannel || "defaultchannel";
+                var sendChannel = dragChannel || "defaultchannel";
                 $rootScope.$broadcast("ANGULAR_DRAG_END", {channel:sendChannel, dom:element});
                 
                 if (e.dataTransfer.dropEffect !== "none") {
@@ -168,6 +175,39 @@ bmDirectives.directive('bmOnDrop', ['$parse', '$rootScope',function($parse, $roo
             var dragChannel = "";
             var dragOverClass = attrs.bmDragOverClass || "on-drag-over";
             var dragEnterClass = attrs.bmDragEnterClass || "on-drag-enter";
+            
+            scope.$watch(attrs.bmDropChannel, function (value) { 
+            	dropChannel = value;
+             }); 
+            /*
+            attrs.$observe('bmDropChannel', function (value) {
+                if (value) {
+                    dropChannel = value;
+                }
+            });             
+            */
+            $rootScope.$on("ANGULAR_DRAG_START", function (event, msg) {
+                dragChannel = msg.channel;
+                
+                var dragElement = msg.dom;
+                
+                if (dropChannel === msg.channel && element !== dragElement && !!!jQuery(dragElement.parent()).find(element.parent()).length) {
+                    element.bind("dragover", onDragOver);
+                    element.bind("dragenter", onDragEnter);
+                    element.bind("dragleave", onDragLeave);
+                    element.bind("drop", onDrop);
+                }
+            });
+            $rootScope.$on("ANGULAR_DRAG_END", function (e, msg) {
+                dragChannel = "";
+                if (dropChannel === msg.channel) {
+                    element.unbind("dragover", onDragOver);
+                    element.unbind("dragenter", onDragEnter);
+                    element.unbind("dragleave", onDragLeave);
+                    element.unbind("drop", onDrop);
+                }
+            });
+            
             
             function onDragOver(e) {
                 e.preventDefault && e.preventDefault(); 
@@ -227,33 +267,6 @@ bmDirectives.directive('bmOnDrop', ['$parse', '$rootScope',function($parse, $roo
                 
            	 	element.removeClass(dragOverClass+'-top'+' '+dragEnterClass+'-top'+' '+dragOverClass+'-middle'+' '+dragEnterClass+'-middle'+' '+dragOverClass+'-bottom'+' '+dragEnterClass+'-bottom');
             }
-            
-            $rootScope.$on("ANGULAR_DRAG_START", function (event, msg) {
-                dragChannel = msg.channel;
-                
-                var dragElement = msg.dom;
-                
-                if (dropChannel === msg.channel && element !== dragElement && !!!jQuery(dragElement.parent()).find(element.parent()).length) {
-                    element.bind("dragover", onDragOver);
-                    element.bind("dragenter", onDragEnter);
-                    element.bind("dragleave", onDragLeave);
-                    element.bind("drop", onDrop);
-                }
-            });
-            $rootScope.$on("ANGULAR_DRAG_END", function (e, msg) {
-                dragChannel = "";
-                if (dropChannel === msg.channel) {
-                    element.unbind("dragover", onDragOver);
-                    element.unbind("dragenter", onDragEnter);
-                    element.unbind("dragleave", onDragLeave);
-                    element.unbind("drop", onDrop);
-                }
-            });
-            attrs.$observe('bmDropChannel', function (value) {
-                if (value) {
-                    dropChannel = value;
-                }
-            });
         	
         }
     };

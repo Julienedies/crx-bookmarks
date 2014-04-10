@@ -28,27 +28,7 @@ function nodeCtrl($scope, $routeParams, bookmarkManager) {
 		})(id);
 	};	
 	
-	
-	var main = function(){
-		
-		bookmarkManager.getSubTree(id).then(function(r){
-			
-			var now = JSON.stringify(r);
-			
-			if(now == old) return;
-			
-			old = now;
-
-			getPathById(id, function(r){
-				$scope.$emit("paths.change", r);
-			});	
-			
-			$scope.bookmarks = r[0].children;
-		
-		});				
-	};
-	
-	var id = $routeParams.nodeId || 1;
+	var id = $routeParams.nodeId || '1';
 	
 	/////////////////////////////////////////////////////
 	
@@ -60,6 +40,7 @@ function nodeCtrl($scope, $routeParams, bookmarkManager) {
 		
 	
 	$scope._update = function(r){
+		
 		getPathById(id, function(r){
 			$scope.$emit("paths.change", r);
 		});	
@@ -72,11 +53,28 @@ function nodeCtrl($scope, $routeParams, bookmarkManager) {
 		$scope.removef(bookmak);
 	};
 	
+	/////////////////////////////////////////////////////
+	
+	// 默认以index排序
 	$scope.orderProp = 'index';
 	
-	/////////////////////////////////////////////////////
+	// 反转排序结果
+	$scope.sortReverse = true;
+	
+	// 拖动排序限定
+	$scope.dragChannel = 'dir';
+	$scope.dropChannel = 'list';	
+	
 	//main
 	$scope.main();
+	
+	$scope.$watch('orderProp',function(newValue){
+		if(!newValue) {
+			$scope.dropChannel = 'dir';
+		}else{
+			$scope.dropChannel = 'list';
+		}
+	});
 	
 	/////////////////////////////////////////////////////	
 	//event handler
@@ -158,6 +156,11 @@ function vdirCtrl($scope, $routeParams, bookmarkManager) {
 	};	
 	
 	/////////////////////////////////////////////////////
+	
+	// 拖动排序限定
+	$scope.dragChannel = 'dir';
+	$scope.dropChannel = 'dir';	
+	
 	// main
 	$scope.main();
 	
@@ -222,7 +225,7 @@ function vdirCtrl($scope, $routeParams, bookmarkManager) {
 	    	}  			
 		}
     	
-    	// bookmarkManager.move(dragId, destination);
+    	bookmarkManager.move(dragId, destination);
     	
     };		
 	
@@ -445,7 +448,7 @@ function trashCtrl($scope, bookmarkManager, rmBookmarkManager) {
 	
 	$scope.$on('chrome.storage.change',function(e,data){
 		console.log('data',data);
-		main();
+		//main();
 	});
 	
 }
@@ -469,7 +472,7 @@ function setingCtrl($scope) {
 //
 function mainCtrl($scope, $window, $location, $timeout, bookmarkManager, bmRelTableManager, rmBookmarkManager, DSmanager){
 	
-	var navs = $scope.navs = [{text:'Main',href:'node/1'},
+	var navs = $scope.navs = [{text:'Main',href:'node'},
 	              {text:'目录',href:'dir'},
 	              {text:'最近',href:'recent'},
 	              {text:'hot',href:'hot'},
@@ -544,6 +547,12 @@ function mainCtrl($scope, $window, $location, $timeout, bookmarkManager, bmRelTa
 		}
 	};
 	
+	
+	//////////////////////////////////////////////////////////////////////	
+	
+	// 拖动排序限定
+	$scope.dragChannel = 'dir';
+	$scope.dropChannel = 'list';		
 	
 	//////////////////////////////////////////////////////////////////////
 
@@ -636,7 +645,7 @@ function mainCtrl($scope, $window, $location, $timeout, bookmarkManager, bmRelTa
     		
     	}  
     	
-      //bookmarkManager.move(dragId, destination);
+      bookmarkManager.move(dragId, destination);
        
     };	
     

@@ -5,7 +5,6 @@
  Search: <input ng-model="query" class="input-sm" placeholder="搜索当前位置">
  <label>排序方式: </label>
   <select class="select-sm" ng-model="orderProp">
-    <option></option>
     <option value="title">Alphabetical</option>
     <option value="index">index</option>
     <option value="url">url</option>
@@ -20,8 +19,6 @@
 <div class="right">
 {{orderProp}}
  auto-width="bookmark.title"
-		bm-drag-channel="dir" 
-		bm-drop-channel="dir"
 </div>
 </div>
 
@@ -35,9 +32,9 @@
 <ul class="bm-list" >
 
 	<li ng-repeat="bookmark in bookmarks | filter:query | orderBy:orderProp:sortReverse"
-		bm-draggable="!orderProp"
-		bm-drag-channel="a" 
-		bm-drop-channel="b"		
+		bm-draggable="true"
+		bm-drag-channel="dragChannel" 
+		bm-drop-channel="dropChannel"		
 		bm-drag="bookmark" 
 		bm-on-Drop="onDrop($event, $position, $data, bookmark, bookmarks)"
 		bm-on-drop-success="dropSuccessHandler($event, bookmark, bookmarks)" >
@@ -90,7 +87,7 @@
 			<button class="btn btn-xs btn-text edit" ng-click="edit(bookmark);">修改</button>
 			<button class="btn btn-xs btn-text cancel" ng-click="exit(bookmark);">取消</button>
 			<button class="btn btn-xs btn-text save" ng-click="update(bookmark);">更新</button>			
-			<button class="btn btn-xs btn-text" ng-click="remove(bookmark, $index);">删除</button>
+			<button class="btn btn-xs btn-text remove" ng-click="remove(bookmark, $index);">删除</button>
 		</div>
 		<span class="close" ng-click="exit(bookmark)">&times;</span>
 	</div>	
