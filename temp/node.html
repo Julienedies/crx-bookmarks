@@ -5,6 +5,7 @@
  Search: <input ng-model="query" class="input-sm" placeholder="搜索当前位置">
  <label>排序方式: </label>
   <select class="select-sm" ng-model="orderProp">
+    <option value="">实际顺序，可拖动排序</option>
     <option value="title">Alphabetical</option>
     <option value="index">index</option>
     <option value="url">url</option>
@@ -17,16 +18,16 @@
   </span>
 </div>
 <div class="right">
-{{orderProp}}
- auto-width="bookmark.title"
 </div>
 </div>
 
 <div ng-show="!bookmarks">loading...
-<!-- 
-<div style="margin:5px auto;display:inline-block;width:100%;text-align:center;" name="_loading_"><svg width="16" height="16" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" version="1.1"><path d="M 150,0 a 150,150 0 0,1 106.066,256.066 l -35.355,-35.355 a -100,-100 0 0,0 -70.711,-170.711 z" fill="#3d7fe6"><animateTransform attributeName="transform" attributeType="XML" type="rotate" from="0 150 150" to="360 150 150" begin="0s" dur="1s" fill="freeze" repeatCount="indefinite" /></path></svg></div>
- ui-on-Drop="onDrop($event,$data,bookmarks)"
- -->
+</div>
+
+<div class="path">
+	<i ng-repeat="node in paths" class="animate">
+	<a href="{{'#/node/'+node.id}}">{{node.title || '根目录'}}</a>&nbsp; &nbsp;› &nbsp;
+	</i>
 </div>
 
 <ul class="bm-list" >
@@ -41,9 +42,9 @@
 		
 	
 	<div ng-if="bookmark.url" class="edit-box editing-{{bookmark.editing}}"  ng-dblclick="open(bookmark);">
-		<img  onerror="(function(img){img.src='/assets/img/doc.png';img.onerror=null;})(this);" xng-src="{{bookmark.url | getIcon}}" class="icon" />
+		<img xng-src="{{bookmark.url | getIcon}}" class="icon" />{{$index}}&nbsp;&nbsp;{{bookmark.id}}&nbsp;&nbsp;
 		<span class="text-overflow">
-		<span ng-show="!bookmark.editing" ng-bind="bookmark.title" class="ghost"></span>
+		<span xng-show="!bookmark.editing" ng-bind="bookmark.title" class="ghost"></span>
 		<input type="text"
 			   tabindex="1"
 			   class="edit-text"
@@ -51,7 +52,7 @@
 		       set-focus="bookmark.editing"
 		       ng-disabled="!!!bookmark.editing"
 		       ng-show="bookmark.editing"
-		       bm-auto-width="bookmark.title"
+		       xbm-auto-width="bookmark.title"
 	    />
 		</span>
 
@@ -72,6 +73,8 @@
 	
 	<div ng-if="!bookmark.url" class="edit-box editing-{{bookmark.editing}}">
 		<img src="assets/img/folder-1.png" class="icon" />
+		<span class="text-overflow">
+		<span xng-show="!bookmark.editing" ng-bind="bookmark.title" class="ghost"></span>
 		<input type="text"
 		   class="edit-text"
 		   href="{{'#/node/'+bookmark.id}}"
@@ -79,8 +82,10 @@
 		   value="{{bookmark.title}}"
 		   set-focus="bookmark.editing"
 		   ng-disabled="!!!bookmark.editing"
-		   auto-width="bookmark.title"
+		   ng-show="bookmark.editing"
+		   xauto-width="bookmark.title"
 		/>
+		</span>
 		   
 		<div class="btn-group">
 			<button class="btn btn-xs btn-text" ng-click="open(bookmark);">打开</button>
@@ -94,5 +99,6 @@
 	
 	</li>
 </ul>
+
 
 </div>

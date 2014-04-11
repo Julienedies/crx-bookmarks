@@ -8,21 +8,21 @@
 // 列出书签树单个节点下所有子节点
 function nodeCtrl($scope, $routeParams, bookmarkManager) {
 	
-	var getPathById = function(id,call){
+	var getPath = function(id,call){
 		var results = [];
-		(function f(id){
-			bookmarkManager.get(id).then(function (arr){
+		return (function f(id){
+			return bookmarkManager.get(id).then(function (arr){
 				var node = arr[0];
 				if(node){
 					results.unshift({id:node.id,title:node.title}); 
 					id = node.parentId;	
 					if(id){
-						f(id);
+						return f(id);
 					}else{
-						call && call(results);
+						return results;//call && call(results);
 					}
 				}else{
-					call && call(results);
+					return results;//call && call(results);
 				}
 			});			
 		})(id);
@@ -41,16 +41,11 @@ function nodeCtrl($scope, $routeParams, bookmarkManager) {
 	
 	$scope._update = function(r){
 		
-		getPathById(id, function(r){
-			$scope.$emit("paths.change", r);
-		});	
+		getPath(id).then(function(r){
+			$scope.paths = r;
+		});
 		
 		$scope.bookmarks = r;		
-	};
-	
-	$scope.remove = function(bookmak, index){
-		$scope.bookmarks.splice(index, 1);
-		$scope.removef(bookmak);
 	};
 	
 	/////////////////////////////////////////////////////
@@ -225,7 +220,7 @@ function vdirCtrl($scope, $routeParams, bookmarkManager) {
 	    	}  			
 		}
     	
-    	bookmarkManager.move(dragId, destination);
+    	//bookmarkManager.move(dragId, destination);
     	
     };		
 	
@@ -241,11 +236,6 @@ function vdirCtrl($scope, $routeParams, bookmarkManager) {
 // 列出最近使用的书签
 function recentCtrl($scope, bookmarkManager){
 
-	$scope.remove = function(bookmak, index){
-		$scope.bookmarks.splice(index, 1);
-		$scope.removef(bookmak);
-	};
-	
 	$scope._getData = function(){
 		return bookmarkManager.getRecent(100);
 	};
@@ -281,14 +271,6 @@ function searchCtrl($scope, $routeParams, bookmarkManager) {
 	
 	main();
 	
-	/////////////////////////////////////////////////////	
-	
-	$scope.remove = function(bookmak, index){
-		//调用父控制器的removef方法
-		$scope.removef(bookmak);
-		$scope.bookmarks.splice(index, 1);
-	};
-	
 	/////////////////////////////////////////////////////
 	
 
@@ -315,7 +297,7 @@ function tagsCtrl($scope) {
 		return o;
 	};
 	
-	var main = function(){
+	var main = $scope.main = function(){
 		bmRelTableManager.get().then(function(bmRelTable){
 			var tagsMap;
 			//console.log(bmRelTable);
@@ -354,13 +336,6 @@ function tagCtrl($scope, $routeParams, bookmarkManager) {
 	//$scope.orderProp = 'dateAdded';
 
 	main();
-	
-	/////////////////////////////////////////////////////	
-	
-	$scope.remove = function(bookmak, index){
-		$scope.removef(bookmak);
-		$scope.bookmarks.splice(index, 1);
-	};
 	
 	/////////////////////////////////////////////////////	
 	
@@ -532,10 +507,18 @@ function mainCtrl($scope, $window, $location, $timeout, bookmarkManager, bmRelTa
 		}
 	};		
 	
-	$scope.removef = function(bookmark, index){
-		//rmBookmarkManager.set(bookmark);
+	$scope.remove = function(bookmark, bookmarks){
+		
+		var z = findInTree(bookmark.id, bookmarks);
+		var place = z.place;
+		var index = z.index;
+		
+		// 前端
+		place.splice(index, 1); 
+		
+		// 后端
 		bookmarkManager.remove(bookmark);
-		bmRelTableManager.remove(bookmark);
+		bmRelTableManager.remove(bookmark);		
 	};
 	
 	$scope.update = function(bookmark){
@@ -588,7 +571,7 @@ function mainCtrl($scope, $window, $location, $timeout, bookmarkManager, bmRelTa
 			
 		})(root);	
 		
-		return b ? {place: _r, index: _i} : {place:{}};
+		return b ? {place: _r, index: _i} : {place:[]};
 	};	
 	
 	//////////////////////////////////////////////////////////////////////
@@ -729,9 +712,6 @@ function mainCtrl($scope, $window, $location, $timeout, bookmarkManager, bmRelTa
 			}		
 	 });	
 	
-	 $scope.$on('paths.change',function(e,msg){
-		 $scope.paths = msg;
-	 });
 	 
 	 $scope.$on('tagsMap',function(e,msg){
 		 $scope.tagsMap = msg;

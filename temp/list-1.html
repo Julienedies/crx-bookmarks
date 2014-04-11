@@ -5,6 +5,7 @@
  Search: <input ng-model="query" class="input-sm" placeholder="搜索当前位置">
  <label>排序方式: </label>
   <select class="select-sm" ng-model="orderProp">
+    <option value="">实际顺序，可拖动排序</option>
     <option value="title">Alphabetical</option>
     <option value="index">index</option>
     <option value="url">url</option>
@@ -17,8 +18,6 @@
   </span>
 </div>
 <div class="right">
-{{orderProp}}
- auto-width="bookmark.title"
 </div>
 </div>
 
@@ -41,7 +40,7 @@
 		
 	
 	<div ng-if="bookmark.url" class="edit-box editing-{{bookmark.editing}}"  ng-dblclick="open(bookmark);">
-		<img  onerror="(function(img){img.src='/assets/img/doc.png';img.onerror=null;})(this);" xng-src="{{bookmark.url | getIcon}}" class="icon" />
+		<img ng-src="{{bookmark.url | getIcon}}" class="icon" />{{$index}}&nbsp;&nbsp;{{bookmark.id}}&nbsp;&nbsp;
 		<span class="text-overflow">
 		<span ng-show="!bookmark.editing" ng-bind="bookmark.title" class="ghost"></span>
 		<input type="text"

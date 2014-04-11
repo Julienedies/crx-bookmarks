@@ -45,10 +45,10 @@ bmDirectives.directive('bmToggle', function() {
         	var status;
         	var call = function(){
         		if(!status){
-        			elm.next().hide();
+        			elm.addClass('a').next().hide();
         			status = 1;
         		}else{
-        			elm.next().show();
+        			elm.removeClass('a').next().show();
         			status = 0;
         		}
         	};

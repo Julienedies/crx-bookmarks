@@ -1,0 +1,19 @@
+
+
+
+<span class="dir" xng-click="$location.path('/node/'+node.id);">
+	<em ng-if="node.children || !node.url"  ng-click="node.open=!node.open">▼</em>
+	<a ng-href="{{'#/node/'+node.id}}"  >{{node.title || '目录'}}</a>
+</span>
+
+<ul ng-if="node.children || !node.url"  ng-show="!node.open">
+	<li ng-repeat="node in tree | isTree"
+	 	ng-include="'temp/tree_item_renderer.html'"
+		bm-draggable="true"
+		bm-drag="node" 
+		bm-on-Drop="onDrop($event, $position, $data, node, tree)"
+		bm-on-drop-success="dropSuccessHandler($event, node, tree)" 
+	 >
+        
+        </li>
+</ul>

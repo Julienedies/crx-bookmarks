@@ -11,7 +11,7 @@ var bmApp = angular.module('bmApp', [ 'ngRoute', 'bmServices', 'bmDirectives', '
 //
 bmApp.config([ '$routeProvider', function($routeProvider) {
 	$routeProvider.when('/node/:nodeId?', {
-		templateUrl : 'temp/list-1.html',
+		templateUrl : 'temp/node.html',
 		controller : 'nodeCtrl'
 	}).when('/dir/:nodeId?', {
 		templateUrl : 'temp/dir.html',

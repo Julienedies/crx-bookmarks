@@ -1,6 +1,6 @@
 <script type="text/ng-template" id="tree_item_renderer.html">
 
-<span class="dir" xng-click="$location.path('/node/'+node.id);"
+<span class="dt" xng-click="$location.path('/node/'+node.id);"
 		bm-draggable="true"
 		bm-drag-channel="dragChannel" 
 		bm-drop-channel="dropChannel"	
@@ -8,16 +8,17 @@
 		bm-on-drop="onDrop($event, $position, $data, node, tree)"
 		bm-on-drop-success="dropSuccessHandler($event, node, tree)" >
 	
-	<em ng-if="node.children || !node.url"  ng-click="node.open=!node.open">▼{{node.id}}</em>
-	<a ng-href="{{'#/node/'+node.id}}"  >{{node.title || '目录'}}</a>
+	<a class="title" ng-href="{{'#/node/'+node.id}}"  >{{node.title || '目录'}}</a>
 </span>
 
-<ul ng-if="node.children || !node.url"  ng-show="!node.open">
+<em class="toggle" ng-if="node.children" bm-toggle>▼</em>
+
+<ul ng-if="node.children">
 	<li ng-repeat="node in node.children | isTree" ng-include="'tree_item_renderer.html'"></li>
 </ul>
 </script>
 
-<ul class="dir-tree" ng-show="!node.open" bm-current-active="li span" bm-current-active-class="selected">
+<ul class="dir-tree" ng-show="!node.open" bm-current-active=".dt" bm-current-active-class="selected">
 	<li ng-repeat="node in tree | isTree" ng-include="'tree_item_renderer.html'"></li>
 </ul>
 
