@@ -29,9 +29,9 @@
 	<a ng-repeat="nav in navs"  ng-href="{{'#/'+nav.href}}" title="{{nav.text}}" class="{{nav.href}}"  ng-class="nav.cla" ng-click="setActive(nav)"></a>
 </nav>
 
-<form class="left">
+<form class="right">
 <input type="text" class="input-sm search-query" placeholder="搜索所有书签" bm-enter-press="searchf" ng-model="q" />
-<button ng-click="searchf();" class="btn btn-xs btn-text search">search</button>
+<button ng-click="searchf();" class="btn btn-xs btn-text search"><img src="assets/img/search.png" width="18"></button>
 </form>
 
 </header>

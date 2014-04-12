@@ -450,7 +450,7 @@ function mainCtrl($scope, $window, $location, $timeout, bookmarkManager, bmRelTa
 	var navs = $scope.navs = [{text:'Main',href:'node'},
 	              //{text:'目录',href:'dir'},
 	              {text:'最近',href:'recent'},
-	              {text:'hot',href:'hot'},
+	              //{text:'hot',href:'hot'},
 	              //{text:'分类',href:'classify'},
 	              {text:'回收站',href:'trash'},
 	              {text:'设置',href:'seting'},
