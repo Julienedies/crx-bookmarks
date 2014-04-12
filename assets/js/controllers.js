@@ -445,7 +445,7 @@ function setingCtrl($scope) {
  */
 
 //
-function mainCtrl($scope, $window, $location, $timeout, bookmarkManager, bmRelTableManager, rmBookmarkManager, DSmanager){
+function mainCtrl($scope, $window, $location, $timeout, cTabsInterface, bookmarkManager, bmRelTableManager, rmBookmarkManager, DSmanager){
 	
 	var navs = $scope.navs = [{text:'Main',href:'node'},
 	              //{text:'目录',href:'dir'},
@@ -697,18 +697,27 @@ function mainCtrl($scope, $window, $location, $timeout, bookmarkManager, bmRelTa
 		var that = this;
 		
 		// 如果当前标签页后台运行，更新数据
-		if(0 && eventName == 'onCreated'){
+		cTabsInterface.getCurrent().then(function(tab){
 			
-			that._getData()
-			.then(function(data){
-				return that._check(data);
-			})
-			.then(function(data){
-				return data && that._update(data);
-			});	
+			if(!tab.active){
+
+				that._getData()
+				.then(function(data){
+					return that._check(data);
+				})
+				.then(function(data){
+					return data && that._update(data);
+				});					
+				
+			}
+			
+		});
+		
+		
+		
+		if(eventName == 'onCreated'){
 			
 		}
-
 		
 	};
 	
@@ -738,7 +747,7 @@ function mainCtrl($scope, $window, $location, $timeout, bookmarkManager, bmRelTa
 
 var bmControllers = angular.module('bmControllers', []);
                                                          
-bmControllers.controller('mainCtrl',['$scope', '$window', '$location', '$timeout', 'bookmarkManager', 'bmRelTableManager', 'rmBookmarkManager', 'DSmanager', mainCtrl]);
+bmControllers.controller('mainCtrl',['$scope', '$window', '$location', '$timeout', 'cTabsInterface', 'bookmarkManager', 'bmRelTableManager', 'rmBookmarkManager', 'DSmanager', mainCtrl]);
 
 bmControllers.controller('nodeCtrl',['$scope', '$routeParams', 'bookmarkManager', nodeCtrl]);
 

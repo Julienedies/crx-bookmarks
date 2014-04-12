@@ -72,7 +72,7 @@ bmServices.factory('cTabsInterface', ['$q', '$rootScope', function($q, $rootScop
 	
 	var events = ['onChanged'];
 	
-	var fs = ['getSelected'];
+	var fs = ['getSelected', 'getCurrent'];
 	
 	var fn;
 	
@@ -242,7 +242,6 @@ bmServices.factory('cStorageInterface', ['$q', '$rootScope', function($q, $rootS
 	return cStorageInterface;
 	
 }]);
-
 
 
 /*
