@@ -343,11 +343,11 @@ bmDirectives.directive('bmAutoWidth',[function() {
 		    link: function(scope, elm, attrs) {
 		    	  
 		    	  //var ghost = elm.prev('.ghost'); 
-			      scope.$watch(attrs.bmAutoWidth, function(value) {
-			    	  elm.width(textWidth(value));
+			      //scope.$watch(attrs.bmAutoWidth, function(value) {
+			    	  //elm.width(textWidth(value));
 			    	  //var w = ghost ? ghost.width()+10 : textWidth(value);
 			    	  //elm.width(w);
-				    });		    	
+				   // });		    	
 		    	
 		    	  function textWidth(text){ 
 		    	        var sensor = jQuery('<pre>'+ text +'</pre>').css({display: 'none'}); 
@@ -357,9 +357,9 @@ bmDirectives.directive('bmAutoWidth',[function() {
 		    	        return width;
 		    	    };		    	
 		    	
-		    	 //jQuery(elm).unbind('keydown').bind('keydown', function(){
-		    	    	//jQuery(this).width(textWidth(jQuery(this).val()));
-		    	 //});		    	
+		    	 jQuery(elm).bind('keydown', function(){
+		    	    	elm.width(textWidth(elm.val()));
+		    	 });		    	
 		    }
 		  };
 		}]);

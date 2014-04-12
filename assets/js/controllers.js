@@ -448,7 +448,7 @@ function setingCtrl($scope) {
 function mainCtrl($scope, $window, $location, $timeout, bookmarkManager, bmRelTableManager, rmBookmarkManager, DSmanager){
 	
 	var navs = $scope.navs = [{text:'Main',href:'node'},
-	              {text:'目录',href:'dir'},
+	              //{text:'目录',href:'dir'},
 	              {text:'最近',href:'recent'},
 	              {text:'hot',href:'hot'},
 	              //{text:'分类',href:'classify'},
@@ -530,6 +530,22 @@ function mainCtrl($scope, $window, $location, $timeout, bookmarkManager, bmRelTa
 		}
 	};
 	
+	$scope.add = function(node){
+		if(!node.url){
+			var place = node.children = node.children || [];
+			var bookmark = {title:'新建文件夹',parentId : node.id};
+			
+			bookmarkManager.add(bookmark).then(function(r){
+				//place.push(r);
+				//$scope.edit(r);
+				angular.extend(bookmark, r);
+			});
+			
+			place.push(bookmark);
+			$scope.edit(bookmark);
+		}
+
+	};
 	
 	//////////////////////////////////////////////////////////////////////	
 	
@@ -676,12 +692,12 @@ function mainCtrl($scope, $window, $location, $timeout, bookmarkManager, bmRelTa
 		};
 		
 		//具体事件名
-		console.log(JSON.stringify(msg));
+		//console.log(JSON.stringify(msg));
 		var eventName = msg[0];
 		var that = this;
 		
 		// 如果当前标签页后台运行，更新数据
-		if(eventName == 'onCreated'){
+		if(0 && eventName == 'onCreated'){
 			
 			that._getData()
 			.then(function(data){

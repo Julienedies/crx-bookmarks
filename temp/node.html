@@ -42,9 +42,9 @@
 		
 	
 	<div ng-if="bookmark.url" class="edit-box editing-{{bookmark.editing}}"  ng-dblclick="open(bookmark);">
-		<img xng-src="{{bookmark.url | getIcon}}" class="icon" />{{$index}}&nbsp;&nbsp;{{bookmark.id}}&nbsp;&nbsp;
+		<img ng-src="{{bookmark.url | getIcon}}" class="icon" />
 		<span class="text-overflow">
-		<span xng-show="!bookmark.editing" ng-bind="bookmark.title" class="ghost"></span>
+		<b xng-show="!bookmark.editing" ng-bind="bookmark.title" class="ghost"></b>
 		<input type="text"
 			   tabindex="1"
 			   class="edit-text"
@@ -65,7 +65,8 @@
 		</div>
 		
 		<div class="tag">
-		tag: <input type="text" ng-model="bookmark.tags" class="input-sm" auto-width="bookmark.tags" tabindex="2">
+		  <ximg alt="标签" src="assets/img/tag.png" width="24">
+		 标签: <input type="text" ng-model="bookmark.tags" class="input-sm" auto-width="bookmark.tags" tabindex="2">
 		</div>		
 		
 		<span class="close" ng-click="exit(bookmark);">&times;</span>
@@ -74,7 +75,7 @@
 	<div ng-if="!bookmark.url" class="edit-box editing-{{bookmark.editing}}">
 		<img src="assets/img/folder-1.png" class="icon" />
 		<span class="text-overflow">
-		<span xng-show="!bookmark.editing" ng-bind="bookmark.title" class="ghost"></span>
+		<b xng-show="!bookmark.editing" ng-bind="bookmark.title" class="ghost"></b>
 		<input type="text"
 		   class="edit-text"
 		   href="{{'#/node/'+bookmark.id}}"
