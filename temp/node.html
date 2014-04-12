@@ -65,8 +65,7 @@
 		</div>
 		
 		<div class="tag">
-		  <ximg alt="标签" src="assets/img/tag.png" width="24">
-		 标签: <input type="text" ng-model="bookmark.tags" class="input-sm" auto-width="bookmark.tags" tabindex="2">
+		 标签: <input type="text" ng-model="bookmark.tags" class="input-sm" bm-auto-width="bookmark.tags" tabindex="2">
 		</div>		
 		
 		<span class="close" ng-click="exit(bookmark);">&times;</span>
@@ -75,7 +74,7 @@
 	<div ng-if="!bookmark.url" class="edit-box editing-{{bookmark.editing}}">
 		<img src="assets/img/folder-1.png" class="icon" />
 		<span class="text-overflow">
-		<b xng-show="!bookmark.editing" ng-bind="bookmark.title" class="ghost"></b>
+		<b ng-bind="bookmark.title" class="ghost"></b>
 		<input type="text"
 		   class="edit-text"
 		   href="{{'#/node/'+bookmark.id}}"
@@ -84,7 +83,6 @@
 		   set-focus="bookmark.editing"
 		   ng-disabled="!!!bookmark.editing"
 		   ng-show="bookmark.editing"
-		   xauto-width="bookmark.title"
 		/>
 		</span>
 		   
