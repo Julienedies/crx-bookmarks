@@ -9,7 +9,7 @@
 
 	<div class="edit-box editing-{{node.editing}}">
 		<span class="text-overflow">
-		<b ng-bind="node.title" class="ghost title"></b>
+		<b ng-bind="node.title|| '根目录'" class="ghost title"></b>
 		<input type="text"
 			   class="edit-text"
 		       ng-model="node.title"

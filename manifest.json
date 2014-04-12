@@ -17,7 +17,7 @@
   
   //"background": { "scripts": ["background.js"] },
   "background": {
-    //"page": "background.html"
+    "page": "background.html"
   },
   
    "icons": {
