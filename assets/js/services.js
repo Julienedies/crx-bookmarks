@@ -244,10 +244,15 @@ bmServices.factory('cStorageInterface', ['$q', '$rootScope', function($q, $rootS
 }]);
 
 
+
+
+
+
+
 /*
  * 记录管理器
  */
-bmServices.factory('recordManager', ['cStorageInterface', function(cStorageInterface) {
+bmServices.factory('_recordManager', ['cStorageInterface', function(cStorageInterface) {
 	
 	function fn(classify){
 		this.classify = classify;
@@ -307,6 +312,103 @@ bmServices.factory('recordManager', ['cStorageInterface', function(cStorageInter
 	return fn;
 	
 }]);
+
+/*
+ * 本地存储记录管理
+ */
+bmServices.factory('recordManager', ['$q','$rootScope','cStorageInterface', function($q, $rootScope, cStorageInterface) {
+	
+	function fn(classify){
+		this.classify = classify;
+	}
+	
+	var fns = {
+			get: function(record){
+				var classify = this.classify + '.';
+				var r = {};
+				
+				var id = typeof record === 'object' ? record.id : record;
+				
+				if(id){
+					return JSON.parse( localStorage.getItem(classify + id) );
+				}else{
+					for(var i in localStorage){
+						if(i.indexOf(classify) === 0){
+							id = i.replace(classify,'') || this.classify;
+							r[id] = JSON.parse( localStorage[i] );
+						}
+					}
+					return r;
+				}
+				
+			},
+			set: function(record){
+				var classify = this.classify + '.';
+				localStorage.setItem(classify + (record.id || ''), JSON.stringify(record));
+			},
+			remove: function(record){
+				var classify = this.classify + '.';
+				var id = typeof record === 'object' ? record.id : record;
+				localStorage.removeItem(classify + id);
+			},
+			clear: function(){
+				var classify = this.classify + '.';
+				
+				for(var i in localStorage){
+					if(i.indexOf(classify) === 0){
+						localStorage.removeItem(i);
+					}
+				}	
+				
+			},
+			sync: function(){
+				var r = {};
+				r[this.classify] = this.get();
+				cStorageInterface.set(r);
+			}
+	};
+	
+	
+	for(var i in fns){
+		
+		fn.prototype[i] = (function(i){
+			
+			return function(){
+				
+				var that = this;
+				
+				var deferred = $q.defer();
+				
+				var args = Array.prototype.slice.call(arguments, 0);
+				
+				var data = fns[i].apply(that, args);
+				
+				//setTimeout(function(){
+					deferred.resolve(data);
+				//},50);
+				
+				//数据发生变化时本页是监听不到storage事件变更消息的，所以只能手动触发
+				//$rootScope.$broadcast('recordManager.change',args.unshift(i));
+				
+				return deferred.promise;				
+			};
+			
+		})(i);
+	}
+	
+	
+	function callback(e){
+		console.log('localStorage.change');
+		$rootScope.$broadcast('recordManager.change',e);
+	};	
+	
+	//addEventListener('storage',callback, false);
+	
+	
+	return fn;	
+	
+}]);
+
 
 
 /*

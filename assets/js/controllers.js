@@ -220,7 +220,7 @@ function vdirCtrl($scope, $routeParams, bookmarkManager) {
 	    	}  			
 		}
     	
-    	//bookmarkManager.move(dragId, destination);
+    	bookmarkManager.move(dragId, destination);
     	
     };		
 	
@@ -295,14 +295,14 @@ function tagsCtrl($scope) {
 			}
 		}
 		return o;
-	};
+	};	
 	
 	var main = $scope.main = function(){
 		bmRelTableManager.get().then(function(bmRelTable){
 			var tagsMap;
-			//console.log(bmRelTable);
+			console.log('bmRelTable',bmRelTable);
 			$scope.bmRelTable = bmRelTable;
-			tagsMap = $scope.tagsMap = getTags(bmRelTable);
+			tagsMap = $scope.tagsMap = getTags(bmRelTable); 
 			$scope.$emit("tagsMap", tagsMap);
 		});
 	};
@@ -311,8 +311,8 @@ function tagsCtrl($scope) {
 	main();
 	
 	/////////////////////////////////////////////////////
-	$scope.$on('chrome.storage.change',function(e,data){
-		console.log('chrome.storage.change.tags',data);
+	$scope.$on('recordManager.change',function(e,data){
+		console.log('recordManager.change.tags',data);
 		main();
 	});
 		
@@ -323,12 +323,17 @@ function tagCtrl($scope, $routeParams, bookmarkManager) {
 	
 	var tags = $routeParams.tag;
 	var tagsMap = $scope.tagsMap;
-	var ids = tagsMap[tags];
+	var ids = tagsMap[tags];	
 	
 	var main = function(){
-		bookmarkManager.get(ids).then(function(r){
-			$scope.bookmarks = r;
-		});			
+		if(ids){
+			 bookmarkManager.get(ids).then(function(r){
+					$scope.bookmarks = r;
+				});				
+		}else{
+			$scope.bookmarks = [];
+		}
+		
 	};
 	
 	/////////////////////////////////////////////////////
@@ -348,42 +353,32 @@ function classifyCtrl($scope) {
 	var bmRelTableManager = $scope.bmRelTableManager = $scope.bmRelTableManager;
 	var bookmarkManager = $scope.bookmarkManager = $scope.bookmarkManager;
 	
-	var getTags = function(m){
-		var o = {};
-		var r=[];
-		for(var i in m){
-			r = m[i].tags;
-			r = r.replace(/，/g,',').replace(/\s+/g,'').split(',');
-			for(var j = 0,v; j< r.length; j++){
-				v = r[j];
-				o[v] = o[v] || [];
-				o[v].push(i);
-			}
-		}
-		return o;
-	};
-	
-	var main = function(){
-		bmRelTableManager.get().then(function(bmRelTable){
-			console.log(bmRelTable);
-			$scope.bmRelTable = bmRelTable;
-			$scope.tags = getTags(bmRelTable);
-		});
-	};
-	
-	/////////////////////////////////////////////////////
-	main();
-	
-	////////////////////////////////////////////////////
-	$scope.getBmByTag = function(ids){
-		bookmarkManager.get(ids).then(function(r){
-			$scope.bookmarks = r;
-		});
-	};
 }
 
 //
 function hotCtrl($scope) {
+	
+	var bookmarkManager = $scope.bookmarkManager = $scope.bookmarkManager;
+	var visitManager = $scope.visitManager;
+	
+	$scope.main = function(){
+		visitManager.get().then(function(r){ 
+			console.log('visit',r);
+			var q = [];
+			for(var i in r){
+				q.push(i);
+			}
+			
+			bookmarkManager.get(q).then(function(r){
+				$scope.bookmarks = r;
+			});			
+			
+		});
+	};
+	
+	/////////////////////////////////////////////////////
+	
+	$scope.main();
 	
 }
 
@@ -421,7 +416,7 @@ function trashCtrl($scope, bookmarkManager, rmBookmarkManager) {
 	
 	/////////////////////////////////////////////////////
 	
-	$scope.$on('chrome.storage.change',function(e,data){
+	$scope.$on('recordManager.change',function(e,data){
 		console.log('data',data);
 		//main();
 	});
@@ -445,12 +440,12 @@ function setingCtrl($scope) {
  */
 
 //
-function mainCtrl($scope, $window, $location, $timeout, cTabsInterface, bookmarkManager, bmRelTableManager, rmBookmarkManager, DSmanager){
+function mainCtrl($scope, $window, $location, $timeout, cTabsInterface, bookmarkManager, bmRelTableManager, rmBookmarkManager,visitManager, searchManager, DSmanager){
 	
 	var navs = $scope.navs = [{text:'Main',href:'node'},
 	              //{text:'目录',href:'dir'},
 	              {text:'最近',href:'recent'},
-	              //{text:'hot',href:'hot'},
+	              {text:'hot',href:'hot'},
 	              //{text:'分类',href:'classify'},
 	              {text:'回收站',href:'trash'},
 	              {text:'设置',href:'seting'},
@@ -467,13 +462,23 @@ function mainCtrl($scope, $window, $location, $timeout, cTabsInterface, bookmark
 	$scope.bookmarkManager = bookmarkManager;
 	$scope.bmRelTableManager = bmRelTableManager;
 	$scope.rmBookmarkManager = rmBookmarkManager;
+	$scope.visitManager = visitManager;
+	$scope.searchManager = searchManager;	
 	$scope.DSmanager = DSmanager;
 	
 	////////////////////////////////////////////////////////////
 	
 	$scope.searchf = function(){
-		if($scope.q){
+		var q = $scope.q;
+		if(q){
 			$location.path('/search/'+$scope.q);
+			searchManager.get('keys').then(function(r){ 
+				r = r || {};
+				r.id = 'keys';
+				r.keys = r.keys || [];
+				r.keys.push(q);
+				searchManager.set(r);
+			});
 		}
 	};	
 	
@@ -502,6 +507,13 @@ function mainCtrl($scope, $window, $location, $timeout, cTabsInterface, bookmark
 	$scope.open = function(bookmark){
 		if(bookmark.url){
 			$window.open(bookmark.url);
+			visitManager.get(bookmark).then(function(r){
+				r = r || {};
+				r.id = r.id || bookmark.id;
+				r.count = (r.count || 0)+1;
+				r.lastTime = new Date - 0;
+				visitManager.set(r);
+			});
 		}else{
 			$location.path('/node/'+bookmark.id);
 		}
@@ -524,7 +536,6 @@ function mainCtrl($scope, $window, $location, $timeout, cTabsInterface, bookmark
 	$scope.update = function(bookmark){
 		bookmark.editing = false;
 		bookmarkManager.update(bookmark);
-		console.log(typeof bookmark.tags);
 		if(typeof bookmark.tags !== 'undefined'){
 			bmRelTableManager.set({id:bookmark.id,tags:bookmark.tags});
 		}
@@ -747,7 +758,7 @@ function mainCtrl($scope, $window, $location, $timeout, cTabsInterface, bookmark
 
 var bmControllers = angular.module('bmControllers', []);
                                                          
-bmControllers.controller('mainCtrl',['$scope', '$window', '$location', '$timeout', 'cTabsInterface', 'bookmarkManager', 'bmRelTableManager', 'rmBookmarkManager', 'DSmanager', mainCtrl]);
+bmControllers.controller('mainCtrl',['$scope', '$window', '$location', '$timeout', 'cTabsInterface', 'bookmarkManager', 'bmRelTableManager', 'rmBookmarkManager', 'visitManager', 'searchManager', 'DSmanager', mainCtrl]);
 
 bmControllers.controller('nodeCtrl',['$scope', '$routeParams', 'bookmarkManager', nodeCtrl]);
 

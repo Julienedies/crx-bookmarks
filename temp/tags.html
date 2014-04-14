@@ -1,7 +1,7 @@
 <div class="tags">
-<h4 ng-click="tagsOpen=!tagsOpen">标签&nbsp;&nbsp; <img src="assets/img/refresh.png" width="16" title="刷新" ng-click="main();" /></h4>
+<h4>标签 <img src="assets/img/refresh.png" width="16" title="刷新" ng-click="main();" class="btn" /></h4>
 
-<ul ng-show="!tagsOpen" bm-current-active="li:nth-child(n)" bm-current-active-class="selected">
+<ul bm-current-active="li:nth-child(n)" bm-current-active-class="selected">
 <li ng-repeat="(key, ids) in tagsMap">
 <a ng-href="{{'#/tag/'+key}}">{{key}}</a>
 </li>
