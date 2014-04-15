@@ -324,11 +324,11 @@ function tagCtrl($scope, $routeParams, bookmarkManager) {
 	var tags = $routeParams.tag;
 	var tagsMap = $scope.tagsMap;
 	var ids = tagsMap[tags];	
-	
+	console.log(ids);
 	var main = function(){
 		if(ids){
 			 bookmarkManager.get(ids).then(function(r){
-					$scope.bookmarks = r;
+					$scope.bookmarks = r || [];
 				});				
 		}else{
 			$scope.bookmarks = [];

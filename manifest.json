@@ -11,6 +11,7 @@
   	"downloads",  
   	"storage",
   	"bookmarks",
+  	"chrome://favicon/",
   	"\u003Call_urls\u003E",
     "http://*/*"
   ],

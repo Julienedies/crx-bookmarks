@@ -27,6 +27,7 @@
  ui-on-Drop="onDrop($event,$data,bookmarks)"
  -->
 </div>
+<div ng-show="bookmarks.length == 0">没有相关记录.</div>
 
 <ul class="bm-list" >
 
@@ -40,7 +41,7 @@
 		
 	
 	<div ng-if="bookmark.url" class="edit-box editing-{{bookmark.editing}}" ng-dblclick="open(bookmark);">
-		<img  xonerror="(function(img){img.src='/assets/img/doc.png';img.onerror=null;})(this);" ng-src="{{bookmark.url | getIcon}}" class="icon" />
+		<img ng-src="{{bookmark.url | getIcon}}" class="icon" />
 		<span class="text-overflow">
 		<b ng-bind="bookmark.title" class="ghost"></b>
 		<input type="text"

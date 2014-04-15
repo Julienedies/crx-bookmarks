@@ -51,7 +51,8 @@ bmApp.config( [
                '$compileProvider',
                function( $compileProvider )
                {   
-                   $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):/);
+                   $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome|chrome-extension):/);
+                   $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|chrome|file|blob):|data:image\//);
                }
            ]);
 
