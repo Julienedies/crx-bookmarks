@@ -1,13 +1,15 @@
 <div class="content">
-<div ng-show="!bmRelTable">loading...</div>
 
-<aside>
+
+<div ng-show="!classes">loading...</div>
+
 <ul>
-<li ng-repeat="(key, ids) in tags" ng-click="getBmByTag(ids)">{{key}}</li>
+<li ng-repeat="(key, item) in classes" ng-click="getBk(item);" >
+<b ng-bind="key"></b> &nbsp;<i ng-bind="item.length"></i>
+</li>
 </ul>
-</aside>
 
-<article resizeable>
-<div ng-include="'temp/list.html'"></div>
-</article>
+<div class="nvi view-animate" ng-show="bookmarks" ng-include="'temp/list.html'"></div>
+
+
 </div>

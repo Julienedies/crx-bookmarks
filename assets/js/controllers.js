@@ -353,6 +353,77 @@ function classifyCtrl($scope) {
 	var bmRelTableManager = $scope.bmRelTableManager = $scope.bmRelTableManager;
 	var bookmarkManager = $scope.bookmarkManager = $scope.bookmarkManager;
 	
+	
+	var isTree = function(o){
+		if(typeof o === 'object'){
+			for(var i in o){
+				if(typeof o[i] === 'object'){
+					return 1;
+				} 
+			}
+		}
+		return 0;
+	};
+	
+	var getListFromTree = function (tree,list){
+		var list = list || {};
+		var item;
+		
+		for(var i in tree){
+			item = tree[i];
+			
+			if( isTree(item) ){
+				getListFromTree(item, list);
+			}else if(typeof item === 'object' && item.url){
+				list[item.id] = item;
+			}	
+		}
+		
+		return list;
+	};	
+	
+	var cla = function(list){
+		var r = {};
+		var len = list.length;
+		var item;
+	    var durl=/^(\w+:\/\/\/?[^\/]+)\//i;  
+	    var domain; //= input.match(durl);  		
+		for(var i in list){
+			item = list[i];
+			domain = item.url.match(durl);
+			domain = domain && domain[0]; 
+			r[domain] = r[domain] || [];
+			r[domain].push(item.id);
+		}
+		
+		return r;
+	};
+	
+	var list;
+	
+	$scope.main = function(){
+		bookmarkManager.getTree().then(function(r){
+			list = getListFromTree(r); 
+			$scope.classes = cla(list);
+		});		
+	};
+	
+	//$scope.getBk = $scope.getBk;
+    // 获取书签数组，用于子控制器继承;
+	$scope.getBk = function(q){ 
+		var that = this;
+		bookmarkManager.get(q).then(function(r){
+			$scope.bookmarks = r;
+		});
+	};
+	
+	// view距左间距
+	$scope.$emit("mainLeft", 0);
+	
+	/////////////////////////////////////////////////////
+	
+	$scope.main();
+	
 }
 
 //
@@ -443,10 +514,10 @@ function setingCtrl($scope) {
 function mainCtrl($scope, $window, $location, $timeout, cTabsInterface, bookmarkManager, bmRelTableManager, rmBookmarkManager,visitManager, searchManager, DSmanager){
 	
 	var navs = $scope.navs = [{text:'Main',href:'node'},
-	              //{text:'目录',href:'dir'},
+	              {text:'目录',href:'dir'},
 	              {text:'最近',href:'recent'},
 	              {text:'hot',href:'hot'},
-	              //{text:'分类',href:'classify'},
+	              {text:'分类',href:'classify'},
 	              {text:'回收站',href:'trash'},
 	              {text:'设置',href:'seting'},
 	              {text:'help',href:'help'}];
@@ -506,7 +577,9 @@ function mainCtrl($scope, $window, $location, $timeout, cTabsInterface, bookmark
 	
 	$scope.open = function(bookmark){
 		if(bookmark.url){
-			$window.open(bookmark.url);
+			//$window.open(bookmark.url);
+			cTabsInterface.create({ url: bookmark.url, selected: true });
+			
 			visitManager.get(bookmark).then(function(r){
 				r = r || {};
 				r.id = r.id || bookmark.id;
@@ -562,7 +635,10 @@ function mainCtrl($scope, $window, $location, $timeout, cTabsInterface, bookmark
 	
 	// 拖动排序限定
 	$scope.dragChannel = 'dir';
-	$scope.dropChannel = 'list';		
+	$scope.dropChannel = 'list';
+	
+	// view距左间距
+	$scope.mainLeft = 280;
 	
 	//////////////////////////////////////////////////////////////////////
 
@@ -659,6 +735,14 @@ function mainCtrl($scope, $window, $location, $timeout, cTabsInterface, bookmark
        
     };	
     
+    // 获取书签数组，用于子控制器继承;
+	$scope.getBk = function(q){ 
+		var that = this;
+		bookmarkManager.get(q).then(function(r){
+			that.bookmarks = r;
+		});
+	};
+    
     // 检查新数据是否有变化，用于子控制器继承;
 	$scope._check = function(data){
 		var now = JSON.stringify(data);
@@ -751,6 +835,10 @@ function mainCtrl($scope, $window, $location, $timeout, cTabsInterface, bookmark
 	 
 	 $scope.$on('tagsMap',function(e,msg){
 		 $scope.tagsMap = msg;
+	 });
+	 
+	 $scope.$on('mainLeft',function(e,msg){
+		 $scope.mainLeft = msg;
 	 });	 
 	
 }

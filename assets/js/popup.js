@@ -28,7 +28,6 @@ bmApp.controller('addCtrl',['$scope', 'cTabsInterface', 'bookmarkManager', funct
 	    //alert(JSON.stringify(tab));
 		bookmark.title = tab.title;
 		bookmark.url = tab.url;
-		//bookmark.favIconUrl = tab.favIconUrl;
 		
 	});
 	

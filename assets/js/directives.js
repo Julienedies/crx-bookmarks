@@ -279,6 +279,10 @@ bmDirectives.directive('bmResizeAble',['$document', function($document) {
 	  return {
 		    link: function(scope, elm, attrs) {
 		    	
+	            scope.$watch(attrs.bmResizeAble, function (value) { 
+	            	elm.css({'margin-left':value + 'px'});
+	             }); 		    	
+		    	
 		    	var boxW = elm.parent().width();
 		    	var elmW = elm.width();
 		    	var dragLineW = 10;
@@ -323,7 +327,7 @@ bmDirectives.directive('bmResizeAble',['$document', function($document) {
 	    			iT > maxW && (iT = maxW);
 	    			//dragLine.css('left',iT-dragLineW+ 'px');
 	    			//elm.css({'margin-left':iT + 'px', 'width':boxW-iT+'px'});
-	    			elm.css({'margin-left':iT + 'px', 'width':boxW-iT+'px'});
+	    			elm.css({'margin-left':iT + 'px'});
 	    			return false;
 	    		}
 	    		

@@ -539,6 +539,10 @@ nav a:link,nav a:visited {
 	background: url(../img/dir-2.png) no-repeat 50% 50%;
 	background-size: 20px;	
 }
+.classify{
+	background: url(../img/star.png) no-repeat 50% 50%;
+	background-size: 20px;	
+}
 .hot{
 	background: url(../img/hot.png) no-repeat 50% 50%;
 	background-size: 20px;	
@@ -620,7 +624,7 @@ header form {
 	top: 0;
 	bottom: 0;
 	z-index: 4;
-	margin-left: 280px;
+	xmargin-left: 280px;
 }
 
 .scroller {
@@ -642,6 +646,12 @@ header form {
 	padding: 5px 10px 30px 10px;
 }
 
+.nvi{
+	position:absolute;
+	top:0;
+	width:100%;
+	background:#fff;
+}
 #main {
 	position: relative;
 	min-height: 100%;
