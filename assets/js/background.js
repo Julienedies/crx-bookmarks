@@ -1,7 +1,7 @@
 
 var bmApp = angular.module('bmApp', [ 'bmServices']);
 
-bmApp.controller('listenerCtrl',['$scope', 'cbInterface', 'rmBookmarkManager', function($scope, cbInterface, rmBookmarkManager){
+bmApp.controller('listenerCtrl',['$scope', 'cbInterface', 'rmBookmarkManager', 'bmRelTableManager', 'visitManager', function($scope, cbInterface, rmBookmarkManager, bmRelTableManager, visitManager){
 	
 	/*
 	 * 因为没有办法从onRemoved事件中获取删除书签的title和url,
@@ -22,7 +22,10 @@ bmApp.controller('listenerCtrl',['$scope', 'cbInterface', 'rmBookmarkManager', f
 		if(event === 'onRemoved'){ 
 			var id = data.splice(0,1)[0];
 			var bookmark = back[id];
-			bookmark && rmBookmarkManager.set(bookmark);	
+			bookmark && rmBookmarkManager.set(bookmark);
+			//删除该书签相关数据
+			bmRelTableManager.remove(bookmark);		
+			visitManager.remove(bookmark);
 		}else{
 			cbInterface.getTree().then(function(r){
 				back = getListFromTree(r);

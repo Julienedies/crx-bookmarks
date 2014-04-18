@@ -603,7 +603,9 @@ function mainCtrl($scope, $window, $location, $timeout, cTabsInterface, bookmark
 		
 		// 后端
 		bookmarkManager.remove(bookmark);
-		bmRelTableManager.remove(bookmark);		
+		//删除相关数据放置在background.js中处理;
+		//bmRelTableManager.remove(bookmark);		
+		//visitManager.remove(bookmark);
 	};
 	
 	$scope.update = function(bookmark){
