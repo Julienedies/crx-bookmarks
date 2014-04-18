@@ -1,4 +1,14 @@
+logs/*
+!.gitkeep
+node_modules/
+tmp
+.idea
+.DS_Store
+angular-phonecat-snapshots
+bower_components/
+
 \.idea/*
 \.settings/*
 \.project
 \.idea
+npm-debug.log

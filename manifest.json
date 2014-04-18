@@ -2,8 +2,8 @@
   "manifest_version": 2,
 
   "name": "bookmarkManager",
-  "description": "To manage bookmark.",
-  "version": "1.0",
+  "description": "A chrome extension for managing bookmaks.",
+  "version": "0.1.0",
 
   "permissions": [
   	"tabs",
