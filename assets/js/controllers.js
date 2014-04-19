@@ -159,7 +159,10 @@ function vdirCtrl($scope, $routeParams, bookmarkManager) {
 	// main
 	$scope.main();
 	
-	/////////////////////////////////////////////////////	
+	/////////////////////////////////////////////////////
+	$scope.selected = function(node){
+		$scope.$emit('selected.dir', node);
+	};
 	
 	$scope.dropSuccessHandler = $scope.dropSuccessHandler;
     
@@ -441,7 +444,7 @@ function hotCtrl($scope) {
 			}
 			
 			bookmarkManager.get(q).then(function(r){
-				$scope.bookmarks = r;
+				$scope.bookmarks = r || [];
 			});			
 			
 		});
@@ -552,28 +555,7 @@ function mainCtrl($scope, $window, $location, $timeout, cTabsInterface, bookmark
 			});
 		}
 	};	
-	
-	$scope.edit = function(bookmark){
-		var currentEditing = $scope.currentEditing;
-		if(!bookmark.editing){
-			currentEditing && (currentEditing.editing = false);
-			bookmark.editing = true;
-			$scope.currentEditing = bookmark;
-			if(typeof bookmark.tags === 'undefined'){
-				bmRelTableManager.get(bookmark.id).then(function(bmRel){
-					if(bmRel){
-						bookmark.tags = bmRel.tags;
-					}
-				});				
-			}
-		}else{
-			bookmark.editing = false;
-		}
-	};
-	
-	$scope.exit = function(bookmark){
-		bookmark.editing = false;
-	};
+
 	
 	$scope.open = function(bookmark){
 		if(bookmark.url){
@@ -607,6 +589,28 @@ function mainCtrl($scope, $window, $location, $timeout, cTabsInterface, bookmark
 		//bmRelTableManager.remove(bookmark);		
 		//visitManager.remove(bookmark);
 	};
+	
+	$scope.edit = function(bookmark){
+		var currentEditing = $scope.currentEditing;
+		if(!bookmark.editing){
+			currentEditing && (currentEditing.editing = false);
+			bookmark.editing = true;
+			$scope.currentEditing = bookmark;
+			if(typeof bookmark.tags === 'undefined'){
+				bmRelTableManager.get(bookmark.id).then(function(r){
+					if(r){
+						bookmark.tags = r.tags;
+					}
+				});				
+			}
+		}else{
+			bookmark.editing = false;
+		}
+	};
+	
+	$scope.exit = function(bookmark){
+		bookmark.editing = false;
+	};	
 	
 	$scope.update = function(bookmark){
 		bookmark.editing = false;

@@ -60,6 +60,27 @@ bmDirectives.directive('bmToggle', function() {
 });
 
 
+// display 设置
+bmDirectives.directive('bmDisplayModel', function() {
+    return {
+        restrict : 'A',
+        scope : {
+        	m : '=bmDisplayModel'
+        },        
+        link : function(scope, elm, attrs) {
+        	
+        	var btn = jQuery('<b class="display-full-btn" title="">[全屏模式切换] </b>').appendTo(elm);
+        	btn.click(function(){
+        		elm.toggleClass('display-full');
+        	});
+        	
+        }
+    };
+    
+});
+
+
+
 // 当前激活显示
 bmDirectives.directive('bmCurrentActive', function() {
     return {

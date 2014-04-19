@@ -8,13 +8,22 @@
 <link rel="stylesheet" href="assets/css/style.css" />
 
 <script src="assets/js/libs/jquery-1.10.2.min.js"></script>
+<script src="assets/js/libs/d3.min.js"></script>
 <script src="assets/js/libs/angular.min.js"></script>
+<script src="assets/js/libs/angular-animate.js"></script>
 <script src="assets/js/libs/angular-resource.js"></script>
 <script src="assets/js/libs/angular-route.js"></script>
 
 <script src="assets/js/services.js"></script>
+<script src="assets/js/directives.js"></script>
+<script src="assets/js/animations.js"></script>
+<script src="assets/js/controllers.js"></script>
+<script src="assets/js/filters.js"></script>
 <script src="assets/js/popup.js"></script>
 <style>
+*{
+	box-sizing: border-box;
+}
 .form-horizontal .control-label {
 	text-align: right;
 }
@@ -43,7 +52,7 @@
 	height: 28px;
 }
 
-.btn,.btn:hover {
+.btn,.btn:hover,.btn:focus  {
 	color: #333;
 	background-color: #f8f8f8;
 	border: solid 1px #b3b3b3;
@@ -61,32 +70,36 @@ legend {
 	padding-bottom: 10px;
 }
 
-form {
-	font-family: Microsoft YaHei, Arial, Helvetica, Garuda, sans-serif;
-}
-
 body {
 	background-color: #fbfbfb;
+	font-family: Microsoft YaHei, Arial, Helvetica, Garuda, sans-serif Helvetica, Arial, sans-serif;
 }
 
 #box {
 	padding: 10px;
-	width: 400px;
+	width: 420px;
 }
 
 #dir-box {
+	position: relative;
+	height:160px;
 	border: solid 1px #b3b3b3;
 	overflow-y: scroll;
+	background:#fff;
+}
+sup{
+	font-size: smaller;
+	vertical-align:-4px;
 }
 </style>
 </head>
 
-<body ng-controller="addCtrl">
+<body ng-controller="mainCtrl">
 
-		<div id="box">
-              <form class="form-horizontal">
+		<div id="box"  ng-controller="addCtrl">
+              <div class="form-horizontal">
                 <fieldset>
-                  <legend>添加新书签！</legend>
+                  <legend>添加新书签 ! <sup ng-bind="bookmark.id"></sup></legend>
                   
                   <div class="form-group">
                     <label class="col-lg-2 control-label">名称:</label>
@@ -105,7 +118,7 @@ body {
                   <div class="form-group">
                     <label class="col-lg-2 control-label">tag:</label>
                     <div class="col-lg-10">
-                    <input class="controls input-sm" type="text" ng-model="tag">
+                    <input class="controls input-sm" type="text" ng-model="bookmark.tags">
                     	<span class="help-block">多个标签请用逗号分隔.</span>
                     </div>
                   </div>
@@ -113,20 +126,21 @@ body {
                   <div class="form-group">
                     <label class="col-lg-2 control-label">目录:</label>
                     <div class="col-lg-10">
-                    	<button type="submit" class="btn btn-sm">选择目录</button>
-                    	<!-- <div id="dir-box" ng-controller="dirCtrl" ng-include="'temp/dir.html'"></div>   -->
+                    	<button type="button" class="btn btn-sm" ng-click="loadDir();" ng-show="!tempName">选择目录</button>
+                    	<div id="dir-box"  ng-include="tempName" bm-display-model></div>
                     </div>
                   </div>                  
                                     
                   <div class="form-group">
                   <div class="col-lg-10 col-lg-offset-2">
-                      <button class="btn" ng-click="bookmarkManager.remove(bookmark);">删除</button>
-                      <button class="btn" type="button" ng-click="add(bookmark);">添加</button>
-                      <button class="btn" ng-click="openBookmarkManager();">打开书签管理器</button>
+                      <button type="button" class="btn btn-sm" ng-click="bookmarkManager.remove(bookmark);" ng-show="bookmark.id">删除</button>
+                      <button type="button" class="btn btn-sm" ng-click="updatef(bookmark);"  ng-show="bookmark.id">修改</button>
+                      <button type="button" class="btn btn-sm" ng-click="create(bookmark);"  ng-hide="bookmark.id">添加</button>
+                      <button type="button" class="btn btn-sm" ng-click="openBookmarkManager();">打开书签管理器</button>
                   </div>                              
  				  </div>
                 </fieldset>
-              </form>
+              </div>
 		</div>
 		
 </body>

@@ -1,0 +1,40 @@
+<div ng-controller="vdirCtrl">
+<div ng-show="!tree">loading...</div>
+<script type="text/ng-template" id="tree_item_renderer.html">
+<div class="dt" ng-click="selected(node);">
+
+	<div class="edit-box editing-{{node.editing}}">
+		<span class="text-overflow">
+		<b ng-bind="node.title|| '根目录'" class="ghost title"></b>
+		<input type="text"
+			   class="edit-text"
+		       ng-model="node.title"
+		       set-focus="node.editing"
+		       ng-disabled="!!!node.editing"
+		       ng-show="node.editing"
+	    />
+		</span>
+
+		<div class="btn-group">
+			<button class="btn btn-xs btn-text" ng-click="selected(node);">选中</button>
+			<button class="btn btn-xs btn-text cancel" ng-click="exit(node);">取消</button>
+			<button class="btn btn-xs btn-text save" ng-click="update(node);">更新</button>	
+			<button class="btn btn-xs btn-text" ng-click="add(node);">新建</button>		
+			<button class="btn btn-xs btn-text remove" ng-click="remove(node, tree);">删除</button>
+		</div>
+
+	</div>
+</div>
+
+<em class="toggle" ng-if="node.children" bm-toggle>▼</em>
+
+<ul ng-if="node.children">
+	<li ng-repeat="node in node.children | isTree" ng-include="'tree_item_renderer.html'"></li>
+</ul>
+</script>
+
+<ul class="dir-tree" ng-show="!node.open" bm-current-active=".dt" bm-current-active-class="selected">
+	<li ng-repeat="node in tree | isTree" ng-include="'tree_item_renderer.html'"></li>
+</ul>
+
+</div>

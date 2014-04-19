@@ -521,18 +521,24 @@ bmServices.factory('bookmarkManager', ['$rootScope', 'cbInterface', 'Bookmark', 
         	return cbInterface.get(id);
         },
         add: function(bookmark){
-        	return cbInterface.create(bookmark);
+        	return this.create(bookmark);
         },
         create: function(bookmark) {
-            return cbInterface.create(bookmark);
+        	var bk = {};
+        	bk.title = bookmark.title;
+        	bk.url = bookmark.url;
+        	if(bookmark.parentId){
+        		bk.parentId = bookmark.parentId;
+        	}
+            return cbInterface.create(bk);
         },
         recover: function(bookmark){
-        	var obj = {};
-        	obj.title = bookmark.title;
-        	obj.url = bookmark.url;
-        	obj.parentId = bookmark.parentId;
-        	obj.index = bookmark.index;
-        	return cbInterface.create(obj);
+        	var bk = {};
+        	bk.title = bookmark.title;
+        	bk.url = bookmark.url;
+        	bk.parentId = bookmark.parentId;
+        	bk.index = bookmark.index;
+        	return cbInterface.create(bk);
         },        
         remove: function(bookmark) {
         	if(bookmark.url){
