@@ -15,15 +15,16 @@ chrome自带的书签管理器过分简洁，应用商店里也没找到符合�
 有兴趣的朋友可以下载源码后，通过chrome中的开发者模式，加载此扩展程序试用。
 
 ##技术选项：
-使用yeoman管理工作流(主要是配合angular使用才引入)；  <br />
-使用karma和jsmaine进行单元测试和e2e测试；   <br />  
-使用grunt处理项目构建；    <br />
-使用angular对应用进行组织架构；  <br />  
-使用jquery处理dom操作；  <br />
-使用d3处理数据可视化；  <br />
+使用<a href="http://yeoman.io/">yeoman</a>管理工作流(主要是配合<a href="https://angularjs.org/">angularJs</a>使用才引入)；  <br />
+使用<a href="http://karma-runner.github.io/0.12/index.html">karma</a>和<a href="http://jasmine.github.io/">jsmaine</a>及<a href="https://github.com/angular/protractor">Protractor</a>进行单元测试和e2e测试；   <br />
+使用<a href="http://gruntjs.com/">grunt</a>处理项目构建中的常见任务；（作为yeoman中的一个组件）    <br />
+使用<a href="https://angularjs.org/">angularJs</a>对应用进行组织架构；  <br />
+使用<a href="http://jquery.com/">jquery</a>处理dom操作；  <br />
+使用<a href="http://d3js.org/">d3</a>处理数据可视化；  <br />
+css部分引用了<a href="http://getbootstrap.com/">bootstrap.css</a> && <a href="http://daneden.github.io/animate.css/">Animate.css</a>；
 
 ##其它：
-chrome扩展开发环境已经搭好，扩展所使用的接口也已经很好的进行了封装，可以很方便的使用；欢迎在此项目基础上进行二次开发。
+chrome扩展开发环境已经搭好，扩展所使用的接口也已经很好的进行了封装，可以很方便的使用；欢迎大家根据自己的需求在此项目基础上进行二次开发。
 
 关于此扩展有其它想法也可以email我。
 
