@@ -1,9 +1,9 @@
 <div class="content">
 
 <div class="toolbar">
-<div class="left">
+<div class="left inline-form">
  Search: <input ng-model="query" class="input-sm" placeholder="搜索当前位置">
- &nbsp;&nbsp;&nbsp; Sort by:
+ <label>排序方式: </label>
   <select class="select-sm" ng-model="orderProp">
     <option value="title">Alphabetical</option>
     <option value="index">index</option>
@@ -11,37 +11,42 @@
     <option value="dateAdded">dateAdded</option>
     <option value="children">children</option>
   </select>
+  <span ng-show="orderProp">
+  <label>反转: </label>
+  <input type="checkbox" ng-model="sortReverse">
+  </span>
 </div>
 <div class="right">
- auto-width="bookmark.title"
-		bm-drag-channel="dir" 
-		bm-drop-channel="dir"
 </div>
 </div>
 
-<div ng-show="!bookmarks">loading...
-<!-- 
+<div ng-show="!bookmarks">
 <div style="margin:5px auto;display:inline-block;width:100%;text-align:center;" name="_loading_"><svg width="16" height="16" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" version="1.1"><path d="M 150,0 a 150,150 0 0,1 106.066,256.066 l -35.355,-35.355 a -100,-100 0 0,0 -70.711,-170.711 z" fill="#3d7fe6"><animateTransform attributeName="transform" attributeType="XML" type="rotate" from="0 150 150" to="360 150 150" begin="0s" dur="1s" fill="freeze" repeatCount="indefinite" /></path></svg></div>
- -->
 </div>
+<div ng-show="bookmarks.length == 0">没有相关记录.</div>
 
-<ul class="bm-list" ui-on-Drop="onDrop($event,$data,bookmarks)">
+<ul class="bm-list" >
 
-	<li ng-repeat="bookmark in bookmarks | filter:query | orderBy:orderProp:true" 
-		ui-draggable="true" drag="woman"  
-		on-drop-success="dropSuccessHandler($event,$index,bookmarks)"
-		class="animate">
+	<li ng-repeat="bookmark in bookmarks | filter:query | orderBy:orderProp:sortReverse"
+		bm-draggable="true"
+		bm-drag-channel="dragChannel" 
+		bm-drop-channel="dropChannel"		
+		bm-drag="bookmark" 
+		bm-on-Drop="onDrop($event, $position, $data, bookmark, bookmarks)"
+		bm-on-drop-success="dropSuccessHandler($event, bookmark, bookmarks)" >
+		
 	
-	<div ng-if="bookmark.url" class="edit-box editing-{{bookmark.editing}}"  ng-dblclick="open(bookmark);">
-		<img qng-src="{{bookmark.url | getIcon}}" class="icon" />{{$index}}&nbsp;&nbsp;
+	<div ng-if="bookmark.url" class="edit-box editing-{{bookmark.editing}}" ng-dblclick="open(bookmark);">
+		<img ng-src="{{bookmark.url | getIcon}}" class="icon" />
 		<span class="text-overflow">
+		<b ng-bind="bookmark.title" class="ghost"></b>
 		<input type="text"
+			   tabindex="1"
 			   class="edit-text"
 		       ng-model="bookmark.title"
-		       value="{{bookmark.title}}"
 		       set-focus="bookmark.editing"
 		       ng-disabled="!!!bookmark.editing"
-		       auto-width="bookmark.title"
+		       ng-show="bookmark.editing"
 	    />
 		</span>
 
@@ -50,39 +55,42 @@
 			<button class="btn btn-xs btn-text edit" ng-click="edit(bookmark);">修改</button>
 			<button class="btn btn-xs btn-text cancel" ng-click="exit(bookmark);">取消</button>
 			<button class="btn btn-xs btn-text save" ng-click="update(bookmark);">更新</button>			
-			<button class="btn btn-xs btn-text remove" ng-click="remove(bookmark, $index);">删除</button>
+			<button class="btn btn-xs btn-text remove" ng-click="remove(bookmark, bookmarks);">删除</button>
 		</div>
 		
 		<div class="tag">
-		tag: <input type="text" ng-model="bookmark.tag" class="input-sm" auto-width="bookmark.tag">
+		tag: <input type="text" ng-model="bookmark.tags" class="input-sm" xbm-auto-width="bookmark.tags" tabindex="2">
 		</div>		
 		
-		<span class="close" ng-click="exit(bookmark);">x</span>
+		<span class="close" ng-click="exit(bookmark);">&times;</span>
 	</div>
 	
 	<div ng-if="!bookmark.url" class="edit-box editing-{{bookmark.editing}}">
 		<img src="assets/img/folder-1.png" class="icon" />
+		<span class="text-overflow">
+		<b ng-bind="bookmark.title" class="ghost"></b>
 		<input type="text"
 		   class="edit-text"
-		   href="{{'#/node/'+bookmark.id}}"
 		   ng-model="bookmark.title"
-		   value="{{bookmark.title}}"
 		   set-focus="bookmark.editing"
 		   ng-disabled="!!!bookmark.editing"
-		   auto-width="bookmark.title"
+		   ng-show="bookmark.editing"
 		/>
+		</span>
 		   
 		<div class="btn-group">
 			<button class="btn btn-xs btn-text" ng-click="open(bookmark);">打开</button>
 			<button class="btn btn-xs btn-text edit" ng-click="edit(bookmark);">修改</button>
 			<button class="btn btn-xs btn-text cancel" ng-click="exit(bookmark);">取消</button>
 			<button class="btn btn-xs btn-text save" ng-click="update(bookmark);">更新</button>			
-			<button class="btn btn-xs btn-text" ng-click="remove(bookmark, $index);">删除</button>
+			<button class="btn btn-xs btn-text remove" ng-click="remove(bookmark, bookmarks);">删除</button>
 		</div>
-		<span class="close" ng-click="exit(bookmark)">x</span>
+		<span class="close" ng-click="exit(bookmark)">&times;</span>
 	</div>	
 	
 	</li>
 </ul>
+
+<span class="close-btn" ng-click="empty();">&times;</span>
 
 </div>

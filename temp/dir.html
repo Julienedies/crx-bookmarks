@@ -1,5 +1,6 @@
 <script type="text/ng-template" id="tree_item_renderer.html">
 <div class="dt"
+		active-able
 		bm-draggable="true"
 		bm-drag-channel="dragChannel" 
 		bm-drop-channel="dropChannel"	
@@ -38,7 +39,7 @@
 </ul>
 </script>
 
-<ul class="dir-tree" ng-show="!node.open" bm-current-active=".dt" bm-current-active-class="selected">
+<ul class="dir-tree" ng-show="!node.open">
 	<li ng-repeat="node in tree | isTree" ng-include="'tree_item_renderer.html'"></li>
 </ul>
 

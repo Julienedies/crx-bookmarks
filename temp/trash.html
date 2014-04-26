@@ -15,11 +15,16 @@
 </div>
 	
 <div class="right">
-<button type="button" class="btn btn-danger btn-xs" ng-click="clear();" ng-show="bookmarks?true:false;">清空回收站</button>
+<button type="button" class="btn btn-danger btn-xs" ng-click="clear();" ng-show="bookmarks.length">清空回收站</button>
 </div>
 
 </div>
 
+<div ng-show="!bookmarks">
+<div style="margin:5px auto;display:inline-block;width:100%;text-align:center;" name="_loading_"><svg width="16" height="16" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" version="1.1"><path d="M 150,0 a 150,150 0 0,1 106.066,256.066 l -35.355,-35.355 a -100,-100 0 0,0 -70.711,-170.711 z" fill="#3d7fe6"><animateTransform attributeName="transform" attributeType="XML" type="rotate" from="0 150 150" to="360 150 150" begin="0s" dur="1s" fill="freeze" repeatCount="indefinite" /></path></svg></div>
+</div>
+
+<div ng-show="bookmarks.length == 0">没有相关记录.</div>
 
 <ul class="bm-list">
 	<li ng-repeat="(key, bookmark) in bookmarks | filter:query | orderBy:orderProp" class="animate">
@@ -31,8 +36,8 @@
 		</a>
 		<div class="btn-group">
 			<button class="btn btn-xs btn-text" ng-click="open(bookmark);">打开</button>
-			<button class="btn btn-xs btn-text" ng-click="recover(bookmark,key);">恢复</button>
-			<button class="btn btn-xs btn-text" ng-click="remove(bookmark,key);">删除</button>
+			<button class="btn btn-xs btn-text" ng-click="recover(bookmark,$index);">恢复</button>
+			<button class="btn btn-xs btn-text" ng-click="remove(bookmark,$index);">删除</button>
 		</div>
 	</div>
 	
@@ -41,8 +46,8 @@
 		{{bookmark.title || '~~~~'}}
 		</a>
 		<div class="btn-group">
-			<button class="btn btn-xs btn-text" ng-click="recover(bookmark,key);">恢复</button>
-			<button class="btn btn-xs btn-text" ng-click="remove(bookmark,key);">删除</button>
+			<button class="btn btn-xs btn-text" ng-click="recover(bookmark,$index);">恢复</button>
+			<button class="btn btn-xs btn-text" ng-click="remove(bookmark,$index);">删除</button>
 		</div>
 	</div>	
 	

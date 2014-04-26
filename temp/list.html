@@ -32,6 +32,7 @@
 <ul class="bm-list" >
 
 	<li ng-repeat="bookmark in bookmarks | filter:query | orderBy:orderProp:sortReverse"
+		class="animate"
 		bm-draggable="true"
 		bm-drag-channel="dragChannel" 
 		bm-drop-channel="dropChannel"		

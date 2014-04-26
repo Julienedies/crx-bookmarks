@@ -30,74 +30,7 @@
 	</i>
 </div>
 
-<ul class="bm-list" >
-
-	<li ng-repeat="bookmark in bookmarks | filter:query | orderBy:orderProp:sortReverse"
-		bm-draggable="true"
-		bm-drag-channel="dragChannel" 
-		bm-drop-channel="dropChannel"		
-		bm-drag="bookmark" 
-		bm-on-Drop="onDrop($event, $position, $data, bookmark, bookmarks)"
-		bm-on-drop-success="dropSuccessHandler($event, bookmark, bookmarks)" >
-		
-	
-	<div ng-if="bookmark.url" class="edit-box editing-{{bookmark.editing}}"  ng-dblclick="open(bookmark);">
-		<img ng-src="{{bookmark.url | getIcon}}" class="icon" />
-		<span class="text-overflow">
-		<b xng-show="!bookmark.editing" ng-bind="bookmark.title" class="ghost"></b>
-		<input type="text"
-			   tabindex="1"
-			   class="edit-text"
-		       ng-model="bookmark.title"
-		       set-focus="bookmark.editing"
-		       ng-disabled="!!!bookmark.editing"
-		       ng-show="bookmark.editing"
-		       xbm-auto-width="bookmark.title"
-	    />
-		</span>
-
-		<div class="btn-group">
-			<button class="btn btn-xs btn-text" ng-click="open(bookmark);">打开</button>
-			<button class="btn btn-xs btn-text edit" ng-click="edit(bookmark);">修改</button>
-			<button class="btn btn-xs btn-text cancel" ng-click="exit(bookmark);">取消</button>
-			<button class="btn btn-xs btn-text save" ng-click="update(bookmark);">更新</button>			
-			<button class="btn btn-xs btn-text remove" ng-click="remove(bookmark, bookmarks);">删除</button>
-		</div>
-		
-		<div class="tag">
-		 标签: <input type="text" ng-model="bookmark.tags" class="input-sm" bm-auto-width="bookmark.tags" tabindex="2">
-		</div>		
-		
-		<span class="close" ng-click="exit(bookmark);">&times;</span>
-	</div>
-	
-	<div ng-if="!bookmark.url" class="edit-box editing-{{bookmark.editing}}">
-		<img src="assets/img/folder-1.png" class="icon" />
-		<span class="text-overflow">
-		<b ng-bind="bookmark.title" class="ghost"></b>
-		<input type="text"
-		   class="edit-text"
-		   href="{{'#/node/'+bookmark.id}}"
-		   ng-model="bookmark.title"
-		   value="{{bookmark.title}}"
-		   set-focus="bookmark.editing"
-		   ng-disabled="!!!bookmark.editing"
-		   ng-show="bookmark.editing"
-		/>
-		</span>
-		   
-		<div class="btn-group">
-			<button class="btn btn-xs btn-text" ng-click="open(bookmark);">打开</button>
-			<button class="btn btn-xs btn-text edit" ng-click="edit(bookmark);">修改</button>
-			<button class="btn btn-xs btn-text cancel" ng-click="exit(bookmark);">取消</button>
-			<button class="btn btn-xs btn-text save" ng-click="update(bookmark);">更新</button>			
-			<button class="btn btn-xs btn-text remove" ng-click="remove(bookmark, bookmarks);">删除</button>
-		</div>
-		<span class="close" ng-click="exit(bookmark)">&times;</span>
-	</div>	
-	
-	</li>
-</ul>
+<div ng-include="'temp/bm-list.html'"></div>
 
 
 </div>

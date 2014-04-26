@@ -3,13 +3,14 @@
 
 <div ng-show="!classes">loading...</div>
 
-<ul>
-<li ng-repeat="(key, item) in classes" ng-click="getBk(item);" >
-<b ng-bind="key"></b> &nbsp;<i ng-bind="item.length"></i>
+<ul class="cla-list">
+<li ng-repeat="(key, item) in classes" ng-click="getBk(item.ids);" class="animate">
+<img ng-src="{{item.urls[0] | getIcon}}" class="icon" title="{{key}}" />
+<b ng-bind="item.size"></b>
 </li>
 </ul>
 
-<div class="nvi view-animate" ng-show="bookmarks" ng-include="'temp/list.html'"></div>
+<div class="nvi view-animate" ng-show="bookmarks" ng-include="'temp/li.html'"></div>
 
 
 </div>

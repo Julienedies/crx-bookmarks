@@ -1,8 +1,8 @@
 <div class="tags">
 <h4>标签 <img src="assets/img/refresh.png" width="16" title="刷新" ng-click="main();" class="btn" /></h4>
 
-<ul bm-current-active="li:nth-child(n)" bm-current-active-class="selected">
-<li ng-repeat="(key, ids) in tagsMap">
+<ul>
+<li ng-repeat="(key, ids) in tagsMap" active-able>
 <a ng-href="{{'#/tag/'+key}}">{{key}}</a>
 </li>
 </ul>
