@@ -84,7 +84,7 @@
 		/////////////////////////////////////////////
 		
 		$scope.$on('selected.dir', function(e,msg){
-			if(bookmark.parentId){
+			if(bookmark.id){
 				bookmark.newParentId = msg.id;
 			}else{
 				bookmark.parentId = msg.id;
