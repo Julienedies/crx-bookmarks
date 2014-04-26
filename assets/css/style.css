@@ -269,7 +269,7 @@ nav a:link,nav a:visited {
 .display-full-btn{
 	position:absolute;
 	top:0;
-	right:0;
+	right:8px;
 	cursor:pointer;
 }
 .display-full{
@@ -282,7 +282,9 @@ nav a:link,nav a:visited {
 	z-index:20000;
 	background:#fff;
 }
-
+.display-full .display-full-btn{
+	position:fixed;
+}
 
 
 
@@ -304,7 +306,7 @@ nav a:link,nav a:visited {
 
 .edit-box .ghost,
 .edit-box .edit-text{
-	min-width: 4em;
+	min-width: 2em;
 	min-height: 1em;
 	max-width: 98% !important;
 	margin:0;
@@ -334,7 +336,7 @@ nav a:link,nav a:visited {
 .edit-box .btn-group {
 	position: absolute;
 	display: none;
-	margin: 0 0 0 24px;
+	margin: 2px 0 0 16px;
 	vertical-align: middle;
 
 }
@@ -527,6 +529,40 @@ nav a:link,nav a:visited {
 
 
 
+.cla-list li{
+	position:relative;
+	display:inline-block;
+	width:30px;
+	padding:5px;
+	margin:10px 20px;
+	overflow:hidden;
+	cursor:pointer;
+}
+.cla-list li .icon{
+	display:block;
+}
+.cla-list li .domain{
+	min-height:3.6em;
+}
+.cla-list li b{
+	position:absolute;
+	top:0;
+	right:0;
+}
+
+
+
+
+.close-btn{
+	position:absolute;
+	top:5px;
+	right:5px;
+	font-size:2em;
+	line-height:1;
+	cursor:pointer;
+}
+
+
 
 .btn.search,.btn.search:hover,.btn.search:focus {
 	outline: none;
@@ -641,7 +677,7 @@ header form {
 	top: 0;
 	bottom: 0;
 	z-index: 4;
-	xmargin-left: 280px;
+	margin-left: 280px;
 }
 
 .scroller {
@@ -664,9 +700,12 @@ header form {
 }
 
 .nvi{
-	position:absolute;
-	top:0;
-	width:100%;
+	position:fixed;
+	top:38px;
+	bottom:0;
+	left:0;
+	right:0;
+	z-index: 10;
 	background:#fff;
 }
 #main {

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zn" ng-app="bmApp">
+<html ng-app="bmApp">
 <head>
 <title>bookmark manager</title>
 <meta charset="utf-8" />
@@ -21,36 +21,33 @@
 <script src="assets/js/controllers.js"></script>
 <script src="assets/js/filters.js"></script>
 </head>
-<body ng-controller="mainCtrl">
+<body ng-controller="mainCtrl"  bm-current-active="[active-able]" bm-current-active-class="active selected">
 
 <header>
-
 <nav class="left">
-	<a ng-repeat="nav in navs"  ng-href="{{'#/'+nav.href}}" title="{{nav.text}}" class="{{nav.href}}"  ng-class="nav.cla" ng-click="setActive(nav)"></a>
+	<a active-able ng-repeat="nav in navs"  ng-href="{{'#/'+nav.href}}" title="{{nav.text}}" class="{{nav.href}}"  ng-class="nav.cla" ng-click="setActive(nav)"></a>
 </nav>
 
 <form class="right">
-<input type="text" class="input-sm search-query" placeholder="搜索所有书签" bm-enter-press="searchf" ng-model="q" />
-<button ng-click="searchf();" class="btn btn-xs btn-text search"><img src="assets/img/search.png" width="18"></button>
+	<input type="text" class="input-sm search-query" placeholder="搜索所有书签" bm-enter-press="searchf" ng-model="q" />
+	<button ng-click="searchf();" class="btn btn-xs btn-text search"><img src="assets/img/search.png" width="18"></button>
 </form>
-
 </header>
 
 <div id="window">
+	<div id="dir-wrapper">
+		<div class="scroller">
+			<div ng-controller="tagsCtrl" ng-include="'temp/tags.html'"></div>
+			<div ng-controller="vdirCtrl" ng-include="'temp/dir.html'"></div>
+		</div>
+	</div>
 
-<div id="dir-wrapper">
-<div class="scroller">
-<div ng-controller="tagsCtrl" ng-include="'temp/tags.html'"></div>
-<div ng-controller="vdirCtrl" ng-include="'temp/dir.html'"></div>
-</div>
-</div>
-
-<div id="main-wrapper" bm-resize-able="mainLeft">
-<div class="scroller" bm-return-top>
-<div id="main" class="view-animate" ng-view></div>
-</div>
+	<div id="main-wrapper" bm-resize-able="mainLeft">
+		<div class="scroller" bm-return-top>
+			<div id="main" class="view-animate" ng-view></div>
+		</div>
+	</div>
 </div>
 
-</div>
 </body>
 </html>
