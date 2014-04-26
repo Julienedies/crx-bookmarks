@@ -2,7 +2,7 @@
   "version": "0.1.0",
   "private": true,
   "name": "bookmarkManager",
-  "description": "A chrome extension for managing bookmaks.",
+  "description": "A chrome extension for managing bookmarks.",
   "repository": "https://github.com/Julienedies/chrome-extension-bookmarkManager",
   "license": "MIT",
   "devDependencies": {
