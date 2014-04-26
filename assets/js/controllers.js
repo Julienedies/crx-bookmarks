@@ -306,7 +306,7 @@
 		var main = $scope.main = function(){
 			bmRelTableManager.get().then(function(bmRelTable){
 				var tagsMap;
-				console.log('bmRelTable',bmRelTable);
+				//console.log('bmRelTable',bmRelTable);
 				$scope.bmRelTable = bmRelTable;
 				tagsMap = $scope.tagsMap = getTags(bmRelTable); 
 				$scope.$emit("tagsMap", tagsMap);
@@ -317,15 +317,17 @@
 		main();
 		
 		/////////////////////////////////////////////////////
-		$scope.$on('recordManager.change',function(e,data){
-			console.log('recordManager.change.tags',data);
+		$scope.$on('bmRelTable.recordManager.change',function(e,data){
+			//console.log('bmRelTable.recordManager.change.tags',data);
 			main();
 		});
 			
 	}
 
 	//显示某标签下的所有书签
-	function tagCtrl($scope, $routeParams, bookmarkManager) {
+	function tagCtrl($scope, $routeParams) {
+		
+		var bookmarkManager = $scope.bookmarkManager;
 		
 		var tags = $routeParams.tag;
 		var tagsMap = $scope.tagsMap;
@@ -873,7 +875,7 @@
 	
 	bmControllers.controller('tagsCtrl',['$scope', tagsCtrl]);
 	
-	bmControllers.controller('tagCtrl',['$scope', tagCtrl]);	
+	bmControllers.controller('tagCtrl',['$scope', '$routeParams', tagCtrl]);	
 
 	bmControllers.controller('dirCtrl',['$scope', 'bookmarkManager', dirCtrl]);
 
