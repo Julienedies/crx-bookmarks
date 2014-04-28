@@ -94,7 +94,8 @@
 		
 		$scope.viewSearch = function(){
 			searchManager.get().then(function(r){
-				$scope.vdata = r.keys.keys || ["Hello", "world", "normally", "you", "want", "more", "words","than", "this"];
+				r = r && r.keys && r.keys.keys;
+				$scope.vdata = r || ["Hello", "world", "normally", "you", "want", "more", "words","than", "this"];
 			});			
 		};
 
@@ -564,7 +565,7 @@
 		
 		var navs = $scope.navs = [{text:'目录',href:'node'},
 		              {text:'view',href:'dir'},
-		              {text:'v',href:'v'},
+		              {text:'标签云',href:'v'},
 		              {text:'最近',href:'recent'},
 		              {text:'hot',href:'hot'},
 		              {text:'分类',href:'classify'},
