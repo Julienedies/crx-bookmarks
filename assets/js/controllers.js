@@ -1,7 +1,9 @@
 'use strict';
 
 /**
+ * 
  * define controllers by Julienedies
+ * 
  */
 
 (function(angular){
