@@ -6,8 +6,7 @@
  <label>排序方式: </label>
   <select class="select-sm" ng-model="orderProp">
     <option value="">实际顺序，可拖动排序</option>
-    <option value="title">Alphabetical</option>
-    <option value="index">index</option>
+    <option value="title">title</option>
     <option value="url">url</option>
     <option value="dateAdded">dateAdded</option>
     <option value="children">children</option>
@@ -25,7 +24,7 @@
 <div ng-show="!bookmarks">loading...
 </div>
 
-<div class="path">
+<div class="path" ng-show="paths">
 	<i ng-repeat="node in paths" class="animate">
 	<a href="{{'#/node/'+node.id}}">{{node.title || '根目录'}}</a>&nbsp; &nbsp;› &nbsp;
 	</i>

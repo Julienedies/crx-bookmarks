@@ -572,7 +572,7 @@ nav a:link,nav a:visited {
 
 
 .node{
-	background: url(../img/eye.png) no-repeat 50% 50%;
+	background: url(../img/dir-2.png) no-repeat 50% 50%;
 	background-size: 20px;	
 }
 
@@ -589,7 +589,11 @@ nav a:link,nav a:visited {
 	background-size: 20px;		
 }
 .dir{
-	background: url(../img/dir-2.png) no-repeat 50% 50%;
+	background: url(../img/dir-5.png) no-repeat 50% 50%;
+	background-size: 20px;	
+}
+.v{
+	background: url(../img/eye.png) no-repeat 50% 50%;
 	background-size: 20px;	
 }
 .classify{
@@ -699,12 +703,12 @@ header form {
 	padding: 5px 10px 30px 10px;
 }
 
-.nvi{
+.view-layer{
 	position:fixed;
+	left:0;
+	right:0;	
 	top:38px;
 	bottom:0;
-	left:0;
-	right:0;
 	z-index: 10;
 	background:#fff;
 }
