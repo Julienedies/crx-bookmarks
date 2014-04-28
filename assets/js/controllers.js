@@ -81,6 +81,32 @@
 		});
 		
 	}
+	
+	// 可视化视图控制器
+	function vCtrl($scope){
+		
+		$scope.$location = $scope.$location;
+		$scope.bookmarkManager = $scope.bookmarkManager;
+		$scope.bmRelTableManager = $scope.bmRelTableManager;
+		$scope.rmBookmarkManager = $scope.rmBookmarkManager;
+		$scope.visitManager = $scope.visitManager;
+		var searchManager = $scope.searchManager = $scope.searchManager;	
+		
+		$scope.viewSearch = function(){
+			searchManager.get().then(function(r){
+				$scope.vdata = r.keys.keys || ["Hello", "world", "normally", "you", "want", "more", "words","than", "this"];
+			});			
+		};
+
+		$scope.empty = function(){
+			$scope.$apply(function() {
+				//delete $scope.vdata;
+				$scope.vdata = ["Hello", "world", "normally", "you", "want", "more", "words","than", "this"];
+			});
+
+		};		
+		
+	}
 
 	//列出书签树中所有书签目录
 	function dirCtrl($scope, bookmarkManager) {
@@ -495,17 +521,17 @@
 			rmBookmarkManager.clear();
 		};	
 		
-		$scope.remove = function(bookmark, key){
+		$scope.remove = function(bookmark, bookmarks){
+			
+			$scope._remove(bookmark, bookmarks);
 			rmBookmarkManager.remove(bookmark);
-			//delete $scope.bookmarks[key];
-			$scope.bookmarks.splice(key,1);
 		};	
 		
-		$scope.recover = function(bookmark, key){
+		$scope.recover = function(bookmark, bookmarks){
+			
+			$scope._remove(bookmark, bookmarks);
 			bookmarkManager.recover(bookmark);
 			rmBookmarkManager.remove(bookmark);
-			//delete $scope.bookmarks[key];
-			$scope.bookmarks.splice(key,1);
 		};	
 		
 		/////////////////////////////////////////////////////
@@ -536,8 +562,9 @@
 	//
 	function mainCtrl($scope, $window, $location, $timeout, cTabsInterface, bookmarkManager, bmRelTableManager, rmBookmarkManager,visitManager, searchManager, DSmanager){
 		
-		var navs = $scope.navs = [{text:'Main',href:'node'},
-		              {text:'目录',href:'dir'},
+		var navs = $scope.navs = [{text:'目录',href:'node'},
+		              {text:'view',href:'dir'},
+		              {text:'v',href:'v'},
 		              {text:'最近',href:'recent'},
 		              {text:'hot',href:'hot'},
 		              {text:'分类',href:'classify'},
@@ -592,16 +619,19 @@
 			}else{
 				$location.path('/node/'+bookmark.id);
 			}
-		};		
+		};	
 		
-		$scope.remove = function(bookmark, bookmarks){
-			
+		$scope._remove = function(bookmark, bookmarks){
 			var z = findInTree(bookmark.id, bookmarks);
 			var place = z.place;
 			var index = z.index;
 			
-			// 前端
-			place.splice(index, 1); 
+			place.splice(index, 1); 			
+		};
+		
+		$scope.remove = function(bookmark, bookmarks){
+			
+			$scope._remove(bookmark, bookmarks);
 			
 			// 后端
 			bookmarkManager.remove(bookmark);
@@ -874,6 +904,8 @@
 	bmControllers.controller('nodeCtrl',['$scope', '$routeParams', 'bookmarkManager', nodeCtrl]);
 	
 	bmControllers.controller('tagsCtrl',['$scope', tagsCtrl]);
+	
+	bmControllers.controller('vCtrl',['$scope', '$routeParams', vCtrl]);	
 	
 	bmControllers.controller('tagCtrl',['$scope', '$routeParams', tagCtrl]);	
 
