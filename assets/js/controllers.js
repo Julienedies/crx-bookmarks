@@ -100,8 +100,8 @@
 
 		$scope.empty = function(){
 			$scope.$apply(function() {
-				//delete $scope.vdata;
-				$scope.vdata = ["Hello", "world", "normally", "you", "want", "more", "words","than", "this"];
+				delete $scope.vdata;
+				//$scope.vdata = ["Hello", "world", "normally", "you", "want", "more", "words","than", "this"];
 			});
 
 		};		

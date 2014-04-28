@@ -660,7 +660,7 @@
 			    		        .on('click',function(d){
 			    		        	//console.log(d);
 			    		        	//$location.path('/search/'+d.text);
-			    		        	location.hash = '#/search/'+d.text;
+			    		        	location.hash = '#/search/'+encodeURIComponent(d.text);
 			    		        });
 			    		  }
 			    		  
