@@ -2,7 +2,7 @@
 <h4>标签 <img src="assets/img/refresh.png" width="16" title="刷新" ng-click="main();" class="btn" /></h4>
 
 <ul>
-<li ng-repeat="(key, ids) in tagsMap" active-able>
+<li class="animate" ng-repeat="(key, ids) in tagsMap" active-able>
 <a ng-href="{{'#/tag/'+key}}">{{key}}</a>
 </li>
 </ul>
