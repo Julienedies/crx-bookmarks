@@ -325,6 +325,7 @@
 				r = r.replace(/，/g,',').replace(/\s+/g,'').split(',');
 				for(var j = 0,v; j< r.length; j++){
 					v = r[j];
+					if(v == '') continue;
 					o[v] = o[v] || [];
 					o[v].push(i);
 				}
