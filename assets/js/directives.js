@@ -436,6 +436,29 @@
 		    }
 		  };
 		}]);
+	
+	//
+	bmDirectives.directive('bmAnimateShow', [function() {
+		  return {
+			  	restrict : 'A',
+			  	link: function(scope, elm, attrs) {
+		    	
+		      elm.hide();
+		      
+		      scope.$watch(attrs.bmAnimateShow, function(value) {
+		    	  if(value){
+		    		  elm.removeClass('animated bounceOut').addClass('animated bounceIn').show();
+		    	  }else{
+		    		  elm.on('webkitAnimationEnd',function(e){
+		    			  this.classList.contains('bounceOut') && elm.hide();
+		    		  });
+		    		  elm.removeClass('animated bounceIn').addClass('animated bounceOut');
+		    	  }
+		      });
+		      
+		    }
+		  };
+		}]);	
 
 	//
 	bmDirectives.directive('bmReturnTop', ['$compile',function($compile) {
@@ -651,6 +674,7 @@
 			    		      .enter().append('text')
 			    		        .style('font-size', function(d) { return d.size + 'px'; })
 			    		        .style('font-family', family)
+			    		        .attr('cursor', 'pointer')
 			    		        .style('fill', function(d, i) { return fill(i); })
 			    		        .attr('text-anchor', 'middle')
 			    		        .attr('transform', function(d) {
