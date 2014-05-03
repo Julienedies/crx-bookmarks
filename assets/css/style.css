@@ -448,11 +448,11 @@ nav a:link,nav a:visited {
 	transition: background,height 400ms  linear ;
 	padding-left:24px;
 	background: url(../img/folder-1.png) 4px 3px no-repeat;
-	background-size: 18px 18px;
+	background-size: 16px 16px;
 }
 .dir-tree .dt .editing-true{
 	background: url(../img/folder-1.png) 4px 3px no-repeat #fbfbfb;
-	background-size: 18px 18px;
+	background-size: 16px 16px;
 }
 
 
@@ -711,6 +711,7 @@ header form {
 	bottom:0;
 	z-index: 10;
 	background:#fff;
+	background: -webkit-gradient(radial, center center, 500, center center, 1400, from(rgba(0,0,0,0)), to(rgba(0,0,0,0.6))) #fff;	
 }
 #main {
 	position: relative;
