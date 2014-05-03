@@ -97,7 +97,7 @@
 		$scope.viewSearch = function(){
 			searchManager.get().then(function(r){
 				r = r && r.keys && r.keys.keys;
-				$scope.vdata = r || ["Hello", "world", "normally", "you", "want", "more", "words","than", "this"];
+				$scope.vdata = r || ["还没有搜索记录"];
 			});			
 		};
 
@@ -477,16 +477,30 @@
 		var bookmarkManager = $scope.bookmarkManager = $scope.bookmarkManager;
 		var visitManager = $scope.visitManager;
 		
+		var visitMap;
+		
 		$scope.main = function(){
 			visitManager.get().then(function(r){ 
-				console.log('visit',r);
+				//console.log('visit',r);
+				visitMap = r;
 				var q = [];
 				for(var i in r){
 					q.push(i);
 				}
-				
+				//console.log('')
 				bookmarkManager.get(q).then(function(r){
-					$scope.bookmarks = r || [];
+					var _q = visitMap;
+					var item;
+					var id;
+					r = r || [];
+					for(var i in r){
+						item = r[i];
+						id = item.id;
+						item.count = _q[id].count;
+						item.lastTime = _q[id].lastTime;
+					}
+					console.log(r);
+					$scope.bookmarks = r;
 				});			
 				
 			});

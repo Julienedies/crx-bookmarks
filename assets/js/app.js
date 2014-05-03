@@ -34,7 +34,7 @@
 			templateUrl : 'temp/classify.html',
 			controller : 'classifyCtrl'			
 		}).when('/hot', {
-			templateUrl : 'temp/list.html',
+			templateUrl : 'temp/hot.html',
 			controller : 'hotCtrl'			
 		}).when('/trash', {
 			templateUrl : 'temp/trash.html',
