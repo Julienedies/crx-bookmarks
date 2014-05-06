@@ -484,7 +484,7 @@
 				var id = q[i];
 				bookmarkManager.get(id).then(function(r){
 					console.log(id);
-					if(!r) visitManager.remove(id);
+					if(!r) manager.remove(id);
 				});
 			}
 		};
@@ -504,7 +504,7 @@
 					var id;
 					
 					if(q.length && !r){
-						$scope._clear(q, bookmarkManager);
+						$scope._clear(q, visitManager);
 						return $scope.main();
 					}
 					
