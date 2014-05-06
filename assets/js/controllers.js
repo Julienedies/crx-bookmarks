@@ -479,6 +479,16 @@
 		
 		var visitMap;
 		
+		$scope._clear = function(q, manager){
+			for(var i in q){
+				var id = q[i];
+				bookmarkManager.get(id).then(function(r){
+					console.log(id);
+					if(!r) visitManager.remove(id);
+				});
+			}
+		};
+		
 		$scope.main = function(){
 			visitManager.get().then(function(r){ 
 				//console.log('visit',r);
@@ -492,6 +502,12 @@
 					var _q = visitMap;
 					var item;
 					var id;
+					
+					if(q.length && !r){
+						$scope._clear(q, bookmarkManager);
+						return $scope.main();
+					}
+					
 					r = r || [];
 					for(var i in r){
 						item = r[i];
@@ -610,7 +626,7 @@
 		$scope.searchf = function(){
 			var q = $scope.q;
 			if(q){
-				$location.path('/search/'+$scope.q);
+				$location.path('/search/'+encodeURIComponent(q));
 				searchManager.get('keys').then(function(r){ 
 					r = r || {};
 					r.id = 'keys';
