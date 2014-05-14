@@ -555,6 +555,15 @@
 			rmBookmarkManager.clear();
 		};	
 		
+		$scope.open = function(bookmark){
+			if(bookmark.url){
+				//$window.open(bookmark.url);
+				cTabsInterface.create({ url: bookmark.url, selected: true });
+			}else{
+				$location.path('/node/'+bookmark.id);
+			}
+		};		
+		
 		$scope.remove = function(bookmark, bookmarks){
 			
 			$scope._remove(bookmark, bookmarks);
