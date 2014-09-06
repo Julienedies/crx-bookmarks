@@ -16,37 +16,37 @@
 	bmApp.config([ '$routeProvider', function($routeProvider) {
 		$routeProvider
 		  .when('/node/:nodeId?', {
-			templateUrl : 'temp/node.html',
+			templateUrl : 'tmpl/node.html',
 			controller : 'nodeCtrl'
 		}).when('/v/:type?', {
-				templateUrl : 'temp/v.html',
+				templateUrl : 'tmpl/v.html',
 				controller : 'vCtrl'					
 		}).when('/dir/:nodeId?', {
-			templateUrl : 'temp/vdir.html',
+			templateUrl : 'tmpl/vdir.html',
 			controller : 'vdirCtrl'	
 		}).when('/tag/:tag', {
-			templateUrl : 'temp/list.html',
+			templateUrl : 'tmpl/list.html',
 			controller : 'tagCtrl'				
 		}).when('/recent', {
-			templateUrl : 'temp/list.html',
+			templateUrl : 'tmpl/list.html',
 			controller : 'recentCtrl'
 		}).when('/classify', {
-			templateUrl : 'temp/classify.html',
+			templateUrl : 'tmpl/classify.html',
 			controller : 'classifyCtrl'			
 		}).when('/hot', {
-			templateUrl : 'temp/hot.html',
+			templateUrl : 'tmpl/hot.html',
 			controller : 'hotCtrl'			
 		}).when('/trash', {
-			templateUrl : 'temp/trash.html',
+			templateUrl : 'tmpl/trash.html',
 			controller : 'trashCtrl'			
 		}).when('/search/:q', {
-			templateUrl : 'temp/list.html',
+			templateUrl : 'tmpl/list.html',
 			controller : 'searchCtrl'			
 		}).when('/seting', {
-			templateUrl : 'temp/seting.html'
+			templateUrl : 'tmpl/seting.html'
 			//controller : 'recentCtrl'
 		}).when('/help', {
-			templateUrl : 'temp/help.html'
+			templateUrl : 'tmpl/help.html'
 			//controller : 'recentCtrl'				
 		}).otherwise({
 			redirectTo : '/recent'

@@ -72,7 +72,7 @@
 		
 		// 加载目录
 		$scope.loadDir = function(){
-			$scope.tempName = 'temp/dir-s.html';
+			$scope.tempName = 'tmpl/dir-s.html';
 		};
 		
 		// 打开书签管理页面
