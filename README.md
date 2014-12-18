@@ -26,6 +26,6 @@ chrome自带的书签管理器过分简洁，应用商店里也没找到符合�
 css部分引用了<a href="http://getbootstrap.com/">bootstrap.css</a> && <a href="http://daneden.github.io/animate.css/">Animate.css</a>；
 
 ##其它：
-chrome扩展开发环境已经搭好，扩展所使用的接口也已经很好的进行了封装，可以很方便的使用；欢迎大家根据自己的需求定制自己的书签管理器。
+其它就没有了.
 
 
