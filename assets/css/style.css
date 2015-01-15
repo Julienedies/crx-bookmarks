@@ -710,6 +710,7 @@ header form {
 	top:38px;
 	bottom:0;
 	z-index: 10;
+	overflow: scroll;
 	background:#fff;
 	background: -webkit-gradient(radial, center center, 500, center center, 1400, from(rgba(0,0,0,0)), to(rgba(0,0,0,0.6))) #fff;	
 }
