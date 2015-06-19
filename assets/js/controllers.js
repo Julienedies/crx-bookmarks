@@ -529,7 +529,7 @@
 	}
 
 	//
-	function trashCtrl($scope, bookmarkManager, rmBookmarkManager) {
+	function trashCtrl($scope, bookmarkManager, rmBookmarkManager, cTabsInterface) {
 		
 		var main = function(){
 			rmBookmarkManager.get().then(function(r){
@@ -962,7 +962,7 @@
 
 	bmControllers.controller('hotCtrl',['$scope', 'bookmarkManager', hotCtrl]);
 
-	bmControllers.controller('trashCtrl',['$scope', 'bookmarkManager', 'rmBookmarkManager', trashCtrl]);
+	bmControllers.controller('trashCtrl',['$scope', 'bookmarkManager', 'rmBookmarkManager','cTabsInterface', trashCtrl]);
 
 	bmControllers.controller('setingCtrl',['$scope', 'bookmarkManager', setingCtrl]);
 
