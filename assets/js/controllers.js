@@ -272,7 +272,7 @@
 	function recentCtrl($scope, bookmarkManager){
 
 		$scope._getData = function(){
-			return bookmarkManager.getRecent(100);
+			return bookmarkManager.getRecent(200);
 		};
 		
 		$scope._update = function(r){
