@@ -1,4 +1,4 @@
-#chrome-extension-bookmarkManager
+#crx-bookmarks
 ================================
 
 一个关于书签管理的chrome扩展。
