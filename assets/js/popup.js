@@ -28,7 +28,7 @@
 			// 检查当前页面是否被添加到书签树
 			bookmarkManager.search(tab.url).then(function(r){
 				//alert(JSON.stringify(r));
-				if(r && r.length == 1){
+				if(r && r.length === 1){
 					angular.extend(bookmark,r[0]);
 					
 					bmRelTableManager.get(bookmark.id).then(function(r){

@@ -545,7 +545,7 @@
 			    		    .enter().append('svg:g')
 			    		      .attr('class', 'cell')
 			    		      .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
-			    		      .on('click', function(d) { return zoom(node == d.parent ? root : d.parent); });
+			    		      .on('click', function(d) { return zoom(node === d.parent ? root : d.parent); });
 
 			    		  cell.append('svg:rect')
 			    		      .attr('width', function(d) { return d.dx - 1; })
@@ -566,7 +566,7 @@
 			    		  d3.select(window).on('click', function() { zoom(root); });
 
 			    		  d3.select('select').on('change', function() {
-			    		    treemap.value(this.value == 'size' ? size : count).nodes(root);
+			    		    treemap.value(this.value === 'size' ? size : count).nodes(root);
 			    		    zoom(node);
 			    		  });
 
